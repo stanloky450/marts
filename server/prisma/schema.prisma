@@ -1,0 +1,496 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+enum UserRole {
+  super_admin
+  admin
+  vendor
+}
+
+enum UserStatus {
+  active
+  suspended
+}
+
+enum VendorStatus {
+  pending 
+  active
+  suspended
+}
+
+enum ProductStatus {
+  draft
+  pending
+  approved
+  rejected
+}
+
+enum PaymentType {
+  registration
+  order
+}
+
+enum PaymentStatus {
+  pending
+  success
+  failed
+}
+
+enum PaymentProvider {
+  paystack
+}
+
+enum ReferralStatus {
+  active
+  inactive
+}
+
+enum CategoryStatus {
+  active
+  inactive
+}
+
+enum AdSlot {
+  home_hero
+  mid_banner
+  sidebar
+  footer
+}
+
+enum MediaProvider {
+  cloudinary
+  s3
+}
+
+enum ThemeColor {
+  black
+  deep_blue
+  green
+  purple_blue
+}
+
+model User {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  email        String @unique
+  passwordHash String
+
+  role   UserRole
+  status UserStatus @default(active)
+
+  profileFirstName String?
+  profileLastName  String?
+  profilePhone     String?
+  profileRegion    String?
+  profileNotes     String?
+
+  lastLoginAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  vendors       Vendor[]       @relation("VendorOwner")
+  media         Media[]        @relation("MediaOwner")
+  adminAssignments AdminAssignment[] @relation("AdminAssignmentAdminUser")
+  adPlacementsCreatedBy AdPlacement[] @relation("AdPlacementCreatedBy")
+  adPlacementsUpdatedBy AdPlacement[] @relation("AdPlacementUpdatedBy")
+  locations     Location[]     @relation("LocationCreatedBy")
+  promotions    Promotion[]    @relation("PromotionCreatedBy")
+  auditLogs     AuditLog[]
+  settings      Setting[]     @relation("SettingUpdatedBy")
+  referrals     Referral[]    @relation("ReferralCreatedBy")
+  payments      Payment[]     @relation("PaymentUser")
+}
+
+model Vendor {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  ownerMongoId String @db.VarChar(24)
+  owner        User   @relation("VendorOwner", fields: [ownerMongoId], references: [mongoId])
+
+  businessName    String?
+  description      String?
+  artisanCategory String?
+
+  logo            String?
+  logoUrl         String?
+  profilePhotoUrl String?
+  bannerImage     String?
+
+  themeColor ThemeColor @default(black)
+
+  phoneNumber    String?
+  whatsappNumber String?
+
+  socialsFacebook  String?
+  socialsInstagram String?
+  socialsX         String?
+
+  referralCodeUsed String?
+
+  status    VendorStatus @default(pending)
+  subdomain String?      @unique
+
+  addressStreet     String?
+  addressCity       String?
+  addressState      String?
+  addressCountry    String?
+  addressPostalCode String?
+
+  locationRegion String?
+  locationArea   String?
+
+  metaViews     Int @default(0)
+  metaFollowers Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  // Extra columns to preserve embedded-object shapes for API compatibility.
+  // Controllers in this repo sometimes expose `phone`/`whatsapp` and embedded objects directly.
+  phone     String?
+  whatsapp  String?
+  socials   Json?
+  address   Json?
+  location  Json?
+
+  @@index([ownerMongoId, status])
+
+  products         Product[]
+  payments         Payment[]
+  subdomains       Subdomain[]
+  media            Media[]
+  adminAssignments AdminAssignment[] @relation("AdminAssignmentVendor")
+  promotions       Promotion[]        @relation("PromotionVendor")
+}
+
+model Category {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  name String @unique
+  slug String @unique
+
+  parentMongoId String? @db.VarChar(24)
+  parent        Category? @relation("CategoryParent", fields: [parentMongoId], references: [mongoId])
+  children      Category[] @relation("CategoryParent")
+
+  icon String?
+
+  createdByMongoId String? @db.VarChar(24)
+  updatedByMongoId String? @db.VarChar(24)
+
+  status CategoryStatus @default(active)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  products Product[]
+}
+
+model Product {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  vendorMongoId   String @db.VarChar(24)
+  vendor          Vendor @relation(fields: [vendorMongoId], references: [mongoId])
+
+  name String
+  description String?
+
+  categoryMongoId String @db.VarChar(24)
+  category        Category @relation(fields: [categoryMongoId], references: [mongoId])
+
+  // Mirrors Mongoose field `region` used in Product controller.
+  region String?
+
+  price         Decimal @db.Decimal(12,2)
+  discountPrice Decimal?
+
+  promoStart DateTime?
+  promoEnd   DateTime?
+
+  sku   String? @unique
+  stock Int @default(0)
+
+  images String[]
+  tags   String[]
+
+  // Mirrors Mongoose embedded `variants` array.
+  variants Json?
+
+  status         ProductStatus @default(pending)
+  rejectionNote String?
+
+  metaViews Int @default(0)
+  metaSales Int @default(0)
+
+  promotions Promotion[] @relation("PromotionProduct")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([vendorMongoId, status])
+  @@index([categoryMongoId, status])
+}
+
+model Location {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  region String @unique
+  areas  String[]
+
+  registrationFee Int
+  isActive Boolean @default(true)
+
+  createdByMongoId String? @db.VarChar(24)
+  createdBy User? @relation("LocationCreatedBy", fields: [createdByMongoId], references: [mongoId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Subdomain {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  name String @unique
+
+  vendorMongoId String @db.VarChar(24)
+  vendor Vendor @relation(fields: [vendorMongoId], references: [mongoId])
+
+  active Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([vendorMongoId])
+}
+
+model AdPlacement {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  slot     AdSlot
+  imageUrl String
+  description String
+  price Decimal @db.Decimal(12,2)
+
+  startDate DateTime
+  endDate   DateTime
+
+  targetUrl String?
+
+  active   Boolean @default(true)
+  priority Int @default(0)
+
+  createdByMongoId String @db.VarChar(24)
+  createdBy User @relation("AdPlacementCreatedBy", fields: [createdByMongoId], references: [mongoId])
+
+  updatedByMongoId String? @db.VarChar(24)
+  updatedBy User? @relation("AdPlacementUpdatedBy", fields: [updatedByMongoId], references: [mongoId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([slot, active])
+  @@index([priority])
+}
+
+model AdminAssignment {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  adminUserMongoId String @db.VarChar(24)
+  adminUser        User @relation("AdminAssignmentAdminUser", fields: [adminUserMongoId], references: [mongoId])
+
+  vendorMongoId    String @db.VarChar(24)
+  vendor           Vendor @relation("AdminAssignmentVendor", fields: [vendorMongoId], references: [mongoId])
+
+  region String?
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([adminUserMongoId, vendorMongoId])
+
+  @@index([adminUserMongoId])
+  @@index([vendorMongoId])
+}
+
+model Payment {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  type PaymentType
+  amount Decimal @db.Decimal(12,2)
+  currency String @default("NGN")
+
+  provider PaymentProvider @default(paystack)
+  reference String @unique
+
+  status PaymentStatus @default(pending)
+
+  userMongoId   String? @db.VarChar(24)
+  user          User? @relation("PaymentUser", fields: [userMongoId], references: [mongoId])
+
+  vendorMongoId String? @db.VarChar(24)
+  vendor        Vendor? @relation(fields: [vendorMongoId], references: [mongoId])
+
+  metadata Json?
+  paidAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([type])
+  @@index([status])
+  @@index([userMongoId])
+  @@index([vendorMongoId, status])
+}
+
+model WebhookEvent {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  provider  String
+  eventId   String @unique
+  eventType String?
+
+  payload    Json?
+  processed  Boolean @default(false)
+  processedAt DateTime?
+  error      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([processed])
+}
+
+model Referral {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  code String @unique
+  label String?
+
+  maxUses   Int?
+  usedCount Int @default(0)
+  expiresAt String @default("0")
+
+  discountPercent Int
+
+  createdByMongoId String? @db.VarChar(24)
+  createdBy User? @relation("ReferralCreatedBy", fields: [createdByMongoId], references: [mongoId])
+
+  status ReferralStatus @default(active)
+  lastUsedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Promotion {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  title String
+  description String?
+
+  productMongoId String? @db.VarChar(24)
+  product Product? @relation("PromotionProduct", fields: [productMongoId], references: [mongoId])
+
+  vendorMongoId String? @db.VarChar(24)
+  vendor Vendor? @relation("PromotionVendor", fields: [vendorMongoId], references: [mongoId])
+
+  startsAt DateTime
+  endsAt DateTime
+
+  createdByMongoId String @db.VarChar(24)
+  createdBy User @relation("PromotionCreatedBy", fields: [createdByMongoId], references: [mongoId])
+
+  active Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([startsAt, endsAt])
+  @@index([active])
+}
+
+model AuditLog {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  userMongoId String @db.VarChar(24)
+  user User @relation(fields: [userMongoId], references: [mongoId])
+
+  action String
+  resource String
+  resourceId String? // Mongo ObjectId string
+
+  changes Json?
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([userMongoId])
+  @@index([resource, resourceId])
+}
+
+model Setting {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  key String @unique
+  value Json?
+  description String?
+
+  updatedByMongoId String? @db.VarChar(24)
+  updatedBy User? @relation("SettingUpdatedBy", fields: [updatedByMongoId], references: [mongoId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Media {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  url String
+  provider MediaProvider @default(cloudinary)
+  folder String?
+
+  ownerUserMongoId String @db.VarChar(24)
+  ownerUser User @relation("MediaOwner", fields: [ownerUserMongoId], references: [mongoId])
+
+  vendorMongoId String? @db.VarChar(24)
+  vendor Vendor? @relation(fields: [vendorMongoId], references: [mongoId])
+
+  width Int?
+  height Int?
+  mime String?
+  size Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([ownerUserMongoId])
+  @@index([vendorMongoId])
+}
+

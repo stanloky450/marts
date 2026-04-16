@@ -1,0 +1,13 @@
+{
+  "name": "@migration/shared",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "dependencies": {
+    "@prisma/client": "^7.5.0",
+    "axios": "^1.6.2",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "node-appwrite": "^14.1.0",
+    "zod": "^3.22.4"
+  }
+}

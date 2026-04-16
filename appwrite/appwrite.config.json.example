@@ -1,0 +1,102 @@
+{
+  "projectId": "YOUR_APPWRITE_PROJECT_ID",
+  "endpoint": "https://<REGION>.cloud.appwrite.io/v1",
+  "functions": [
+    {
+      "$id": "auth-function-id",
+      "name": "auth-function",
+      "runtime": "node-20.0",
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "enabled": true,
+      "logging": true,
+      "execute": [
+        "any"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "functions/auth-function"
+    },
+    {
+      "$id": "user-function-id",
+      "name": "user-function",
+      "runtime": "node-20.0",
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "enabled": true,
+      "logging": true,
+      "execute": [
+        "any"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "functions/user-function"
+    },
+    {
+      "$id": "product-function-id",
+      "name": "product-function",
+      "runtime": "node-20.0",
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "enabled": true,
+      "logging": true,
+      "execute": [
+        "any"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "functions/product-function"
+    },
+    {
+      "$id": "payment-function-id",
+      "name": "payment-function",
+      "runtime": "node-20.0",
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "enabled": true,
+      "logging": true,
+      "execute": [
+        "any"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "functions/payment-function"
+    },
+    {
+      "$id": "storefront-function-id",
+      "name": "storefront-function",
+      "runtime": "node-20.0",
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "enabled": true,
+      "logging": true,
+      "execute": [
+        "any"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "functions/storefront-function"
+    },
+    {
+      "$id": "analytics-function-id",
+      "name": "analytics-function",
+      "runtime": "node-20.0",
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "enabled": true,
+      "logging": true,
+      "execute": [
+        "any"
+      ],
+      "events": [],
+      "schedule": "",
+      "timeout": 15,
+      "path": "functions/analytics-function"
+    }
+  ]
+}

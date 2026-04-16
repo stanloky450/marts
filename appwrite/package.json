@@ -1,0 +1,8 @@
+{
+  "name": "appwrite-function-migration",
+  "private": true,
+  "workspaces": [
+    "functions/shared",
+    "functions/*-function"
+  ]
+}
