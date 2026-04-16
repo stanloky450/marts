@@ -25,10 +25,10 @@ export const config = {
 	},
 
 	paystack: {
-		secretKey: "sk_test_f6358f39abc0fdd40b81b0eb0bfaa8636165c428",
-		// secretKey: process.env.PAYSTACK_SECRET_KEY,
-		// publicKey: process.env.PAYSTACK_PUBLIC_KEY,
-		publicKey: "pk_test_f35613a7cca4a53c34eb35d094eb736ca56c5c14",
+		// secretKey: "sk_test_f6358f39abc0fdd40b81b0eb0bfaa8636165c428",
+		secretKey: process.env.PAYSTACK_SECRET_KEY,
+		publicKey: process.env.PAYSTACK_PUBLIC_KEY,
+		// publicKey: "pk_test_f35613a7cca4a53c34eb35d094eb736ca56c5c14",
 		webhookSecret: process.env.PAYSTACK_WEBHOOK_SECRET,
 	},
 
