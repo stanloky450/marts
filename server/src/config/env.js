@@ -45,6 +45,7 @@ export const config = {
 	openai: {
 		apiKey: process.env.OPENAI_API_KEY,
 	},
+	// For seeding initial data like super admin credentials
 
 	seed: {
 		superAdminEmail: process.env.SEED_SUPERADMIN_EMAIL,
