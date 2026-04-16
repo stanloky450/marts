@@ -43,11 +43,7 @@ export const config = {
 	},
 
 	openai: {
-		// apiKey: "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",
-		// apiKey: "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",
 		apiKey: process.env.OPENAI_API_KEY,
-		// ||
-		// "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",
 	},
 
 	seed: {
