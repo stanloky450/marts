@@ -1,0 +1,430 @@
+
+> my-v0-project@0.1.0 dev
+> next dev -p 3001
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://172.17.128.1:3001
+- Environments: .env.local
+✓ Ready in 2.7s
+⚠ `eslint` configuration in next.config.mjs is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ Invalid next.config.mjs options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+
+ GET / 200 in 4.3s (next.js: 2.3s, application-code: 1928ms)
+⨯ TypeError: fetch failed
+    at async proxyToBaseUrl (app\api\v1\[...path]\route.ts:193:20)
+  191 |   }
+  192 |
+> 193 |   const upstream = await fetch(upstreamUrl, init);
+      |                    ^
+  194 |   const responseHeaders = new Headers();
+  195 |
+  196 |   upstream.headers.forEach((value, key) => { {
+  [cause]: Error [NotSupportedError]: expect header not supported
+      at new Promise (<anonymous>)
+      at proxyToBaseUrl (app\api\v1\[...path]\route.ts:193:26)
+      at proxy (app\api\v1\[...path]\route.ts:249:10)
+    191 |   }
+    192 |
+  > 193 |   const upstream = await fetch(upstreamUrl, init);
+        |                          ^
+    194 |   const responseHeaders = new Headers();
+    195 |
+    196 |   upstream.headers.forEach((value, key) => { {
+    code: 'UND_ERR_NOT_SUPPORTED'
+  }
+}
+ POST /api/v1/auth/login 500 in 4.5s (next.js: 3.3s, application-code: 1254ms)
+ GET /api/v1/categories 200 in 1133ms (next.js: 32ms, application-code: 1101ms)
+ GET /api/v1/categories 200 in 414ms (next.js: 90ms, application-code: 324ms)
+ POST /api/v1/auth/login 401 in 74ms (next.js: 12ms, application-code: 63ms)
+ GET / 200 in 1038ms (next.js: 248ms, application-code: 789ms)
+ GET / 200 in 210ms (next.js: 26ms, application-code: 184ms)
+ GET /api/v1/auth/me 401 in 120ms (next.js: 34ms, application-code: 86ms)
+ POST /api/v1/auth/refresh 500 in 32ms (next.js: 7ms, application-code: 26ms)
+[browser] [v0] Failed to refresh user: AxiosError: Request failed with status code 500
+    at async (lib/api-client.ts:54:24)
+    at async AuthProvider.useCallback[refreshUser] (contexts/auth-context.tsx:30:24)
+    at async AuthProvider.useEffect.initAuth (contexts/auth-context.tsx:45:9)
+  52 | 						}
+  53 |
+> 54 | 						const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+     |                  ^
+  55 | 							refreshToken,
+  56 | 						});
+  57 | (contexts/auth-context.tsx:34:15)
+ GET /login 200 in 901ms (next.js: 186ms, application-code: 715ms)
+ POST /api/v1/auth/login 500 in 83ms (next.js: 38ms, application-code: 45ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET /login 200 in 167ms (next.js: 22ms, application-code: 145ms)
+ GET /login 200 in 108ms (next.js: 9ms, application-code: 99ms)
+ POST /api/v1/auth/login 500 in 47ms (next.js: 21ms, application-code: 26ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET /login 200 in 166ms (next.js: 12ms, application-code: 154ms)
+ POST /api/v1/auth/login 500 in 46ms (next.js: 18ms, application-code: 28ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET /login 200 in 173ms (next.js: 6ms, application-code: 168ms)
+ GET /login 200 in 155ms (next.js: 9ms, application-code: 146ms)
+ POST /api/v1/auth/login 500 in 58ms (next.js: 24ms, application-code: 34ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ POST /api/v1/auth/login 500 in 44ms (next.js: 29ms, application-code: 16ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ POST /api/v1/auth/login 200 in 666ms (next.js: 22ms, application-code: 643ms)
+ POST /api/v1/auth/login 200 in 130ms (next.js: 13ms, application-code: 117ms)
+ POST /api/v1/auth/login 200 in 288ms (next.js: 20ms, application-code: 268ms)
+ GET /api/v1/auth/me 200 in 59ms (next.js: 8ms, application-code: 51ms)
+ POST /api/v1/auth/login 401 in 358ms (next.js: 16ms, application-code: 343ms)
+ POST /api/v1/auth/login 200 in 357ms (next.js: 23ms, application-code: 333ms)
+ POST /api/v1/auth/login 500 in 107ms (next.js: 24ms, application-code: 83ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET /login 200 in 356ms (next.js: 28ms, application-code: 327ms)
+ POST /api/v1/auth/login 500 in 53ms (next.js: 22ms, application-code: 31ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ POST /api/v1/auth/login 500 in 54ms (next.js: 29ms, application-code: 25ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET /login 200 in 147ms (next.js: 10ms, application-code: 137ms)
+ POST /api/v1/auth/login 500 in 39ms (next.js: 19ms, application-code: 20ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET /login 200 in 258ms (next.js: 15ms, application-code: 242ms)
+ POST /api/v1/auth/login 500 in 40ms (next.js: 19ms, application-code: 20ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET / 200 in 140ms (next.js: 11ms, application-code: 128ms)
+ GET /login 200 in 550ms (next.js: 396ms, application-code: 153ms)
+ POST /api/v1/auth/login 200 in 484ms (next.js: 163ms, application-code: 321ms)
+ GET /login 200 in 612ms (next.js: 8ms, application-code: 604ms)
+ POST /api/v1/auth/login 200 in 325ms (next.js: 31ms, application-code: 294ms)
+ GET /super-admin 200 in 424ms (next.js: 293ms, application-code: 132ms)
+ GET /api/v1/admins/stats 500 in 190ms (next.js: 6ms, application-code: 184ms)
+ GET /api/v1/admins/stats 500 in 203ms (next.js: 42ms, application-code: 161ms)
+[browser]  Failed to fetch stats: AxiosError: Request failed with status code 500 (app/super-admin/page.tsx:35:13)
+[browser]  Failed to fetch stats: AxiosError: Request failed with status code 500 (app/super-admin/page.tsx:35:13)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 265ms (next.js: 17ms, application-code: 248ms)
+ GET /api/v1/vendors?limit=5 200 in 284ms (next.js: 70ms, application-code: 214ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 102ms (next.js: 19ms, application-code: 83ms)
+ GET /api/v1/vendors?limit=5 200 in 90ms (next.js: 17ms, application-code: 72ms)
+ GET /super-admin/admins 200 in 222ms (next.js: 156ms, application-code: 66ms)
+ GET /api/v1/admins/list 200 in 93ms (next.js: 24ms, application-code: 69ms)
+ GET /api/v1/admins/list 200 in 39ms (next.js: 9ms, application-code: 30ms)
+ GET /super-admin/categories 200 in 174ms (next.js: 125ms, application-code: 49ms)
+ GET /api/v1/categories 200 in 146ms (next.js: 19ms, application-code: 127ms)
+ GET /api/v1/categories 200 in 33ms (next.js: 7ms, application-code: 26ms)
+ GET /super-admin/vendors 200 in 201ms (next.js: 128ms, application-code: 73ms)
+ GET /api/v1/vendors 200 in 299ms (next.js: 27ms, application-code: 272ms)
+ GET /api/v1/vendors 200 in 45ms (next.js: 6ms, application-code: 40ms)
+○ Compiling /store/[subdomain] ...
+ GET /store/framer 200 in 7.9s (next.js: 7.4s, application-code: 455ms)
+ GET /api/v1/auth/me 200 in 508ms (next.js: 126ms, application-code: 382ms)
+ GET /api/v1/categories 200 in 445ms (next.js: 111ms, application-code: 334ms)
+ GET /api/v1/storefront/store/products?search=&sortBy=name_asc 200 in 518ms (next.js: 44ms, application-code: 474ms)
+ GET /api/v1/storefront/store/info?t=1776763123579 200 in 634ms (next.js: 23ms, application-code: 611ms)
+ GET /store/alice-electronics 200 in 202ms (next.js: 43ms, application-code: 159ms)
+ GET /api/v1/auth/me 200 in 235ms (next.js: 27ms, application-code: 207ms)
+ GET /api/v1/categories 200 in 243ms (next.js: 23ms, application-code: 220ms)
+ GET /api/v1/storefront/store/info?t=1776763393608 200 in 279ms (next.js: 12ms, application-code: 267ms)
+ GET /api/v1/storefront/store/products?search=&sortBy=name_asc 200 in 284ms (next.js: 26ms, application-code: 258ms)
+ GET /super-admin/products 200 in 118ms (next.js: 82ms, application-code: 35ms)
+ GET /api/v1/products 200 in 295ms (next.js: 29ms, application-code: 266ms)
+ GET /api/v1/products 200 in 45ms (next.js: 6ms, application-code: 39ms)
+ GET /super-admin/analytics 200 in 1110ms (next.js: 1049ms, application-code: 61ms)
+ GET /api/v1/admins/products/analytics?limit=50 200 in 87ms (next.js: 32ms, application-code: 54ms)
+ GET /api/v1/admins/products/analytics?limit=50 200 in 42ms (next.js: 6ms, application-code: 36ms)
+ GET /store/alice-electronics/products/087c5c799f969751b8edd03c 200 in 5.1s (next.js: 4.8s, application-code: 367ms)
+ GET /store/alice-electronics/products/087c5c799f969751b8edd03c 200 in 205ms (next.js: 35ms, application-code: 170ms)
+ POST /api/v1/products/087c5c799f969751b8edd03c/view 500 in 438ms (next.js: 39ms, application-code: 399ms)
+ POST /api/v1/products/087c5c799f969751b8edd03c/view 500 in 516ms (next.js: 82ms, application-code: 434ms)
+ GET /api/v1/storefront/store/info?t=1776763762641 200 in 447ms (next.js: 30ms, application-code: 417ms)
+[browser] Failed to track product view: AxiosError: Request failed with status code 500 (app/store/[subdomain]/products/[productId]/page.tsx:86:15)
+[browser] Failed to track product view: AxiosError: Request failed with status code 500 (app/store/[subdomain]/products/[productId]/page.tsx:86:15)
+ GET /api/v1/storefront/store/info?t=1776763762639 200 in 552ms (next.js: 37ms, application-code: 515ms)
+ GET /api/v1/storefront/store/products/087c5c799f969751b8edd03c 200 in 657ms (next.js: 107ms, application-code: 549ms)
+ GET /api/v1/storefront/store/products/087c5c799f969751b8edd03c 200 in 80ms (next.js: 6ms, application-code: 74ms)
+ GET /api/v1/settings/public 200 in 73ms (next.js: 15ms, application-code: 59ms)
+ GET /api/v1/settings/public 200 in 47ms (next.js: 18ms, application-code: 29ms)
+ GET /api/v1/reviews/vendor/34c33b1cd92975cf5993695d 200 in 70ms (next.js: 13ms, application-code: 56ms)
+ GET /api/v1/reviews/product/087c5c799f969751b8edd03c 200 in 83ms (next.js: 37ms, application-code: 45ms)
+ GET /super-admin/analytics 200 in 30ms (next.js: 4ms, application-code: 26ms)
+ GET /super-admin/analytics 200 in 39ms (next.js: 4ms, application-code: 34ms)
+ GET /super-admin/analytics 200 in 213ms (next.js: 10ms, application-code: 203ms)
+ GET /api/v1/auth/me 200 in 262ms (next.js: 49ms, application-code: 213ms)
+ GET /api/v1/admins/products/analytics?limit=50 200 in 419ms (next.js: 28ms, application-code: 391ms)
+ GET /super-admin/categories 200 in 766ms (next.js: 301ms, application-code: 465ms)
+ GET /api/v1/categories 200 in 1161ms (next.js: 168ms, application-code: 993ms)
+ GET /api/v1/categories 200 in 42ms (next.js: 15ms, application-code: 27ms)
+ GET /super-admin/vendors 200 in 141ms (next.js: 28ms, application-code: 113ms)
+ GET /api/v1/vendors 401 in 100ms (next.js: 46ms, application-code: 54ms)
+ GET /api/v1/vendors 401 in 47ms (next.js: 21ms, application-code: 26ms)
+ POST /api/v1/auth/refresh 200 in 72ms (next.js: 10ms, application-code: 61ms)
+ POST /api/v1/auth/refresh 200 in 50ms (next.js: 6ms, application-code: 44ms)
+ GET /api/v1/vendors 200 in 142ms (next.js: 6ms, application-code: 136ms)
+ GET /api/v1/vendors 200 in 53ms (next.js: 9ms, application-code: 44ms)
+○ Compiling /super-admin/settings ...
+ GET /super-admin/settings 200 in 8.7s (next.js: 8.5s, application-code: 222ms)
+ GET /super-admin/settings 200 in 162ms (next.js: 25ms, application-code: 137ms)
+○ Compiling /super-admin/settings/locations ...
+ GET /super-admin/settings/locations 200 in 6.3s (next.js: 5.1s, application-code: 1145ms)
+ GET /api/v1/locations/catalog/nigeria 200 in 804ms (next.js: 100ms, application-code: 705ms)
+ GET /api/v1/locations/catalog/nigeria 200 in 31ms (next.js: 14ms, application-code: 17ms)
+ GET /api/v1/locations 200 in 1071ms (next.js: 52ms, application-code: 1020ms)
+ GET /api/v1/locations 200 in 48ms (next.js: 24ms, application-code: 24ms)
+ GET /super-admin/settings/market 200 in 997ms (next.js: 947ms, application-code: 51ms)
+ GET /api/v1/settings 401 in 102ms (next.js: 29ms, application-code: 73ms)
+ GET /api/v1/settings 401 in 27ms (next.js: 10ms, application-code: 16ms)
+ POST /api/v1/auth/refresh 200 in 155ms (next.js: 4ms, application-code: 151ms)
+ POST /api/v1/auth/refresh 200 in 193ms (next.js: 6ms, application-code: 186ms)
+ GET /api/v1/settings 200 in 37ms (next.js: 5ms, application-code: 32ms)
+ GET /api/v1/settings 200 in 34ms (next.js: 7ms, application-code: 28ms)
+ POST /api/v1/media/uploadfile 200 in 4.0s (next.js: 23ms, application-code: 4.0s)
+ GET /super-admin 200 in 54ms (next.js: 13ms, application-code: 41ms)
+ GET /api/v1/admins/stats 500 in 281ms (next.js: 32ms, application-code: 249ms)
+ GET /api/v1/admins/stats 500 in 58ms (next.js: 22ms, application-code: 36ms)
+[browser]  Failed to fetch stats: AxiosError: Request failed with status code 500 (app/super-admin/page.tsx:35:13)
+[browser]  Failed to fetch stats: AxiosError: Request failed with status code 500 (app/super-admin/page.tsx:35:13)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 130ms (next.js: 8ms, application-code: 122ms)
+ GET /api/v1/vendors?limit=5 200 in 138ms (next.js: 28ms, application-code: 110ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 61ms (next.js: 11ms, application-code: 50ms)
+ GET /api/v1/vendors?limit=5 200 in 65ms (next.js: 20ms, application-code: 45ms)
+⨯ TypeError: fetch failed
+    at async proxyToBaseUrl (app\api\v1\[...path]\route.ts:196:20)
+  194 |   }
+  195 |
+> 196 |   const upstream = await fetch(upstreamUrl, init);
+      |                    ^
+  197 |   const responseHeaders = new Headers();
+  198 |
+  199 |   upstream.headers.forEach((value, key) => { {
+  [cause]: Error: read ECONNRESET
+      at ignore-listed frames {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+ POST /api/v1/auth/login 500 in 1866ms (next.js: 33ms, application-code: 1833ms)
+ POST /api/v1/auth/login 200 in 738ms (next.js: 19ms, application-code: 719ms)
+ GET /api/v1/admins/stats 200 in 398ms (next.js: 6ms, application-code: 392ms)
+ GET /super-admin 200 in 601ms (next.js: 11ms, application-code: 590ms)
+ GET /api/v1/admins/stats 401 in 67ms (next.js: 24ms, application-code: 43ms)
+ GET /api/v1/auth/me 401 in 75ms (next.js: 33ms, application-code: 42ms)
+ POST /api/v1/auth/refresh 200 in 170ms (next.js: 7ms, application-code: 163ms)
+ POST /api/v1/auth/refresh 200 in 163ms (next.js: 5ms, application-code: 157ms)
+ GET /api/v1/auth/me 200 in 71ms (next.js: 17ms, application-code: 54ms)
+ GET /api/v1/admins/stats 200 in 246ms (next.js: 12ms, application-code: 234ms)
+ GET /api/v1/vendors?limit=5 200 in 108ms (next.js: 8ms, application-code: 100ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 137ms (next.js: 19ms, application-code: 117ms)
+ GET /api/v1/vendors?limit=5 200 in 83ms (next.js: 36ms, application-code: 47ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 66ms (next.js: 11ms, application-code: 55ms)
+ GET /super-admin/analytics 200 in 96ms (next.js: 38ms, application-code: 58ms)
+ GET /api/v1/admins/products/analytics?limit=50 200 in 302ms (next.js: 31ms, application-code: 271ms)
+ GET /api/v1/admins/products/analytics?limit=50 200 in 45ms (next.js: 7ms, application-code: 38ms)
+○ Compiling /super-admin/referrals ...
+ GET /super-admin/referrals 200 in 4.3s (next.js: 4.2s, application-code: 87ms)
+ GET /api/v1/referrals 200 in 317ms (next.js: 59ms, application-code: 258ms)
+ GET /api/v1/referrals 200 in 39ms (next.js: 11ms, application-code: 29ms)
+○ Compiling /super-admin/referrals/[id] ...
+ GET /super-admin/referrals/2c89318caa43359b6feb93ec 200 in 6.9s (next.js: 6.7s, application-code: 221ms)
+ GET /super-admin/referrals/2c89318caa43359b6feb93ec 200 in 139ms (next.js: 34ms, application-code: 105ms)
+ GET /api/v1/referrals/2c89318caa43359b6feb93ec/stats 200 in 204ms (next.js: 24ms, application-code: 180ms)
+ GET /api/v1/referrals/2c89318caa43359b6feb93ec/stats 200 in 51ms (next.js: 9ms, application-code: 42ms)
+ GET /super-admin/admins 200 in 47ms (next.js: 13ms, application-code: 33ms)
+ GET /api/v1/admins/list 200 in 238ms (next.js: 21ms, application-code: 217ms)
+ GET /api/v1/admins/list 200 in 34ms (next.js: 6ms, application-code: 28ms)
+ GET /super-admin 200 in 47ms (next.js: 6ms, application-code: 41ms)
+ GET /api/v1/admins/stats 200 in 232ms (next.js: 23ms, application-code: 209ms)
+ GET /api/v1/admins/stats 200 in 89ms (next.js: 24ms, application-code: 65ms)
+ GET /api/v1/vendors?limit=5 200 in 53ms (next.js: 10ms, application-code: 43ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 85ms (next.js: 22ms, application-code: 63ms)
+ GET /api/v1/vendors?limit=5 200 in 43ms (next.js: 6ms, application-code: 36ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 50ms (next.js: 9ms, application-code: 41ms)
+ GET /super-admin/settings 200 in 64ms (next.js: 12ms, application-code: 52ms)

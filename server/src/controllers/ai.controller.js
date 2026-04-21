@@ -5,8 +5,8 @@ import { PRODUCT_STATUS } from "../utils/constants.js"
 import { logger } from "../utils/logger.js"
 import prisma from "../lib/prisma.js"
 
-// Initialize OpenAI client
-const openai = new OpenAI({ apiKey: config.openai.apiKey })
+// Initialize lazily so the whole API can boot without OPENAI_API_KEY.
+const openai = config.openai.apiKey ? new OpenAI({ apiKey: config.openai.apiKey }) : null
 
 // ─── HARDCODED SALES SYSTEM PROMPT ──────────────────────────────────────────
 const SALES_SYSTEM_PROMPT = `
@@ -52,6 +52,10 @@ export const aiChat = async (req, res, next) => {
     }
 
     if (!config.openai.apiKey) {
+      return res.status(503).json(errorResponse("AI_NOT_CONFIGURED", "AI assistant is not configured"))
+    }
+
+    if (!openai) {
       return res.status(503).json(errorResponse("AI_NOT_CONFIGURED", "AI assistant is not configured"))
     }
 

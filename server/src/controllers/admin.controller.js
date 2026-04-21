@@ -538,7 +538,7 @@ export const getDashboardStats = async (req, res, next) => {
       totalRevenueData,
       totalViewsData
     ] = await Promise.all([
-      prisma.product.count({ where: { status: PRODUCT_STATUS.APPROVED } }),
+      prisma.product.count(),
       prisma.vendor.count({ where: { status: VENDOR_STATUS.ACTIVE } }),
       prisma.user.count({ where: { role: USER_ROLES.ADMIN } }),
       prisma.payment.aggregate({
@@ -546,7 +546,7 @@ export const getDashboardStats = async (req, res, next) => {
         _sum: { amount: true }
       }),
       prisma.product.aggregate({
-        _sum: { views: true }
+        _sum: { metaViews: true }
       })
     ])
 
@@ -562,7 +562,6 @@ export const getDashboardStats = async (req, res, next) => {
     ] = await Promise.all([
       prisma.product.count({ 
         where: { 
-          status: PRODUCT_STATUS.APPROVED,
           createdAt: { gte: thirtyDaysAgo }
         }
       }),
@@ -606,7 +605,7 @@ export const getDashboardStats = async (req, res, next) => {
         vendors: totalVendors,
         admins: totalAdmins,
         revenue: Number(totalRevenueData._sum.amount || 0),
-        views: Number(totalViewsData._sum.views || 0)
+        views: Number(totalViewsData._sum.metaViews || 0)
       },
       recent: {
         products: recentProducts,

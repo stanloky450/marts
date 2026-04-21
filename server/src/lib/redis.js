@@ -9,7 +9,11 @@ const redisClient = createClient({
 redisClient.on("error", (err) => logger.error("Redis Client Error", err));
 redisClient.on("connect", () => logger.info("✅ Redis connected successfully"));
 
-await redisClient.connect();
+redisClient.connect().catch((err) => {
+	logger.warn("Redis unavailable, continuing without cache", {
+		message: err?.message,
+	});
+});
 
 export default redisClient;
 

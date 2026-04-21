@@ -11,6 +11,9 @@ import routes from "./routes/index.js";
 
 const app = express();
 
+// The Next.js dev server proxies requests to this API locally.
+app.set("trust proxy", 1);
+
 // Connect to database
 await connectDB();
 

@@ -3,6 +3,7 @@ import {
 	signRefreshToken,
 	verifyRefreshToken,
 } from "../utils/jwt.js";
+import bcrypt from "bcrypt";
 import { successResponse, errorResponse } from "../utils/apiResponse.js";
 import { logger } from "../utils/logger.js";
 import prisma from "../lib/prisma.js";
@@ -17,6 +18,15 @@ export const login = async (req, res, next) => {
 		});
 
 		if (!user) {
+			return res
+				.status(401)
+				.json(
+					errorResponse("INVALID_CREDENTIALS", "Invalid email or password")
+				);
+		}
+
+		const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+		if (!passwordMatches) {
 			return res
 				.status(401)
 				.json(

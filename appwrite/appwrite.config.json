@@ -1,0 +1,24 @@
+{
+    "functions":  [
+                      {
+                          "path":  ".deploy/gateway-function",
+                          "enabled":  true,
+                          "timeout":  15,
+                          "$id":  "gateway-function",
+                          "schedule":  "",
+                          "events":  [
+
+                                     ],
+                          "commands":  "npm install",
+                          "name":  "gateway-function",
+                          "execute":  [
+                                          "any"
+                                      ],
+                          "runtime":  "node-25",
+                          "logging":  true,
+                          "entrypoint":  "src/main.js"
+                      }
+                  ],
+    "endpoint":  "https://fra.cloud.appwrite.io/v1",
+    "projectId":  "69cac2a200146c72ef64"
+}

@@ -6,8 +6,10 @@ import crypto from "crypto";
 
 export const seedSuperAdmin = async () => {
 	try {
-		const email = "superadmin@ecommerce.com";
-		const password = "SuperAdmin123!";
+		const email =
+			process.env.SEED_SUPERADMIN_EMAIL || "superadmin@ecommerce.com";
+		const password =
+			process.env.SEED_SUPERADMIN_PASSWORD || "SuperAdmin123!";
 
 		if (!email || !password) {
 			logger.warn(

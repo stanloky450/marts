@@ -1,0 +1,22 @@
+
+> my-v0-project@0.1.0 dev
+> next dev -p 3002
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3002
+- Network:       http://172.17.128.1:3002
+- Environments: .env.local
+✓ Ready in 2.6s
+⚠ `eslint` configuration in next.config.mjs is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ Invalid next.config.mjs options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3001
+- PID:          32516
+- Dir:          C:\Users\Stanloky\Desktop\learning\commm\new_com3
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 32516 /F to stop it.
+[?25h

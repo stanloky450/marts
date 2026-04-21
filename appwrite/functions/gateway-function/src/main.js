@@ -1,0 +1,68 @@
+const {
+  createRoute,
+  createHandler,
+  login,
+  refresh,
+  logout,
+  me,
+  listUsers,
+  getUser,
+  createProduct,
+  listProducts,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+  approveProduct,
+  rejectProduct,
+  trackView,
+  getProductAnalytics,
+  verifyPaymentStatus,
+  listPayments,
+  listAllStores,
+  searchStores,
+  getStoreInfo,
+  getStoreProducts,
+  getStoreProduct,
+  getPublicProductById,
+  getFeaturedProducts,
+  getNewArrivals,
+  searchAllProducts,
+  marketplaceOverview,
+} = require("@migration/shared");
+
+const routes = [
+  createRoute("POST", "/api/v1/auth/login", login),
+  createRoute("POST", "/api/v1/auth/refresh", refresh),
+  createRoute("POST", "/api/v1/auth/logout", logout),
+  createRoute("GET", "/api/v1/auth/me", me),
+
+  createRoute("GET", "/api/v1/users", listUsers),
+  createRoute("GET", "/api/v1/users/:id", getUser),
+
+  createRoute("POST", "/api/v1/products", createProduct),
+  createRoute("GET", "/api/v1/products", listProducts),
+  createRoute("GET", "/api/v1/products/analytics/mine", getProductAnalytics),
+  createRoute("GET", "/api/v1/products/:id", getProduct),
+  createRoute("PATCH", "/api/v1/products/:id", updateProduct),
+  createRoute("DELETE", "/api/v1/products/:id", deleteProduct),
+  createRoute("PATCH", "/api/v1/products/:id/approve", approveProduct),
+  createRoute("PATCH", "/api/v1/products/:id/reject", rejectProduct),
+  createRoute("POST", "/api/v1/products/:id/view", trackView),
+
+  createRoute("GET", "/api/v1/payments", listPayments),
+  createRoute("GET", "/api/v1/payments/verify/:reference", verifyPaymentStatus),
+
+  createRoute("GET", "/api/v1/storefront/stores", listAllStores),
+  createRoute("GET", "/api/v1/storefront/stores/search", searchStores),
+  createRoute("GET", "/api/v1/storefront/products/featured", getFeaturedProducts),
+  createRoute("GET", "/api/v1/storefront/products/new", getNewArrivals),
+  createRoute("GET", "/api/v1/storefront/products/search", searchAllProducts),
+  createRoute("GET", "/api/v1/storefront/products/:id", getPublicProductById),
+  createRoute("GET", "/api/v1/storefront/store/info", getStoreInfo),
+  createRoute("GET", "/api/v1/storefront/store/products", getStoreProducts),
+  createRoute("GET", "/api/v1/storefront/store/products/:id", getStoreProduct),
+
+  createRoute("GET", "/api/v1/analytics/overview", marketplaceOverview),
+];
+
+module.exports = async (context) => createHandler(routes)(context);

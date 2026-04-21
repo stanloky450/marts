@@ -1,0 +1,317 @@
+
+> multi-vendor-ecommerce-backend@1.0.0 dev
+> node --watch src/server.js
+
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-20 23:58:20 [[32minfo[39m]: Prisma connected to PostgreSQL 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-20 23:58:23 [[32minfo[39m]: Prisma connected to PostgreSQL 
+2026-04-20 23:58:23 [[32minfo[39m]: Server running on port 5700 in development mode 
+2026-04-20 23:58:23 [[32minfo[39m]: API available at http://localhost:5700/api 
+2026-04-20 23:58:23 [[32minfo[39m]: ✅ Redis connected successfully 
+ValidationError: The 'X-Forwarded-For' header is set but the Express 'trust proxy' setting is false (default). This could indicate a misconfiguration which would prevent express-rate-limit from accurately identifying users. See https://express-rate-limit.github.io/ERR_ERL_UNEXPECTED_X_FORWARDED_FOR/ for more information.
+    at Object.xForwardedForHeader (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/express-rate-limit/dist/index.mjs:157:13)
+    at wrappedValidations.<computed> [as xForwardedForHeader] (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/express-rate-limit/dist/index.mjs:369:22)
+    at Object.keyGenerator (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/express-rate-limit/dist/index.mjs:630:20)
+    at file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/express-rate-limit/dist/index.mjs:682:32
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/express-rate-limit/dist/index.mjs:663:5 {
+  code: 'ERR_ERL_UNEXPECTED_X_FORWARDED_FOR',
+  help: 'https://express-rate-limit.github.io/ERR_ERL_UNEXPECTED_X_FORWARDED_FOR/'
+}
+2026-04-21 09:29:00 [[32minfo[39m]: ::1 - - [21/Apr/2026:08:29:00 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 09:29:06 [[32minfo[39m]: ::1 - - [21/Apr/2026:08:29:06 +0000] "GET /api/health HTTP/1.1" 200 78 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-21 09:29:34 [[32minfo[39m]: Prisma connected to PostgreSQL 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-21 09:29:39 [[32minfo[39m]: Prisma connected to PostgreSQL 
+2026-04-21 09:29:39 [[32minfo[39m]: Server running on port 5700 in development mode 
+2026-04-21 09:29:39 [[32minfo[39m]: API available at http://localhost:5700/api 
+2026-04-21 09:29:39 [[32minfo[39m]: ✅ Redis connected successfully 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-21 09:30:04 [[32minfo[39m]: Prisma connected to PostgreSQL 
+2026-04-21 09:30:04 [[32minfo[39m]: Server running on port 5700 in development mode 
+2026-04-21 09:30:04 [[32minfo[39m]: API available at http://localhost:5700/api 
+2026-04-21 09:30:04 [[32minfo[39m]: ✅ Redis connected successfully 
+2026-04-21 09:35:52 [[32minfo[39m]: ::1 - - [21/Apr/2026:08:35:52 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 09:36:02 [[32minfo[39m]: ::1 - - [21/Apr/2026:08:36:02 +0000] "POST /api/auth/login HTTP/1.1" 401 94 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-21 09:36:05 [[32minfo[39m]: Prisma connected to PostgreSQL 
+2026-04-21 09:36:05 [[32minfo[39m]: Server running on port 5700 in development mode 
+2026-04-21 09:36:05 [[32minfo[39m]: API available at http://localhost:5700/api 
+2026-04-21 09:36:05 [[32minfo[39m]: ✅ Redis connected successfully 
+2026-04-21 09:42:17 [[32minfo[39m]: ::1 - - [21/Apr/2026:08:42:17 +0000] "GET /api/auth/me HTTP/1.1" 401 86 "http://localhost:3001/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 09:42:17 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/refresh",
+  "method": "POST"
+}
+2026-04-21 09:42:23 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 09:42:30 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 09:43:51 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 09:44:47 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 09:44:50 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 09:58:40 [[32minfo[39m]: User logged in: superadmin@ecommerce.com 
+2026-04-21 09:58:40 [[32minfo[39m]: ::1 - - [21/Apr/2026:08:58:40 +0000] "POST /api/auth/login HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 09:59:22 [[32minfo[39m]: User logged in: adminweb@ecommerce.com 
+2026-04-21 09:59:22 [[32minfo[39m]: ::1 - - [21/Apr/2026:08:59:22 +0000] "POST /api/auth/login HTTP/1.1" 200 710 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 10:02:54 [[32minfo[39m]: User logged in: superadmin@ecommerce.com 
+2026-04-21 10:02:54 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:02:54 +0000] "POST /api/auth/login HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 10:02:54 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:02:54 +0000] "GET /api/auth/me HTTP/1.1" 200 515 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-21 10:05:08 [[32minfo[39m]: Prisma connected to PostgreSQL 
+2026-04-21 10:05:08 [[32minfo[39m]: Server running on port 5700 in development mode 
+2026-04-21 10:05:08 [[32minfo[39m]: API available at http://localhost:5700/api 
+2026-04-21 10:05:08 [[32minfo[39m]: ✅ Redis connected successfully 
+2026-04-21 10:06:28 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:06:28 +0000] "POST /api/auth/login HTTP/1.1" 401 94 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 10:08:40 [[32minfo[39m]: User logged in: adminweb@ecommerce.com 
+2026-04-21 10:08:40 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:08:40 +0000] "POST /api/auth/login HTTP/1.1" 200 710 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 10:09:22 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 10:09:29 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 10:09:51 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 10:10:19 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 10:11:35 [[31merror[39m]: Not allowed by CORS {
+  "stack": "Error: Not allowed by CORS\n    at origin (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/config/cors.js:20:14)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:219:13\n    at optionsCallback (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:199:9)\n    at corsMiddleware (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\cors\\lib\\index.js:204:7)\n    at Layer.handle [as handle_request] (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:286:9\n    at Function.process_params (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at internalNext (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/node_modules/helmet/index.mjs:533:6)",
+  "url": "/api/auth/login",
+  "method": "POST"
+}
+2026-04-21 10:15:16 [[32minfo[39m]: User logged in: adminweb@ecommerce.com 
+2026-04-21 10:15:16 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:16 +0000] "POST /api/auth/login HTTP/1.1" 200 710 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.7920" 
+2026-04-21 10:15:50 [[32minfo[39m]: User logged in: superadmin@ecommerce.com 
+2026-04-21 10:15:50 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:50 +0000] "POST /api/auth/login HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:15:51 [[31merror[39m]: 
+Invalid `prisma.product.aggregate()` invocation:
+
+{
+  select: {
+    _sum: {
+      select: {
+        views: true,
+        ~~~~~
+?       price?: true,
+?       discountPrice?: true,
+?       stock?: true,
+?       metaViews?: true,
+?       metaSales?: true
+      }
+    }
+  }
+}
+
+Unknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?. {
+  "stack": "PrismaClientValidationError: \nInvalid `prisma.product.aggregate()` invocation:\n\n{\n  select: {\n    _sum: {\n      select: {\n        views: true,\n        ~~~~~\n?       price?: true,\n?       discountPrice?: true,\n?       stock?: true,\n?       metaViews?: true,\n?       metaSales?: true\n      }\n    }\n  }\n}\n\nUnknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?.\n    at ar (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:14:1374)\n    at Gr.handleRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7929)\n    at Gr.handleAndLogRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7581)\n    at Gr.request (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7288)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async a (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:79:6730)\n    at async Promise.all (index 4)\n    at async getDashboardStats (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/controllers/admin.controller.js:540:9)",
+  "url": "/api/admins/stats",
+  "method": "GET"
+}
+2026-04-21 10:15:51 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:51 +0000] "GET /api/admins/stats HTTP/1.1" 500 476 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:15:51 [[31merror[39m]: 
+Invalid `prisma.product.aggregate()` invocation:
+
+{
+  select: {
+    _sum: {
+      select: {
+        views: true,
+        ~~~~~
+?       price?: true,
+?       discountPrice?: true,
+?       stock?: true,
+?       metaViews?: true,
+?       metaSales?: true
+      }
+    }
+  }
+}
+
+Unknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?. {
+  "stack": "PrismaClientValidationError: \nInvalid `prisma.product.aggregate()` invocation:\n\n{\n  select: {\n    _sum: {\n      select: {\n        views: true,\n        ~~~~~\n?       price?: true,\n?       discountPrice?: true,\n?       stock?: true,\n?       metaViews?: true,\n?       metaSales?: true\n      }\n    }\n  }\n}\n\nUnknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?.\n    at ar (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:14:1374)\n    at Gr.handleRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7929)\n    at Gr.handleAndLogRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7581)\n    at Gr.request (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7288)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async a (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:79:6730)\n    at async Promise.all (index 4)\n    at async getDashboardStats (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/controllers/admin.controller.js:540:9)",
+  "url": "/api/admins/stats",
+  "method": "GET"
+}
+2026-04-21 10:15:51 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:51 +0000] "GET /api/admins/stats HTTP/1.1" 500 476 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:15:51 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:51 +0000] "GET /api/admins/products/analytics?sort=views&limit=5 HTTP/1.1" 200 1355 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:15:51 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:51 +0000] "GET /api/vendors?limit=5 HTTP/1.1" 200 4555 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:15:52 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:52 +0000] "GET /api/admins/products/analytics?sort=views&limit=5 HTTP/1.1" 200 1355 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:15:52 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:15:52 +0000] "GET /api/vendors?limit=5 HTTP/1.1" 200 4555 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:16:01 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:16:01 +0000] "GET /api/admins/list HTTP/1.1" 200 588 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:16:01 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:16:01 +0000] "GET /api/admins/list HTTP/1.1" 200 588 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:17:20 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:17:20 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:17:20 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:17:20 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:18:19 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:18:19 +0000] "GET /api/vendors HTTP/1.1" 200 4556 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:18:19 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:18:19 +0000] "GET /api/vendors HTTP/1.1" 200 4556 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:18:44 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:18:44 +0000] "GET /api/auth/me HTTP/1.1" 200 515 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:18:44 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:18:44 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:18:44 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:18:44 +0000] "GET /api/storefront/store/products?search=&sortBy=name_asc HTTP/1.1" 200 80 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:18:44 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:18:44 +0000] "GET /api/storefront/store/info?t=1776763123579 HTTP/1.1" 200 690 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:23:13 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:23:13 +0000] "GET /api/auth/me HTTP/1.1" 200 515 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:23:13 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:23:13 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:23:13 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:23:13 +0000] "GET /api/storefront/store/info?t=1776763393608 HTTP/1.1" 200 626 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:23:13 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:23:13 +0000] "GET /api/storefront/store/products?search=&sortBy=name_asc HTTP/1.1" 200 2291 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:03 +0000] "GET /api/products HTTP/1.1" 200 5373 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:03 +0000] "GET /api/products HTTP/1.1" 200 5373 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:09 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:09 +0000] "GET /api/admins/products/analytics?limit=50 HTTP/1.1" 200 1603 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:09 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:09 +0000] "GET /api/admins/products/analytics?limit=50 HTTP/1.1" 200 1603 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[31merror[39m]: 
+Invalid `prisma.product.findFirst()` invocation:
+
+
+Invalid input value: invalid input syntax for type uuid: "087c5c799f969751b8edd03c" {
+  "stack": "PrismaClientKnownRequestError: \nInvalid `prisma.product.findFirst()` invocation:\n\n\nInvalid input value: invalid input syntax for type uuid: \"087c5c799f969751b8edd03c\"\n    at Gr.handleRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:8286)\n    at Gr.handleAndLogRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7581)\n    at Gr.request (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7288)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async a (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:79:6730)\n    at async trackView (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/controllers/product.controller.js:670:19)",
+  "url": "/api/products/087c5c799f969751b8edd03c/view",
+  "method": "POST"
+}
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "POST /api/products/087c5c799f969751b8edd03c/view HTTP/1.1" 500 203 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[31merror[39m]: 
+Invalid `prisma.product.findFirst()` invocation:
+
+
+Invalid input value: invalid input syntax for type uuid: "087c5c799f969751b8edd03c" {
+  "stack": "PrismaClientKnownRequestError: \nInvalid `prisma.product.findFirst()` invocation:\n\n\nInvalid input value: invalid input syntax for type uuid: \"087c5c799f969751b8edd03c\"\n    at Gr.handleRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:8286)\n    at Gr.handleAndLogRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7581)\n    at Gr.request (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7288)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async a (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:79:6730)\n    at async trackView (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/controllers/product.controller.js:670:19)",
+  "url": "/api/products/087c5c799f969751b8edd03c/view",
+  "method": "POST"
+}
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "POST /api/products/087c5c799f969751b8edd03c/view HTTP/1.1" 500 203 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/storefront/store/info?t=1776763762641 HTTP/1.1" 200 626 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/storefront/store/info?t=1776763762639 HTTP/1.1" 200 626 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/storefront/store/products/087c5c799f969751b8edd03c HTTP/1.1" 200 778 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/storefront/store/products/087c5c799f969751b8edd03c HTTP/1.1" 200 778 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/settings/public HTTP/1.1" 200 26 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/settings/public HTTP/1.1" 200 26 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/reviews/vendor/34c33b1cd92975cf5993695d HTTP/1.1" 200 78 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:23 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:23 +0000] "GET /api/reviews/product/087c5c799f969751b8edd03c HTTP/1.1" 200 78 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:34 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:34 +0000] "GET /api/auth/me HTTP/1.1" 200 515 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 10:29:35 [[32minfo[39m]: ::1 - - [21/Apr/2026:09:29:35 +0000] "GET /api/admins/products/analytics?limit=50 HTTP/1.1" 200 1603 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:11 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:11 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:11 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:11 +0000] "GET /api/categories HTTP/1.1" 200 3341 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:13 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:13 +0000] "GET /api/vendors HTTP/1.1" 401 86 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:13 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:13 +0000] "GET /api/vendors HTTP/1.1" 401 86 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:14 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:14 +0000] "POST /api/auth/refresh HTTP/1.1" 200 554 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:14 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:14 +0000] "POST /api/auth/refresh HTTP/1.1" 200 554 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:14 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:14 +0000] "GET /api/vendors HTTP/1.1" 200 4556 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 12:57:14 [[32minfo[39m]: ::1 - - [21/Apr/2026:11:57:14 +0000] "GET /api/vendors HTTP/1.1" 200 4556 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:23:37 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:23:37 +0000] "GET /api/locations/catalog/nigeria HTTP/1.1" 200 10632 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:23:37 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:23:37 +0000] "GET /api/locations/catalog/nigeria HTTP/1.1" 200 10632 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:23:37 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:23:37 +0000] "GET /api/locations HTTP/1.1" 200 631 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:23:37 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:23:37 +0000] "GET /api/locations HTTP/1.1" 200 631 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:24:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:24:03 +0000] "GET /api/settings HTTP/1.1" 401 86 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:24:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:24:03 +0000] "GET /api/settings HTTP/1.1" 401 86 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:24:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:24:03 +0000] "POST /api/auth/refresh HTTP/1.1" 200 554 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:24:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:24:03 +0000] "POST /api/auth/refresh HTTP/1.1" 200 554 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:24:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:24:03 +0000] "GET /api/settings HTTP/1.1" 200 120 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:24:03 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:24:03 +0000] "GET /api/settings HTTP/1.1" 200 120 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+[v0] Upload temp called
+[v0] Uploading file to Cloudinary: Screenshot 2025-03-20 203004.png
+[v0] File uploaded successfully: https://res.cloudinary.com/dfonitxgi/image/upload/v1776774417/vendors/Screenshot%202025-03-20%20203004.png
+2026-04-21 13:26:58 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:26:58 +0000] "POST /api/media/uploadfile HTTP/1.1" 200 121 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:33:50 [[31merror[39m]: 
+Invalid `prisma.product.aggregate()` invocation:
+
+{
+  select: {
+    _sum: {
+      select: {
+        views: true,
+        ~~~~~
+?       price?: true,
+?       discountPrice?: true,
+?       stock?: true,
+?       metaViews?: true,
+?       metaSales?: true
+      }
+    }
+  }
+}
+
+Unknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?. {
+  "stack": "PrismaClientValidationError: \nInvalid `prisma.product.aggregate()` invocation:\n\n{\n  select: {\n    _sum: {\n      select: {\n        views: true,\n        ~~~~~\n?       price?: true,\n?       discountPrice?: true,\n?       stock?: true,\n?       metaViews?: true,\n?       metaSales?: true\n      }\n    }\n  }\n}\n\nUnknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?.\n    at ar (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:14:1374)\n    at Gr.handleRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7929)\n    at Gr.handleAndLogRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7581)\n    at Gr.request (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7288)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async a (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:79:6730)\n    at async Promise.all (index 4)\n    at async getDashboardStats (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/controllers/admin.controller.js:540:9)",
+  "url": "/api/admins/stats",
+  "method": "GET"
+}
+2026-04-21 13:33:50 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:33:50 +0000] "GET /api/admins/stats HTTP/1.1" 500 476 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:33:50 [[31merror[39m]: 
+Invalid `prisma.product.aggregate()` invocation:
+
+{
+  select: {
+    _sum: {
+      select: {
+        views: true,
+        ~~~~~
+?       price?: true,
+?       discountPrice?: true,
+?       stock?: true,
+?       metaViews?: true,
+?       metaSales?: true
+      }
+    }
+  }
+}
+
+Unknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?. {
+  "stack": "PrismaClientValidationError: \nInvalid `prisma.product.aggregate()` invocation:\n\n{\n  select: {\n    _sum: {\n      select: {\n        views: true,\n        ~~~~~\n?       price?: true,\n?       discountPrice?: true,\n?       stock?: true,\n?       metaViews?: true,\n?       metaSales?: true\n      }\n    }\n  }\n}\n\nUnknown field `views` for select statement on model `ProductSumAggregateOutputType`. Available options are marked with ?.\n    at ar (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:14:1374)\n    at Gr.handleRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7929)\n    at Gr.handleAndLogRequestError (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7581)\n    at Gr.request (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:69:7288)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async a (C:\\Users\\Stanloky\\Desktop\\learning\\commm\\new_com3\\server\\generated\\prisma-client\\runtime\\client.js:79:6730)\n    at async Promise.all (index 4)\n    at async getDashboardStats (file:///C:/Users/Stanloky/Desktop/learning/commm/new_com3/server/src/controllers/admin.controller.js:540:9)",
+  "url": "/api/admins/stats",
+  "method": "GET"
+}
+2026-04-21 13:33:50 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:33:50 +0000] "GET /api/admins/stats HTTP/1.1" 500 476 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:33:50 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:33:50 +0000] "GET /api/admins/products/analytics?sort=views&limit=5 HTTP/1.1" 200 1355 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:33:50 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:33:50 +0000] "GET /api/vendors?limit=5 HTTP/1.1" 200 4555 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:33:50 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:33:50 +0000] "GET /api/admins/products/analytics?sort=views&limit=5 HTTP/1.1" 200 1355 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+2026-04-21 13:33:50 [[32minfo[39m]: ::1 - - [21/Apr/2026:12:33:50 +0000] "GET /api/vendors?limit=5 HTTP/1.1" 200 4555 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-21 13:42:05 [[32minfo[39m]: Prisma connected to PostgreSQL 
+2026-04-21 13:42:05 [[32minfo[39m]: Server running on port 5700 in development mode 
+2026-04-21 13:42:05 [[32minfo[39m]: API available at http://localhost:5700/api 
+2026-04-21 13:42:05 [[32minfo[39m]: ✅ Redis connected successfully 
+Restarting 'src/server.js'
+Loading Prisma... DATABASE_URL is: postgresql://postgres:default@localhost:5432/ecommerce?schema=public
+2026-04-21 13:42:29 [[32minfo[39m]: Prisma connected to PostgreSQL 
+2026-04-21 13:42:29 [[32minfo[39m]: Server running on port 5700 in development mode 
+2026-04-21 13:42:29 [[32minfo[39m]: API available at http://localhost:5700/api 
+2026-04-21 13:42:29 [[32minfo[39m]: ✅ Redis connected successfully 
