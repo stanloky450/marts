@@ -66,6 +66,10 @@ function getLegacyFallbackBaseUrl() {
   return "http://localhost:5700/api";
 }
 
+function isProductionRuntime() {
+  return process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+}
+
 function buildUpstreamUrl(baseUrl: string, path: string[], request: NextRequest) {
   const upstream = new URL(`${baseUrl}/${path.join("/")}`);
   upstream.search = request.nextUrl.search;
@@ -265,6 +269,20 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
     }
   } catch {
     // Ignore Appwrite execution errors and fall back to the local legacy server below.
+  }
+
+  if (isProductionRuntime()) {
+    return Response.json(
+      {
+        success: false,
+        error: {
+          code: "API_BACKEND_UNAVAILABLE",
+          message:
+            "API backend is unavailable. Configure APPWRITE_API_GATEWAY_URL or valid Appwrite execution credentials.",
+        },
+      },
+      { status: 503 }
+    );
   }
 
   return proxyToBaseUrl(legacyFallbackBaseUrl, request, path, body);
