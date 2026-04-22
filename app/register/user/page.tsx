@@ -32,6 +32,7 @@ export default function RegisterUserPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = searchParams.get("next");
+  const encodedNext = nextPath ? `&next=${encodeURIComponent(nextPath)}` : "";
 
   const [step, setStep] = useState(1);
   const [isSaving, setIsSaving] = useState(false);
@@ -331,6 +332,9 @@ export default function RegisterUserPage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/register">
                   <Button variant="outline">Back</Button>
+                </Link>
+                <Link href={`/login?mode=user${encodedNext}`}>
+                  <Button variant="ghost">Already registered? Login</Button>
                 </Link>
                 {step > 1 && (
                   <Button variant="outline" onClick={() => setStep((current) => current - 1)}>

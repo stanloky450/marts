@@ -30,7 +30,11 @@ export interface MarketUserRegistration {
   lastActiveAt?: string;
 }
 
+interface MarketUserAccount extends MarketUserRegistration {}
+
 export const MARKET_USER_REG_KEY = "marketUserRegistration";
+export const MARKET_USER_SESSION_KEY = "marketUserSession";
+export const MARKET_USER_ACCOUNTS_KEY = "marketUserAccounts";
 export const MARKET_USER_HISTORY_KEY = "marketUserViewedProducts";
 export const MARKET_USER_BOOKMARKS_KEY = "marketUserBookmarkedProducts";
 export const MARKET_USER_EVENT = "market-user-updated";
@@ -75,6 +79,56 @@ function normalizeRegistration(payload: Partial<MarketUserRegistration>): Market
   };
 }
 
+function readAccounts(): MarketUserAccount[] {
+  return safeRead<Partial<MarketUserAccount>[]>(MARKET_USER_ACCOUNTS_KEY, [])
+    .map((item) => normalizeRegistration(item))
+    .filter((item): item is MarketUserAccount => !!item);
+}
+
+function writeAccounts(accounts: MarketUserAccount[]) {
+  safeWrite(MARKET_USER_ACCOUNTS_KEY, accounts);
+}
+
+function upsertAccount(payload: MarketUserRegistration) {
+  const normalized = normalizeRegistration(payload);
+  if (!normalized) return;
+
+  const nextAccounts = readAccounts();
+  const existingIndex = nextAccounts.findIndex(
+    (item) => item.email.trim().toLowerCase() === normalized.email.trim().toLowerCase()
+  );
+
+  if (existingIndex >= 0) {
+    nextAccounts[existingIndex] = {
+      ...nextAccounts[existingIndex],
+      ...normalized,
+    };
+  } else {
+    nextAccounts.unshift(normalized);
+  }
+
+  writeAccounts(nextAccounts);
+}
+
+function writeSession(payload: MarketUserRegistration) {
+  const normalized = normalizeRegistration(payload);
+  if (!normalized) return;
+  safeWrite(MARKET_USER_SESSION_KEY, normalized);
+  safeWrite(MARKET_USER_REG_KEY, normalized);
+}
+
+function migrateLegacyRegistration() {
+  const legacy = safeRead<Partial<MarketUserRegistration> | null>(MARKET_USER_REG_KEY, null);
+  const normalized = legacy ? normalizeRegistration(legacy) : null;
+  if (!normalized) return null;
+
+  upsertAccount(normalized);
+  if (!safeRead<Partial<MarketUserRegistration> | null>(MARKET_USER_SESSION_KEY, null)) {
+    safeWrite(MARKET_USER_SESSION_KEY, normalized);
+  }
+  return normalized;
+}
+
 function dedupeProducts(items: MarketUserProductSnapshot[], limit: number) {
   const map = new Map<string, MarketUserProductSnapshot>();
   for (const item of items) {
@@ -95,14 +149,41 @@ function dedupeProducts(items: MarketUserProductSnapshot[], limit: number) {
 }
 
 export const readMarketUserRegistration = (): MarketUserRegistration | null => {
-  const raw = safeRead<Partial<MarketUserRegistration> | null>(MARKET_USER_REG_KEY, null);
-  return raw ? normalizeRegistration(raw) : null;
+  const session = safeRead<Partial<MarketUserRegistration> | null>(MARKET_USER_SESSION_KEY, null);
+  const normalizedSession = session ? normalizeRegistration(session) : null;
+  if (normalizedSession) return normalizedSession;
+  return migrateLegacyRegistration();
 };
 
 export const saveMarketUserRegistration = (payload: MarketUserRegistration): void => {
   const normalized = normalizeRegistration(payload);
   if (!normalized) return;
-  safeWrite(MARKET_USER_REG_KEY, normalized);
+  upsertAccount(normalized);
+  writeSession(normalized);
+};
+
+export const loginMarketUser = (
+  email: string,
+  phoneNumber: string
+): MarketUserRegistration | null => {
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPhone = phoneNumber.trim();
+  if (!normalizedEmail || !normalizedPhone) return null;
+
+  const account = readAccounts().find(
+    (item) =>
+      item.email.trim().toLowerCase() === normalizedEmail &&
+      item.phoneNumber.trim() === normalizedPhone
+  );
+
+  if (!account) return null;
+
+  const nextSession = {
+    ...account,
+    lastActiveAt: new Date().toISOString(),
+  };
+  writeSession(nextSession);
+  return nextSession;
 };
 
 export const updateMarketUserActivity = (): void => {
@@ -116,9 +197,7 @@ export const updateMarketUserActivity = (): void => {
 
 export const clearMarketUserSession = (): void => {
   if (typeof window === "undefined") return;
-  window.localStorage.removeItem(MARKET_USER_REG_KEY);
-  window.localStorage.removeItem(MARKET_USER_HISTORY_KEY);
-  window.localStorage.removeItem(MARKET_USER_BOOKMARKS_KEY);
+  window.localStorage.removeItem(MARKET_USER_SESSION_KEY);
   emitMarketUserUpdate();
 };
 
