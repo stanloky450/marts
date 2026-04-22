@@ -41,6 +41,14 @@ function verifyLegacyJwt(token) {
   return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 }
 
+function tryVerifyLegacyJwt(token) {
+  try {
+    return verifyLegacyJwt(token);
+  } catch {
+    return null;
+  }
+}
+
 async function authenticateRequest(ctx, { allowLegacy = true } = {}) {
   const strategy = process.env.AUTH_STRATEGY || "hybrid";
   const appwriteJwt = ctx.headers["x-appwrite-user-jwt"];
@@ -50,11 +58,15 @@ async function authenticateRequest(ctx, { allowLegacy = true } = {}) {
   let legacyPayload = null;
 
   if (appwriteJwt && strategy !== "legacy") {
-    appwriteUser = await verifyAppwriteJwt(appwriteJwt);
+    try {
+      appwriteUser = await verifyAppwriteJwt(appwriteJwt);
+    } catch {
+      appwriteUser = null;
+    }
   }
 
   if (!appwriteUser && bearerToken && allowLegacy && strategy !== "appwrite") {
-    legacyPayload = verifyLegacyJwt(bearerToken);
+    legacyPayload = tryVerifyLegacyJwt(bearerToken);
   }
 
   if (!appwriteUser && !legacyPayload) return null;

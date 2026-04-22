@@ -40,13 +40,19 @@ export default function ProductsPage() {
     fetchProducts()
   }, [search, statusFilter])
 
+  const getErrorMessage = (error: any, fallback: string) =>
+    error?.response?.data?.error?.message ||
+    error?.response?.data?.message ||
+    error?.message ||
+    fallback
+
   const handleApprove = async (id: string) => {
     try {
       await productService.approve(id)
       toast.success("Product approved successfully")
       fetchProducts()
     } catch (error: any) {
-      const message = error?.response?.data?.message || "Failed to approve product"
+      const message = getErrorMessage(error, "Failed to approve product")
       console.error("[v0] Failed to approve product:", error)
       toast.error(message)
     }
@@ -60,7 +66,7 @@ export default function ProductsPage() {
       toast.success("Product rejected successfully")
       fetchProducts()
     } catch (error: any) {
-      const message = error?.response?.data?.message || "Failed to reject product"
+      const message = getErrorMessage(error, "Failed to reject product")
       console.error("[v0] Failed to reject product:", error)
       toast.error(message)
     }

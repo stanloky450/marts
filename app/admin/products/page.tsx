@@ -47,14 +47,20 @@ export default function AdminProductsPage() {
     fetchProducts()
   }, [search, statusFilter])
 
+  const getErrorMessage = (error: any, fallback: string) =>
+    error?.response?.data?.error?.message ||
+    error?.response?.data?.message ||
+    error?.message ||
+    fallback
+
   const handleApprove = async (id: string) => {
     try {
       await productService.approve(id)
       toast.success("Product approved successfully")
       fetchProducts()
-    } catch (error) {
+    } catch (error: any) {
       console.error("[v0] Failed to approve product:", error)
-      toast.error("Failed to approve product")
+      toast.error(getErrorMessage(error, "Failed to approve product"))
     }
   }
 
@@ -72,9 +78,9 @@ export default function AdminProductsPage() {
       setRejectReason("")
       setSelectedProduct(null)
       fetchProducts()
-    } catch (error) {
+    } catch (error: any) {
       console.error("[v0] Failed to reject product:", error)
-      toast.error("Failed to reject product")
+      toast.error(getErrorMessage(error, "Failed to reject product"))
     } finally {
       setIsSubmitting(false)
     }
