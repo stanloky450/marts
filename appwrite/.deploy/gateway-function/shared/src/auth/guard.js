@@ -5,12 +5,19 @@ const { sendError } = require("../http/response");
 const { getBearerToken } = require("../http/request");
 const { prisma } = require("../db/prisma");
 
+function isUuid(value) {
+  return (
+    typeof value === "string" &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)
+  );
+}
+
 async function resolveInternalUser({ appwriteUser, legacyPayload }) {
   if (legacyPayload?.sub) {
     const user = await prisma.user.findFirst({
-      where: {
-        OR: [{ mongoId: legacyPayload.sub }, { id: legacyPayload.sub }],
-      },
+      where: isUuid(legacyPayload.sub)
+        ? { id: legacyPayload.sub }
+        : { mongoId: legacyPayload.sub },
     });
     if (user) return user;
   }

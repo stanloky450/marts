@@ -428,3 +428,105 @@
  GET /api/v1/vendors?limit=5 200 in 43ms (next.js: 6ms, application-code: 36ms)
  GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 50ms (next.js: 9ms, application-code: 41ms)
  GET /super-admin/settings 200 in 64ms (next.js: 12ms, application-code: 52ms)
+ GET /login 200 in 1921ms (next.js: 704ms, application-code: 1217ms)
+⨯ TypeError: fetch failed
+    at async proxyToBaseUrl (app\api\v1\[...path]\route.ts:196:20)
+  194 |   }
+  195 |
+> 196 |   const upstream = await fetch(upstreamUrl, init);
+      |                    ^
+  197 |   const responseHeaders = new Headers();
+  198 |
+  199 |   upstream.headers.forEach((value, key) => { {
+  [cause]: Error: read ECONNRESET
+      at ignore-listed frames {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+ POST /api/v1/auth/login 500 in 2.3s (next.js: 170ms, application-code: 2.2s)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+⨯ TypeError: fetch failed
+    at async proxyToBaseUrl (app\api\v1\[...path]\route.ts:196:20)
+  194 |   }
+  195 |
+> 196 |   const upstream = await fetch(upstreamUrl, init);
+      |                    ^
+  197 |   const responseHeaders = new Headers();
+  198 |
+  199 |   upstream.headers.forEach((value, key) => { {
+  [cause]: AggregateError: 
+      at ignore-listed frames {
+    code: 'ECONNREFUSED',
+    [errors]: [ [Error], [Error] ]
+  }
+}
+ POST /api/v1/auth/login 500 in 1104ms (next.js: 147ms, application-code: 957ms)
+[browser] [v0] Login error: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (contexts/auth-context.tsx:78:15)
+[browser] [v0] Login failed: AxiosError: Request failed with status code 500
+    at async login (contexts/auth-context.tsx:56:24)
+    at async handleLogin (app/login/page.tsx:28:7)
+  54 |   const login = async (email: string, password: string) => {
+  55 |     try {
+> 56 |       const response = await apiClient.post<ApiResponse<AuthResponse>>("/auth/login", {
+     |                        ^
+  57 |         email,
+  58 |         password,
+  59 |       }) (app/login/page.tsx:30:15)
+ GET /login 200 in 385ms (next.js: 45ms, application-code: 340ms)
+ POST /api/v1/auth/login 200 in 796ms (next.js: 22ms, application-code: 774ms)
+ GET /super-admin 200 in 96ms (next.js: 32ms, application-code: 65ms)
+ GET /api/v1/admins/stats 200 in 414ms (next.js: 12ms, application-code: 402ms)
+ GET /api/v1/admins/stats 200 in 233ms (next.js: 18ms, application-code: 215ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 148ms (next.js: 30ms, application-code: 118ms)
+ GET /api/v1/vendors?limit=5 200 in 159ms (next.js: 50ms, application-code: 110ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 81ms (next.js: 21ms, application-code: 60ms)
+ GET /api/v1/vendors?limit=5 200 in 98ms (next.js: 31ms, application-code: 67ms)
+ GET /super-admin 200 in 145ms (next.js: 9ms, application-code: 136ms)
+ GET /api/v1/auth/me 200 in 134ms (next.js: 38ms, application-code: 96ms)
+ GET /api/v1/admins/stats 200 in 307ms (next.js: 24ms, application-code: 283ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 68ms (next.js: 7ms, application-code: 61ms)
+ GET /api/v1/vendors?limit=5 200 in 62ms (next.js: 10ms, application-code: 52ms)
+ GET /api/v1/admins/products/analytics?sort=views&limit=5 200 in 66ms (next.js: 13ms, application-code: 53ms)
+ GET /api/v1/vendors?limit=5 200 in 60ms (next.js: 8ms, application-code: 52ms)
+ GET /super-admin/admins 200 in 67ms (next.js: 18ms, application-code: 49ms)
+ GET /api/v1/admins/list 200 in 78ms (next.js: 25ms, application-code: 53ms)
+ GET /api/v1/admins/list 200 in 34ms (next.js: 6ms, application-code: 28ms)
+ GET /super-admin/products 200 in 91ms (next.js: 32ms, application-code: 58ms)
+ GET /api/v1/products 200 in 78ms (next.js: 31ms, application-code: 47ms)
+ GET /api/v1/products 200 in 41ms (next.js: 9ms, application-code: 33ms)
+○ Compiling /super-admin/ads ...
+ GET /super-admin/ads 200 in 17.5s (next.js: 17.4s, application-code: 78ms)
+ GET /api/v1/adsplace 200 in 239ms (next.js: 23ms, application-code: 215ms)
+ GET /api/v1/adsplace 200 in 35ms (next.js: 12ms, application-code: 23ms)
+ POST /api/v1/auth/login 200 in 468ms (next.js: 46ms, application-code: 422ms)
+ GET /api/v1/products 200 in 364ms (next.js: 6ms, application-code: 359ms)

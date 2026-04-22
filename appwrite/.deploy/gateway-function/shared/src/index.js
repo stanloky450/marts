@@ -6,7 +6,13 @@ module.exports = {
   ...require("./services/auth.service"),
   ...require("./services/product.service"),
   ...require("./services/payment.service"),
+  ...require("./services/media.service"),
+  ...require("./services/chat-gateway.service"),
   ...require("./services/storefront.service"),
   ...require("./services/user.service"),
   ...require("./services/analytics.service"),
+  ...require("./services/vendors-categories.service"),
+  ...require("./services/admins-referrals.service"),
+  ...require("./services/settings-locations.service"),
+  ...require("./services/vendor-portal.service"),
 };

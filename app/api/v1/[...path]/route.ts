@@ -34,7 +34,18 @@ type AppwriteExecutionResult = {
 type BufferedRequestBody = {
   bytes?: ArrayBuffer;
   text: string;
+  base64?: string;
 };
+
+function shouldEncodeBodyAsBase64(contentType: string | null) {
+  if (!contentType) return false;
+
+  const normalized = contentType.toLowerCase();
+  return (
+    normalized.includes("multipart/form-data") ||
+    normalized.includes("application/octet-stream")
+  );
+}
 
 function getConfiguredProxyBaseUrl() {
   const value = process.env.API_PROXY_TARGET_URL || process.env.APPWRITE_API_GATEWAY_URL;
@@ -131,7 +142,12 @@ async function executeViaAppwrite(
 
   const method = request.method.toUpperCase();
   const headers = buildRequestHeaders(request);
+  const useBase64Body = shouldEncodeBodyAsBase64(request.headers.get("content-type"));
   const executionUrl = `${config.endpoint}/functions/${config.functionId}/executions`;
+
+  if (useBase64Body) {
+    headers.set("x-body-encoding", "base64");
+  }
 
   const executionResponse = await fetch(executionUrl, {
     method: "POST",
@@ -146,7 +162,7 @@ async function executeViaAppwrite(
       method,
       path: `/api/v1/${path.join("/")}${request.nextUrl.search}`,
       headers: headersToExecutionObject(headers),
-      body: body.text,
+      body: useBase64Body ? body.base64 || "" : body.text,
     }),
   });
 
@@ -219,9 +235,11 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
       ? { text: "" }
       : await (async (): Promise<BufferedRequestBody> => {
           const bytes = await request.arrayBuffer();
+          const buffer = Buffer.from(bytes);
           return {
             bytes,
             text: new TextDecoder().decode(bytes),
+            base64: buffer.toString("base64"),
           };
         })();
 
