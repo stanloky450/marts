@@ -79,6 +79,7 @@ const {
   getPublicProductById,
   getFeaturedProducts,
   getNewArrivals,
+  listPublicProducts,
   searchAllProducts,
   marketplaceOverview,
 } = require("@migration/shared");
@@ -173,6 +174,7 @@ const routes = [
   createRoute("GET", "/api/v1/storefront/stores/search", searchStores),
   createRoute("GET", "/api/v1/storefront/products/featured", getFeaturedProducts),
   createRoute("GET", "/api/v1/storefront/products/new", getNewArrivals),
+  createRoute("GET", "/api/v1/storefront/products", listPublicProducts),
   createRoute("GET", "/api/v1/storefront/products/search", searchAllProducts),
   createRoute("GET", "/api/v1/storefront/products/:id", getPublicProductById),
   createRoute("GET", "/api/v1/storefront/store/info", getStoreInfo),

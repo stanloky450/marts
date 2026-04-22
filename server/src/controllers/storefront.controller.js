@@ -387,6 +387,110 @@ export const getFeaturedProducts = async (req, res, next) => {
   }
 }
 
+export const listPublicProducts = async (req, res, next) => {
+  try {
+    const {
+      category,
+      search,
+      region,
+      area,
+      minPrice,
+      maxPrice,
+      page = 1,
+      limit = 24,
+    } = req.query
+
+    const qPage = Math.max(1, parseInt(page, 10) || 1)
+    const qLimit = Math.min(100, parseInt(limit, 10) || 24)
+    const skip = (qPage - 1) * qLimit
+
+    const where = {
+      status: PRODUCT_STATUS.APPROVED,
+    }
+
+    if (category) {
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(category)
+      const cat = await prisma.category.findFirst({
+        where: isUuid ? { id: category } : { mongoId: category }
+      })
+      if (cat) where.categoryMongoId = cat.mongoId
+    }
+
+    if (region) {
+      where.region = String(region).trim()
+    }
+
+    if (area) {
+      where.vendor = {
+        is: {
+          locationArea: String(area).trim(),
+        },
+      }
+    }
+
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+        { vendor: { is: { businessName: { contains: search, mode: "insensitive" } } } },
+      ]
+    }
+
+    if (minPrice || maxPrice) {
+      where.price = {}
+      if (minPrice) where.price.gte = Number.parseFloat(minPrice)
+      if (maxPrice) where.price.lte = Number.parseFloat(maxPrice)
+    }
+
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        include: {
+          vendor: {
+            select: {
+              businessName: true,
+              subdomain: true,
+              logoUrl: true,
+              mongoId: true,
+              locationRegion: true,
+              locationArea: true,
+              phoneNumber: true,
+              whatsappNumber: true,
+            },
+          },
+          category: { select: { name: true, slug: true, mongoId: true } },
+        },
+        orderBy: [{ metaViews: "desc" }, { createdAt: "desc" }],
+        skip,
+        take: qLimit,
+      }),
+      prisma.product.count({ where }),
+    ])
+
+    const mappedProducts = products.map((product) => ({
+      ...mapStoreProduct(product),
+      vendor: product.vendor
+        ? {
+            ...product.vendor,
+            _id: product.vendor.mongoId,
+          }
+        : null,
+      category: product.category ? { ...product.category, _id: product.category.mongoId } : null,
+    }))
+
+    res.json(
+      successResponse(mappedProducts, {
+        total,
+        page: qPage,
+        limit: qLimit,
+        totalPages: Math.ceil(total / qLimit),
+      })
+    )
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const getNewArrivals = async (req, res, next) => {
   try {
     const { limit = 12 } = req.query

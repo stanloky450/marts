@@ -6,6 +6,8 @@ export interface StorefrontFilters {
 	limit?: number;
 	search?: string;
 	category?: string;
+	region?: string;
+	area?: string;
 	minPrice?: number;
 	maxPrice?: number;
 	sortBy?: "price_asc" | "price_desc" | "name_asc" | "name_desc";
@@ -31,6 +33,12 @@ export const storefrontService = {
             `/storefront/store/products/${productId}`,
             { headers: { "x-subdomain": subdomain } }
         );
+	},
+
+	async getProducts(filters?: StorefrontFilters) {
+		return apiClient.get<ApiResponse<Product[]>>("/storefront/products", {
+			params: filters,
+		});
 	},
 
 	async trackProductView(productId: string) {

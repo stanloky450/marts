@@ -11,6 +11,10 @@ const sampleProductsFor = (vendorMongoId, categories) => [
     categoryMongoId: categories["electronics"],
     price: 199.99,
     stock: 50,
+    images: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=900&auto=format&fit=crop",
+    ],
     tags: ["audio", "wireless"],
     status: PRODUCT_STATUS.APPROVED,
   },
@@ -21,6 +25,10 @@ const sampleProductsFor = (vendorMongoId, categories) => [
     categoryMongoId: categories["electronics"],
     price: 69.99,
     stock: 120,
+    images: [
+      "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=900&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1510017803434-a899398421b3?w=900&auto=format&fit=crop",
+    ],
     tags: ["fitness", "wearable"],
     status: PRODUCT_STATUS.APPROVED,
   },
@@ -31,6 +39,10 @@ const sampleProductsFor = (vendorMongoId, categories) => [
     categoryMongoId: categories["fashion"],
     price: 19.99,
     stock: 200,
+    images: [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=900&auto=format&fit=crop",
+    ],
     tags: ["clothing"],
     status: PRODUCT_STATUS.APPROVED,
   },
@@ -63,7 +75,10 @@ export const seedProducts = async () => {
     }
 
     for (const vendor of vendors) {
-      const productBatch = sampleProductsFor(vendor.mongoId, catMap)
+      const productBatch = sampleProductsFor(vendor.mongoId, catMap).map((product) => ({
+        ...product,
+        region: vendor.locationRegion || null,
+      }))
       
       const productData = productBatch.map(p => ({
         ...p,

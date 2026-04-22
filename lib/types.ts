@@ -3,6 +3,13 @@ export interface User {
 	email: string;
 	role: "super_admin" | "admin" | "vendor";
 	isActive: boolean;
+	profile?: {
+		firstName?: string;
+		lastName?: string;
+		phone?: string;
+		region?: string;
+		notes?: string;
+	};
 	createdAt: string;
 	updatedAt: string;
 }
@@ -37,8 +44,11 @@ export interface Vendor {
 	};
 	address?: {
 		city?: string;
+		state?: string;
 		country?: string;
 	};
+	locationRegion?: string;
+	locationArea?: string;
 	logoUrl?: string;
 	subdomain?: string;
 	bannerImage?: string;

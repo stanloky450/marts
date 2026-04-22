@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { productService } from "@/lib/services/product.service"
 import type { Product } from "@/lib/types"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Search01Icon, AccessIcon, Delete02Icon, CheckmarkCircle02Icon, Cancel01Icon } from "@hugeicons/core-free-icons"
+import { Search01Icon, Delete02Icon, CheckmarkCircle02Icon, Cancel01Icon } from "@hugeicons/core-free-icons"
 import { toast } from "sonner"
 import { Spinner } from "@/components/ui/spinner"
 
@@ -69,20 +69,6 @@ export default function ProductsPage() {
       const message = getErrorMessage(error, "Failed to reject product")
       console.error("[v0] Failed to reject product:", error)
       toast.error(message)
-    }
-  }
-
-  const handleSuspend = async (id: string) => {
-    const reason = prompt("Enter reason for suspension:")
-    if (!reason) return
-
-    try {
-      await productService.suspend(id, reason)
-      toast.success("Product suspended successfully")
-      fetchProducts()
-    } catch (error) {
-      console.error("[v0] Failed to suspend product:", error)
-      toast.error("Failed to suspend product")
     }
   }
 
@@ -218,11 +204,6 @@ export default function ProductsPage() {
                                 title="Approve"
                               >
                                 <HugeiconsIcon icon={CheckmarkCircle02Icon} className="h-4 w-4 text-green-600" />
-                              </Button>
-                            )}
-                            {product.status !== "suspended" && (
-                              <Button variant="ghost" size="icon" onClick={() => handleSuspend(product._id)}>
-                                <HugeiconsIcon icon={AccessIcon} className="h-4 w-4 text-orange-600" />
                               </Button>
                             )}
                             <Button variant="ghost" size="icon" onClick={() => handleDelete(product._id)}>

@@ -268,6 +268,72 @@ async function getFeaturedProducts({ ctx, res }) {
   );
 }
 
+async function listPublicProducts({ ctx, res }) {
+  const page = Math.max(1, Number.parseInt(ctx.query.page || "1", 10) || 1);
+  const limit = Math.min(100, Number.parseInt(ctx.query.limit || "24", 10) || 24);
+  const skip = (page - 1) * limit;
+  const where = {
+    status: PRODUCT_STATUS.APPROVED,
+  };
+
+  if (ctx.query.category) where.categoryMongoId = ctx.query.category;
+  if (ctx.query.region) where.region = String(ctx.query.region).trim();
+  if (ctx.query.area) {
+    where.vendor = {
+      is: {
+        locationArea: String(ctx.query.area).trim(),
+      },
+    };
+  }
+  if (ctx.query.search) {
+    where.OR = [
+      { name: { contains: ctx.query.search, mode: "insensitive" } },
+      { description: { contains: ctx.query.search, mode: "insensitive" } },
+      { vendor: { is: { businessName: { contains: ctx.query.search, mode: "insensitive" } } } },
+    ];
+  }
+  if (ctx.query.minPrice || ctx.query.maxPrice) {
+    where.price = {};
+    if (ctx.query.minPrice) where.price.gte = Number(ctx.query.minPrice);
+    if (ctx.query.maxPrice) where.price.lte = Number(ctx.query.maxPrice);
+  }
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      include: {
+        vendor: {
+          select: {
+            businessName: true,
+            subdomain: true,
+            logoUrl: true,
+            mongoId: true,
+            locationRegion: true,
+            locationArea: true,
+            phoneNumber: true,
+            whatsappNumber: true,
+          },
+        },
+        category: { select: { name: true, slug: true, mongoId: true } },
+      },
+      orderBy: [{ metaViews: "desc" }, { createdAt: "desc" }],
+      skip,
+      take: limit,
+    }),
+    prisma.product.count({ where }),
+  ]);
+
+  return sendSuccess(
+    res,
+    products.map((product) => ({
+      ...mapStoreProduct(product),
+      vendor: product.vendor ? { ...product.vendor, _id: product.vendor.mongoId } : null,
+      category: product.category ? { ...product.category, _id: product.category.mongoId } : null,
+    })),
+    { total, page, limit, totalPages: Math.ceil(total / limit) }
+  );
+}
+
 async function getNewArrivals({ ctx, res }) {
   const limit = Math.min(100, Number.parseInt(ctx.query.limit || "12", 10) || 12);
   const products = await prisma.product.findMany({
@@ -342,6 +408,7 @@ module.exports = {
   getStoreProduct,
   getPublicProductById,
   getFeaturedProducts,
+  listPublicProducts,
   getNewArrivals,
   searchAllProducts,
 };

@@ -17,7 +17,9 @@ const seedVendorsData = [
       phone: "+1-555-1001",
       status: VENDOR_STATUS.ACTIVE,
       subdomain: "alice-electronics",
-      address: { city: "Lagos", country: "NG" },
+      region: "Lagos",
+      area: "Ikeja",
+      address: { city: "Ikeja", state: "Lagos", country: "NG" },
     },
   },
   {
@@ -32,7 +34,9 @@ const seedVendorsData = [
       phone: "+1-555-1002",
       status: VENDOR_STATUS.ACTIVE,
       subdomain: "bob-fashion",
-      address: { city: "Abuja", country: "NG" },
+      region: "Federal Capital Territory",
+      area: "Wuse",
+      address: { city: "Wuse", state: "Federal Capital Territory", country: "NG" },
     },
   },
 ]
@@ -74,9 +78,15 @@ export const seedVendors = async () => {
           businessName: entry.vendor.businessName,
           description: entry.vendor.description,
           phone: entry.vendor.phone,
+          phoneNumber: entry.vendor.phone,
           status: entry.vendor.status,
           subdomain: entry.vendor.subdomain,
           address: entry.vendor.address,
+          locationRegion: entry.vendor.region,
+          locationArea: entry.vendor.area,
+          addressCity: entry.vendor.address.city,
+          addressState: entry.vendor.address.state,
+          addressCountry: entry.vendor.address.country,
           ownerMongoId: user.mongoId,
         }
       })

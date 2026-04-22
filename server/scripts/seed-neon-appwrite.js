@@ -51,6 +51,24 @@ async function createSettings(client) {
   }
 }
 
+async function createLocations(client) {
+  const locations = [
+    ["Lagos", ["Ikeja", "Lekki", "Yaba", "Surulere"], 10000],
+    ["Federal Capital Territory", ["Garki", "Wuse", "Maitama", "Kubwa"], 10000],
+    ["Rivers", ["Port Harcourt", "Obio-Akpor", "Eleme"], 9000],
+  ];
+
+  for (const [region, areas, registrationFee] of locations) {
+    await client.query(
+      `INSERT INTO "Location" ("id", "mongoId", region, areas, "registrationFee", "isActive", "createdAt", "updatedAt")
+       VALUES (gen_random_uuid(), $1, $2, $3::text[], $4, TRUE, NOW(), NOW())
+       ON CONFLICT (region)
+       DO UPDATE SET areas = EXCLUDED.areas, "registrationFee" = EXCLUDED."registrationFee", "isActive" = TRUE, "updatedAt" = NOW()`,
+      [mongoId(), region, areas, registrationFee]
+    );
+  }
+}
+
 async function createCategories(client, superAdminMongoId) {
   const categories = [
     ["Electronics", "electronics"],
@@ -88,9 +106,10 @@ async function createVendorBundle(client, entry) {
   if (!vendor) {
     const createdVendor = await client.query(
       `INSERT INTO "Vendor" (
-         "id", "mongoId", "ownerMongoId", "businessName", description, phone, status, subdomain, address, "createdAt", "updatedAt"
+         "id", "mongoId", "ownerMongoId", "businessName", description, phone, "phoneNumber", "locationRegion", "locationArea",
+         "addressCity", "addressState", "addressCountry", address, status, subdomain, "createdAt", "updatedAt"
        ) VALUES (
-         gen_random_uuid(), $1, $2, $3, $4, $5, $6::"VendorStatus", $7, $8::jsonb, NOW(), NOW()
+         gen_random_uuid(), $1, $2, $3, $4, $5, $5, $6, $7, $8, $6, $9, $10::jsonb, $11::"VendorStatus", $12, NOW(), NOW()
        )
        RETURNING id, "mongoId", subdomain`,
       [
@@ -99,12 +118,47 @@ async function createVendorBundle(client, entry) {
         entry.vendor.businessName,
         entry.vendor.description,
         entry.vendor.phone,
+        entry.vendor.region,
+        entry.vendor.area,
+        entry.vendor.address.city,
+        entry.vendor.address.country,
+        JSON.stringify(entry.vendor.address),
         entry.vendor.status,
         entry.vendor.subdomain,
-        JSON.stringify(entry.vendor.address),
       ]
     );
     vendor = createdVendor.rows[0];
+  } else {
+    await client.query(
+      `UPDATE "Vendor"
+       SET "businessName" = $2,
+           description = $3,
+           phone = $4,
+           "phoneNumber" = $4,
+           "locationRegion" = $5,
+           "locationArea" = $6,
+           "addressCity" = $7,
+           "addressState" = $5,
+           "addressCountry" = $8,
+           address = $9::jsonb,
+           status = $10::"VendorStatus",
+           subdomain = $11,
+           "updatedAt" = NOW()
+       WHERE "mongoId" = $1`,
+      [
+        vendor.mongoId,
+        entry.vendor.businessName,
+        entry.vendor.description,
+        entry.vendor.phone,
+        entry.vendor.region,
+        entry.vendor.area,
+        entry.vendor.address.city,
+        entry.vendor.address.country,
+        JSON.stringify(entry.vendor.address),
+        entry.vendor.status,
+        entry.vendor.subdomain,
+      ]
+    );
   }
 
   if (entry.vendor.subdomain) {
@@ -131,19 +185,65 @@ async function createVendorBundle(client, entry) {
 
 async function createProducts(client, vendorMongoId, categoryMap) {
   const products = [
-    ["Wireless Headphones", "Noise-cancelling over-ear headphones", "electronics", "199.99", 50, ["audio", "wireless"]],
-    ["Fitness Tracker", "Waterproof fitness band with heart rate monitor", "electronics", "69.99", 120, ["fitness", "wearable"]],
-    ["Casual T-Shirt", "100% cotton unisex tee", "fashion", "19.99", 200, ["clothing"]],
+    [
+      "Wireless Headphones",
+      "Noise-cancelling over-ear headphones",
+      "electronics",
+      "199.99",
+      50,
+      ["audio", "wireless"],
+      [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=900&auto=format&fit=crop",
+      ],
+    ],
+    [
+      "Fitness Tracker",
+      "Waterproof fitness band with heart rate monitor",
+      "electronics",
+      "69.99",
+      120,
+      ["fitness", "wearable"],
+      [
+        "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1510017803434-a899398421b3?w=900&auto=format&fit=crop",
+      ],
+    ],
+    [
+      "Casual T-Shirt",
+      "100% cotton unisex tee",
+      "fashion",
+      "19.99",
+      200,
+      ["clothing"],
+      [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=900&auto=format&fit=crop",
+      ],
+    ],
   ];
 
-  for (const [name, description, categorySlug, price, stock, tags] of products) {
+  const vendorResult = await client.query(
+    `SELECT "locationRegion" FROM "Vendor" WHERE "mongoId" = $1 LIMIT 1`,
+    [vendorMongoId]
+  );
+  const vendorRegion = vendorResult.rows[0]?.locationRegion || null;
+
+  for (const [name, description, categorySlug, price, stock, tags, images] of products) {
+    await client.query(
+      `UPDATE "Product"
+       SET region = $3, images = $4::text[], "updatedAt" = NOW()
+       WHERE "vendorMongoId" = $1::varchar AND name = $2::text`,
+      [vendorMongoId, name, vendorRegion, images]
+    );
+
     await client.query(
       `INSERT INTO "Product" (
-         "id", "mongoId", "vendorMongoId", name, description, "categoryMongoId", price, stock, tags, status, "createdAt", "updatedAt"
+         "id", "mongoId", "vendorMongoId", name, description, "categoryMongoId", region, price, stock, images, tags, status, "createdAt", "updatedAt"
        )
-       SELECT gen_random_uuid(), $1::varchar, $2::varchar, $3::text, $4::text, $5::varchar, $6::decimal, $7::integer, $8::text[], 'approved'::"ProductStatus", NOW(), NOW()
+       SELECT gen_random_uuid(), $1::varchar, $2::varchar, $3::text, $4::text, $5::varchar, $6::text, $7::decimal, $8::integer, $9::text[], $10::text[], 'approved'::"ProductStatus", NOW(), NOW()
        WHERE NOT EXISTS (SELECT 1 FROM "Product" WHERE "vendorMongoId" = $2::varchar AND name = $3::text)`,
-      [mongoId(), vendorMongoId, name, description, categoryMap[categorySlug], price, stock, tags]
+      [mongoId(), vendorMongoId, name, description, categoryMap[categorySlug], vendorRegion, price, stock, images, tags]
     );
   }
 }
@@ -174,6 +274,7 @@ async function main() {
     });
 
     await createSettings(client);
+    await createLocations(client);
     const categoryMap = await createCategories(client, superAdmin.mongoId);
 
     const vendors = [
@@ -191,7 +292,9 @@ async function main() {
           phone: "+1-555-1001",
           status: "active",
           subdomain: "alice-electronics",
-          address: { city: "Lagos", country: "NG" },
+          region: "Lagos",
+          area: "Ikeja",
+          address: { city: "Ikeja", state: "Lagos", country: "NG" },
         },
       },
       {
@@ -208,7 +311,9 @@ async function main() {
           phone: "+1-555-1002",
           status: "active",
           subdomain: "bob-fashion",
-          address: { city: "Abuja", country: "NG" },
+          region: "Federal Capital Territory",
+          area: "Wuse",
+          address: { city: "Wuse", state: "Federal Capital Territory", country: "NG" },
         },
       },
     ];

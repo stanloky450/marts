@@ -12,6 +12,12 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon, Store01Icon, PackageIcon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import { StoreInteractions } from "@/components/store-interactions";
+import {
+  addViewedProduct,
+  isBookmarkedProduct,
+  readMarketUserRegistration,
+  toggleBookmarkedProduct,
+} from "@/lib/market-user";
 
 const getServiceMeta = (product: Product) => {
   if (
@@ -61,6 +67,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [vendor, setVendor] = useState<Vendor | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,8 +77,34 @@ export default function ProductDetailPage() {
           storefrontService.getVendorBySubdomain(subdomain),
         ]);
 
-        setProduct(productRes.data.data);
-        setVendor(vendorRes.data.data);
+        const nextProduct = productRes.data.data;
+        const nextVendor = vendorRes.data.data;
+
+        setProduct(nextProduct);
+        setVendor(nextVendor);
+        setIsBookmarked(isBookmarkedProduct(nextProduct._id));
+
+        if (readMarketUserRegistration()) {
+          addViewedProduct({
+            id: nextProduct._id,
+            name: nextProduct.name,
+            description: nextProduct.description,
+            price: Number(nextProduct.price || 0),
+            discountPrice: Number(nextProduct.discountPrice || 0),
+            images: nextProduct.images || [],
+            category:
+              typeof nextProduct.category === "object"
+                ? (nextProduct.category as any)?.name
+                : String(nextProduct.category || ""),
+            productType: nextProduct.productType,
+            vendorMongoId: nextVendor.mongoId || nextVendor._id,
+            vendorName: nextVendor.businessName,
+            vendorSubdomain: nextVendor.subdomain,
+            vendorPhone: nextVendor.phoneNumber || nextVendor.phone,
+            region: nextVendor.address?.state || nextVendor.address?.city,
+            area: nextVendor.address?.city,
+          });
+        }
       } catch (error) {
         console.error("Failed to fetch product:", error);
         toast.error("Failed to load product");
@@ -123,6 +156,30 @@ export default function ProductDetailPage() {
       </div>
     );
   }
+
+  const toggleBookmark = () => {
+    const active = toggleBookmarkedProduct({
+      id: product._id,
+      name: product.name,
+      description: product.description,
+      price: Number(product.price || 0),
+      discountPrice: Number(product.discountPrice || 0),
+      images: product.images || [],
+      category:
+        typeof product.category === "object"
+          ? (product.category as any)?.name
+          : String(product.category || ""),
+      productType: product.productType,
+      vendorMongoId: vendor.mongoId || vendor._id,
+      vendorName: vendor.businessName,
+      vendorSubdomain: vendor.subdomain,
+      vendorPhone: vendor.phoneNumber || vendor.phone,
+      region: vendor.address?.state || vendor.address?.city,
+      area: vendor.address?.city,
+    });
+    setIsBookmarked(active);
+    toast.success(active ? "Product saved to your account" : "Product removed from saved picks");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -255,6 +312,11 @@ export default function ProductDetailPage() {
                   </Button>
                 </>
               )}
+              {readMarketUserRegistration() && (
+                <Button size="lg" variant="outline" className="w-full bg-transparent" onClick={toggleBookmark}>
+                  {isBookmarked ? "Remove bookmark" : "Bookmark product"}
+                </Button>
+              )}
             </div>
 
             {!serviceMode && product.stock === 0 && (
@@ -262,6 +324,38 @@ export default function ProductDetailPage() {
                 This product is currently out of stock. Please check back later.
               </p>
             )}
+
+            <Card>
+              <CardContent className="space-y-4 pt-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold">Vendor details</h2>
+                    <p className="text-sm text-muted-foreground">
+                      Chat is available below for logged-in marketplace users.
+                    </p>
+                  </div>
+                  <Link href={`/store/${subdomain}`}>
+                    <Button variant="outline">Visit store</Button>
+                  </Link>
+                </div>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div className="rounded-xl border p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Business</p>
+                    <p className="mt-2 font-semibold">{vendor.businessName}</p>
+                    <p className="text-sm text-muted-foreground">{vendor.description || "No vendor description yet."}</p>
+                  </div>
+                  <div className="rounded-xl border p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Reach vendor</p>
+                    <p className="mt-2 text-sm">{vendor.phoneNumber || vendor.phone || "Phone unavailable"}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {[vendor.address?.city, vendor.address?.state, vendor.address?.country]
+                        .filter(Boolean)
+                        .join(", ") || "Location unavailable"}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             <StoreInteractions
               vendorMongoId={vendor.mongoId || vendor._id}

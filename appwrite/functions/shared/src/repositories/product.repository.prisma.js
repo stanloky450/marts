@@ -1,5 +1,12 @@
 const { prisma } = require("../db/prisma");
 
+function isUuid(value) {
+  return (
+    typeof value === "string" &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)
+  );
+}
+
 function buildWhere(filters = {}, actor = null) {
   const where = {};
 
@@ -49,8 +56,12 @@ async function listProducts({ filters, pagination, actor }) {
 }
 
 async function getProductById(id) {
+  const raw = String(id || "").trim();
+  const OR = [{ mongoId: raw }];
+  if (isUuid(raw)) OR.push({ id: raw });
+
   return prisma.product.findFirst({
-    where: { OR: [{ mongoId: id }, { id }] },
+    where: { OR },
     include: {
       vendor: { select: { businessName: true, subdomain: true, logoUrl: true, mongoId: true } },
       category: { select: { name: true, slug: true, mongoId: true } },

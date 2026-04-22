@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { storefrontService } from "@/lib/services/storefront.service";
@@ -282,7 +282,7 @@ export default function StorefrontPage() {
 		label: string;
 		url: string;
 		handle: string;
-		icon: JSX.Element;
+		icon: ReactNode;
 	}>;
 
 	const copyText = async (value: string, label: string) => {

@@ -9,6 +9,7 @@ import {
   getFeaturedProducts,
   getNewArrivals,
   getPublicProductById,
+  listPublicProducts,
   searchAllProducts,
 } from "../controllers/storefront.controller.js"
 import { extractSubdomain, requireSubdomain } from "../middleware/subdomain.js"
@@ -20,6 +21,7 @@ router.get("/stores", listAllStores)
 router.get("/stores/search", searchStores)
 router.get("/products/featured", getFeaturedProducts)
 router.get("/products/new", getNewArrivals)
+router.get("/products", listPublicProducts)
 router.get("/products/search", searchAllProducts)
 router.get("/products/:id", getPublicProductById)
 

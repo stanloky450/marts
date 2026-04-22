@@ -37,7 +37,7 @@ export function ProductCard({ product }: { product: Product }) {
 					)}
 				</div>
 				<Button className="w-full mt-2 rounded-full font-semibold" size="sm">
-					Buy Now
+					View Product
 				</Button>
 			</div>
 		</div>

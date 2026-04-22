@@ -26,7 +26,9 @@ export default function ProductGatewayPage() {
 
     const resolve = async () => {
       try {
-        const response = await apiClient.get(`/storefront/products/${id}`);
+        const response = await apiClient.get<{ data?: { vendor?: { subdomain?: string } } }>(
+          `/storefront/products/${id}`
+        );
         const product = response.data?.data;
         const subdomain = product?.vendor?.subdomain;
 

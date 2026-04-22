@@ -14,6 +14,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type { Product, Vendor, ApiResponse } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { storefrontService } from "@/lib/services/storefront.service";
+import { MarketHeader } from "@/components/market-header";
 
 // Simple UI data for categories
 const CATEGORIES = [
@@ -102,25 +103,7 @@ export default function MarketPage() {
 
 	return (
 		<div className="min-h-screen bg-slate-50 flex flex-col">
-			{/* Simple Header */}
-			<header className="bg-white sticky top-0 z-50 shadow-sm border-b px-4 py-3 md:px-8 flex items-center justify-between">
-				<div className="flex items-center gap-6">
-					<div className="font-bold text-xl text-primary flex items-center gap-2">
-						<span className="bg-primary text-white p-1 rounded">W</span>
-						WIKZON
-					</div>
-					<nav className="hidden md:flex gap-4 text-sm text-muted-foreground font-medium">
-						<Link href="/market" className="text-primary font-bold">Home</Link>
-						<Link href="/explore">Explore</Link>
-						<Link href="/account">Account</Link>
-					</nav>
-				</div>
-				<div className="flex items-center gap-4">
-					<Button variant="outline" size="sm" className="bg-slate-900 text-white hover:bg-slate-800">
-						Ask Fred
-					</Button>
-				</div>
-			</header>
+			<MarketHeader current="market" />
 
 			{/* Search Bar */}
 			<div className="bg-white px-4 py-6 md:px-8 border-b">

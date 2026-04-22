@@ -199,7 +199,7 @@ export function StoreInteractions({
           <CardContent className="space-y-3">
             {!canChatOrReview ? (
               <p className="text-sm text-muted-foreground">
-                Register as a User to chat with this vendor.
+                Login as a user or complete user registration to chat with this vendor.
               </p>
             ) : (
               <>

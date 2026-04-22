@@ -6,6 +6,7 @@ import { seedCategories } from "./seedCategories.js"
 import { seedVendors } from "./seedVendors.js"
 import { seedProducts } from "./seedProducts.js"
 import { seedSettings } from "./seedSettings.js"
+import { seedLocations } from "./seedLocations.js"
 import { logger } from "../utils/logger.js"
 
 const runSeeds = async () => {
@@ -17,6 +18,7 @@ const runSeeds = async () => {
     await seedAdmin()
     await seedSuperAdmin()
     await seedSettings()
+    await seedLocations()
     await seedCategories()
     await seedVendors()
     await seedProducts()
