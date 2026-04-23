@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model MarketUser
+ * 
+ */
+export type MarketUser = $Result.DefaultSelection<Prisma.$MarketUserPayload>
+/**
  * Model Vendor
  * 
  */
@@ -376,6 +381,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.marketUser`: Exposes CRUD operations for the **MarketUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketUsers
+    * const marketUsers = await prisma.marketUser.findMany()
+    * ```
+    */
+  get marketUser(): Prisma.MarketUserDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.vendor`: Exposes CRUD operations for the **Vendor** model.
@@ -951,6 +966,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    MarketUser: 'MarketUser',
     Vendor: 'Vendor',
     Category: 'Category',
     Product: 'Product',
@@ -980,7 +996,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "vendor" | "category" | "product" | "location" | "subdomain" | "adPlacement" | "adminAssignment" | "payment" | "webhookEvent" | "referral" | "promotion" | "auditLog" | "setting" | "media"
+      modelProps: "user" | "marketUser" | "vendor" | "category" | "product" | "location" | "subdomain" | "adPlacement" | "adminAssignment" | "payment" | "webhookEvent" | "referral" | "promotion" | "auditLog" | "setting" | "media"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1055,6 +1071,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      MarketUser: {
+        payload: Prisma.$MarketUserPayload<ExtArgs>
+        fields: Prisma.MarketUserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketUserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketUserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketUserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketUserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>
+          }
+          findMany: {
+            args: Prisma.MarketUserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>[]
+          }
+          create: {
+            args: Prisma.MarketUserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>
+          }
+          createMany: {
+            args: Prisma.MarketUserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketUserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketUserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>
+          }
+          update: {
+            args: Prisma.MarketUserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketUserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketUserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MarketUserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>[]
+          }
+          upsert: {
+            args: Prisma.MarketUserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketUserPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketUserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketUser>
+          }
+          groupBy: {
+            args: Prisma.MarketUserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketUserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketUserCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketUserCountAggregateOutputType> | number
           }
         }
       }
@@ -2203,6 +2293,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    marketUser?: MarketUserOmit
     vendor?: VendorOmit
     category?: CategoryOmit
     product?: ProductOmit
@@ -2308,6 +2399,7 @@ export namespace Prisma {
     settings: number
     referrals: number
     payments: number
+    managedMarketUsers: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2322,6 +2414,7 @@ export namespace Prisma {
     settings?: boolean | UserCountOutputTypeCountSettingsArgs
     referrals?: boolean | UserCountOutputTypeCountReferralsArgs
     payments?: boolean | UserCountOutputTypeCountPaymentsArgs
+    managedMarketUsers?: boolean | UserCountOutputTypeCountManagedMarketUsersArgs
   }
 
   // Custom InputTypes
@@ -2410,6 +2503,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PaymentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountManagedMarketUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketUserWhereInput
   }
 
 
@@ -2811,6 +2911,7 @@ export namespace Prisma {
     settings?: boolean | User$settingsArgs<ExtArgs>
     referrals?: boolean | User$referralsArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
+    managedMarketUsers?: boolean | User$managedMarketUsersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2878,6 +2979,7 @@ export namespace Prisma {
     settings?: boolean | User$settingsArgs<ExtArgs>
     referrals?: boolean | User$referralsArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
+    managedMarketUsers?: boolean | User$managedMarketUsersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2897,6 +2999,7 @@ export namespace Prisma {
       settings: Prisma.$SettingPayload<ExtArgs>[]
       referrals: Prisma.$ReferralPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
+      managedMarketUsers: Prisma.$MarketUserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3318,6 +3421,7 @@ export namespace Prisma {
     settings<T extends User$settingsArgs<ExtArgs> = {}>(args?: Subset<T, User$settingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SettingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     referrals<T extends User$referralsArgs<ExtArgs> = {}>(args?: Subset<T, User$referralsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends User$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    managedMarketUsers<T extends User$managedMarketUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$managedMarketUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4018,6 +4122,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.managedMarketUsers
+   */
+  export type User$managedMarketUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    where?: MarketUserWhereInput
+    orderBy?: MarketUserOrderByWithRelationInput | MarketUserOrderByWithRelationInput[]
+    cursor?: MarketUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketUserScalarFieldEnum | MarketUserScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4033,6 +4161,1197 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MarketUser
+   */
+
+  export type AggregateMarketUser = {
+    _count: MarketUserCountAggregateOutputType | null
+    _min: MarketUserMinAggregateOutputType | null
+    _max: MarketUserMaxAggregateOutputType | null
+  }
+
+  export type MarketUserMinAggregateOutputType = {
+    id: string | null
+    mongoId: string | null
+    fullName: string | null
+    email: string | null
+    phoneNumber: string | null
+    region: string | null
+    area: string | null
+    status: $Enums.UserStatus | null
+    lastLoginAt: Date | null
+    updatedByMongoId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketUserMaxAggregateOutputType = {
+    id: string | null
+    mongoId: string | null
+    fullName: string | null
+    email: string | null
+    phoneNumber: string | null
+    region: string | null
+    area: string | null
+    status: $Enums.UserStatus | null
+    lastLoginAt: Date | null
+    updatedByMongoId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketUserCountAggregateOutputType = {
+    id: number
+    mongoId: number
+    fullName: number
+    email: number
+    phoneNumber: number
+    region: number
+    area: number
+    status: number
+    selectedProductIds: number
+    selectedProductNames: number
+    lastLoginAt: number
+    updatedByMongoId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MarketUserMinAggregateInputType = {
+    id?: true
+    mongoId?: true
+    fullName?: true
+    email?: true
+    phoneNumber?: true
+    region?: true
+    area?: true
+    status?: true
+    lastLoginAt?: true
+    updatedByMongoId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketUserMaxAggregateInputType = {
+    id?: true
+    mongoId?: true
+    fullName?: true
+    email?: true
+    phoneNumber?: true
+    region?: true
+    area?: true
+    status?: true
+    lastLoginAt?: true
+    updatedByMongoId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketUserCountAggregateInputType = {
+    id?: true
+    mongoId?: true
+    fullName?: true
+    email?: true
+    phoneNumber?: true
+    region?: true
+    area?: true
+    status?: true
+    selectedProductIds?: true
+    selectedProductNames?: true
+    lastLoginAt?: true
+    updatedByMongoId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MarketUserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketUser to aggregate.
+     */
+    where?: MarketUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketUsers to fetch.
+     */
+    orderBy?: MarketUserOrderByWithRelationInput | MarketUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketUsers
+    **/
+    _count?: true | MarketUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketUserMaxAggregateInputType
+  }
+
+  export type GetMarketUserAggregateType<T extends MarketUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketUser[P]>
+      : GetScalarType<T[P], AggregateMarketUser[P]>
+  }
+
+
+
+
+  export type MarketUserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketUserWhereInput
+    orderBy?: MarketUserOrderByWithAggregationInput | MarketUserOrderByWithAggregationInput[]
+    by: MarketUserScalarFieldEnum[] | MarketUserScalarFieldEnum
+    having?: MarketUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketUserCountAggregateInputType | true
+    _min?: MarketUserMinAggregateInputType
+    _max?: MarketUserMaxAggregateInputType
+  }
+
+  export type MarketUserGroupByOutputType = {
+    id: string
+    mongoId: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    region: string
+    area: string
+    status: $Enums.UserStatus
+    selectedProductIds: string[]
+    selectedProductNames: string[]
+    lastLoginAt: Date | null
+    updatedByMongoId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MarketUserCountAggregateOutputType | null
+    _min: MarketUserMinAggregateOutputType | null
+    _max: MarketUserMaxAggregateOutputType | null
+  }
+
+  type GetMarketUserGroupByPayload<T extends MarketUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketUserGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketUserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mongoId?: boolean
+    fullName?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    region?: boolean
+    area?: boolean
+    status?: boolean
+    selectedProductIds?: boolean
+    selectedProductNames?: boolean
+    lastLoginAt?: boolean
+    updatedByMongoId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean | MarketUser$updatedByArgs<ExtArgs>
+  }, ExtArgs["result"]["marketUser"]>
+
+  export type MarketUserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mongoId?: boolean
+    fullName?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    region?: boolean
+    area?: boolean
+    status?: boolean
+    selectedProductIds?: boolean
+    selectedProductNames?: boolean
+    lastLoginAt?: boolean
+    updatedByMongoId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean | MarketUser$updatedByArgs<ExtArgs>
+  }, ExtArgs["result"]["marketUser"]>
+
+  export type MarketUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mongoId?: boolean
+    fullName?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    region?: boolean
+    area?: boolean
+    status?: boolean
+    selectedProductIds?: boolean
+    selectedProductNames?: boolean
+    lastLoginAt?: boolean
+    updatedByMongoId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean | MarketUser$updatedByArgs<ExtArgs>
+  }, ExtArgs["result"]["marketUser"]>
+
+  export type MarketUserSelectScalar = {
+    id?: boolean
+    mongoId?: boolean
+    fullName?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    region?: boolean
+    area?: boolean
+    status?: boolean
+    selectedProductIds?: boolean
+    selectedProductNames?: boolean
+    lastLoginAt?: boolean
+    updatedByMongoId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MarketUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mongoId" | "fullName" | "email" | "phoneNumber" | "region" | "area" | "status" | "selectedProductIds" | "selectedProductNames" | "lastLoginAt" | "updatedByMongoId" | "createdAt" | "updatedAt", ExtArgs["result"]["marketUser"]>
+  export type MarketUserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    updatedBy?: boolean | MarketUser$updatedByArgs<ExtArgs>
+  }
+  export type MarketUserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    updatedBy?: boolean | MarketUser$updatedByArgs<ExtArgs>
+  }
+  export type MarketUserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    updatedBy?: boolean | MarketUser$updatedByArgs<ExtArgs>
+  }
+
+  export type $MarketUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketUser"
+    objects: {
+      updatedBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      mongoId: string
+      fullName: string
+      email: string
+      phoneNumber: string
+      region: string
+      area: string
+      status: $Enums.UserStatus
+      selectedProductIds: string[]
+      selectedProductNames: string[]
+      lastLoginAt: Date | null
+      updatedByMongoId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["marketUser"]>
+    composites: {}
+  }
+
+  type MarketUserGetPayload<S extends boolean | null | undefined | MarketUserDefaultArgs> = $Result.GetResult<Prisma.$MarketUserPayload, S>
+
+  type MarketUserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MarketUserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MarketUserCountAggregateInputType | true
+    }
+
+  export interface MarketUserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketUser'], meta: { name: 'MarketUser' } }
+    /**
+     * Find zero or one MarketUser that matches the filter.
+     * @param {MarketUserFindUniqueArgs} args - Arguments to find a MarketUser
+     * @example
+     * // Get one MarketUser
+     * const marketUser = await prisma.marketUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketUserFindUniqueArgs>(args: SelectSubset<T, MarketUserFindUniqueArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MarketUser that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MarketUserFindUniqueOrThrowArgs} args - Arguments to find a MarketUser
+     * @example
+     * // Get one MarketUser
+     * const marketUser = await prisma.marketUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketUserFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketUserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketUserFindFirstArgs} args - Arguments to find a MarketUser
+     * @example
+     * // Get one MarketUser
+     * const marketUser = await prisma.marketUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketUserFindFirstArgs>(args?: SelectSubset<T, MarketUserFindFirstArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketUser that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketUserFindFirstOrThrowArgs} args - Arguments to find a MarketUser
+     * @example
+     * // Get one MarketUser
+     * const marketUser = await prisma.marketUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketUserFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketUserFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MarketUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketUserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketUsers
+     * const marketUsers = await prisma.marketUser.findMany()
+     * 
+     * // Get first 10 MarketUsers
+     * const marketUsers = await prisma.marketUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketUserWithIdOnly = await prisma.marketUser.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketUserFindManyArgs>(args?: SelectSubset<T, MarketUserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MarketUser.
+     * @param {MarketUserCreateArgs} args - Arguments to create a MarketUser.
+     * @example
+     * // Create one MarketUser
+     * const MarketUser = await prisma.marketUser.create({
+     *   data: {
+     *     // ... data to create a MarketUser
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketUserCreateArgs>(args: SelectSubset<T, MarketUserCreateArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MarketUsers.
+     * @param {MarketUserCreateManyArgs} args - Arguments to create many MarketUsers.
+     * @example
+     * // Create many MarketUsers
+     * const marketUser = await prisma.marketUser.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketUserCreateManyArgs>(args?: SelectSubset<T, MarketUserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketUsers and returns the data saved in the database.
+     * @param {MarketUserCreateManyAndReturnArgs} args - Arguments to create many MarketUsers.
+     * @example
+     * // Create many MarketUsers
+     * const marketUser = await prisma.marketUser.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketUsers and only return the `id`
+     * const marketUserWithIdOnly = await prisma.marketUser.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketUserCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketUserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MarketUser.
+     * @param {MarketUserDeleteArgs} args - Arguments to delete one MarketUser.
+     * @example
+     * // Delete one MarketUser
+     * const MarketUser = await prisma.marketUser.delete({
+     *   where: {
+     *     // ... filter to delete one MarketUser
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketUserDeleteArgs>(args: SelectSubset<T, MarketUserDeleteArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MarketUser.
+     * @param {MarketUserUpdateArgs} args - Arguments to update one MarketUser.
+     * @example
+     * // Update one MarketUser
+     * const marketUser = await prisma.marketUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketUserUpdateArgs>(args: SelectSubset<T, MarketUserUpdateArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MarketUsers.
+     * @param {MarketUserDeleteManyArgs} args - Arguments to filter MarketUsers to delete.
+     * @example
+     * // Delete a few MarketUsers
+     * const { count } = await prisma.marketUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketUserDeleteManyArgs>(args?: SelectSubset<T, MarketUserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketUsers
+     * const marketUser = await prisma.marketUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketUserUpdateManyArgs>(args: SelectSubset<T, MarketUserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketUsers and returns the data updated in the database.
+     * @param {MarketUserUpdateManyAndReturnArgs} args - Arguments to update many MarketUsers.
+     * @example
+     * // Update many MarketUsers
+     * const marketUser = await prisma.marketUser.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MarketUsers and only return the `id`
+     * const marketUserWithIdOnly = await prisma.marketUser.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MarketUserUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketUserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MarketUser.
+     * @param {MarketUserUpsertArgs} args - Arguments to update or create a MarketUser.
+     * @example
+     * // Update or create a MarketUser
+     * const marketUser = await prisma.marketUser.upsert({
+     *   create: {
+     *     // ... data to create a MarketUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketUser we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketUserUpsertArgs>(args: SelectSubset<T, MarketUserUpsertArgs<ExtArgs>>): Prisma__MarketUserClient<$Result.GetResult<Prisma.$MarketUserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MarketUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketUserCountArgs} args - Arguments to filter MarketUsers to count.
+     * @example
+     * // Count the number of MarketUsers
+     * const count = await prisma.marketUser.count({
+     *   where: {
+     *     // ... the filter for the MarketUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketUserCountArgs>(
+      args?: Subset<T, MarketUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketUserAggregateArgs>(args: Subset<T, MarketUserAggregateArgs>): Prisma.PrismaPromise<GetMarketUserAggregateType<T>>
+
+    /**
+     * Group by MarketUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketUserGroupByArgs['orderBy'] }
+        : { orderBy?: MarketUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketUser model
+   */
+  readonly fields: MarketUserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    updatedBy<T extends MarketUser$updatedByArgs<ExtArgs> = {}>(args?: Subset<T, MarketUser$updatedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketUser model
+   */
+  interface MarketUserFieldRefs {
+    readonly id: FieldRef<"MarketUser", 'String'>
+    readonly mongoId: FieldRef<"MarketUser", 'String'>
+    readonly fullName: FieldRef<"MarketUser", 'String'>
+    readonly email: FieldRef<"MarketUser", 'String'>
+    readonly phoneNumber: FieldRef<"MarketUser", 'String'>
+    readonly region: FieldRef<"MarketUser", 'String'>
+    readonly area: FieldRef<"MarketUser", 'String'>
+    readonly status: FieldRef<"MarketUser", 'UserStatus'>
+    readonly selectedProductIds: FieldRef<"MarketUser", 'String[]'>
+    readonly selectedProductNames: FieldRef<"MarketUser", 'String[]'>
+    readonly lastLoginAt: FieldRef<"MarketUser", 'DateTime'>
+    readonly updatedByMongoId: FieldRef<"MarketUser", 'String'>
+    readonly createdAt: FieldRef<"MarketUser", 'DateTime'>
+    readonly updatedAt: FieldRef<"MarketUser", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketUser findUnique
+   */
+  export type MarketUserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketUser to fetch.
+     */
+    where: MarketUserWhereUniqueInput
+  }
+
+  /**
+   * MarketUser findUniqueOrThrow
+   */
+  export type MarketUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketUser to fetch.
+     */
+    where: MarketUserWhereUniqueInput
+  }
+
+  /**
+   * MarketUser findFirst
+   */
+  export type MarketUserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketUser to fetch.
+     */
+    where?: MarketUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketUsers to fetch.
+     */
+    orderBy?: MarketUserOrderByWithRelationInput | MarketUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketUsers.
+     */
+    cursor?: MarketUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketUsers.
+     */
+    distinct?: MarketUserScalarFieldEnum | MarketUserScalarFieldEnum[]
+  }
+
+  /**
+   * MarketUser findFirstOrThrow
+   */
+  export type MarketUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketUser to fetch.
+     */
+    where?: MarketUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketUsers to fetch.
+     */
+    orderBy?: MarketUserOrderByWithRelationInput | MarketUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketUsers.
+     */
+    cursor?: MarketUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketUsers.
+     */
+    distinct?: MarketUserScalarFieldEnum | MarketUserScalarFieldEnum[]
+  }
+
+  /**
+   * MarketUser findMany
+   */
+  export type MarketUserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketUsers to fetch.
+     */
+    where?: MarketUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketUsers to fetch.
+     */
+    orderBy?: MarketUserOrderByWithRelationInput | MarketUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketUsers.
+     */
+    cursor?: MarketUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketUsers.
+     */
+    distinct?: MarketUserScalarFieldEnum | MarketUserScalarFieldEnum[]
+  }
+
+  /**
+   * MarketUser create
+   */
+  export type MarketUserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MarketUser.
+     */
+    data: XOR<MarketUserCreateInput, MarketUserUncheckedCreateInput>
+  }
+
+  /**
+   * MarketUser createMany
+   */
+  export type MarketUserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketUsers.
+     */
+    data: MarketUserCreateManyInput | MarketUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketUser createManyAndReturn
+   */
+  export type MarketUserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * The data used to create many MarketUsers.
+     */
+    data: MarketUserCreateManyInput | MarketUserCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketUser update
+   */
+  export type MarketUserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MarketUser.
+     */
+    data: XOR<MarketUserUpdateInput, MarketUserUncheckedUpdateInput>
+    /**
+     * Choose, which MarketUser to update.
+     */
+    where: MarketUserWhereUniqueInput
+  }
+
+  /**
+   * MarketUser updateMany
+   */
+  export type MarketUserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketUsers.
+     */
+    data: XOR<MarketUserUpdateManyMutationInput, MarketUserUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketUsers to update
+     */
+    where?: MarketUserWhereInput
+    /**
+     * Limit how many MarketUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketUser updateManyAndReturn
+   */
+  export type MarketUserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * The data used to update MarketUsers.
+     */
+    data: XOR<MarketUserUpdateManyMutationInput, MarketUserUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketUsers to update
+     */
+    where?: MarketUserWhereInput
+    /**
+     * Limit how many MarketUsers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketUser upsert
+   */
+  export type MarketUserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MarketUser to update in case it exists.
+     */
+    where: MarketUserWhereUniqueInput
+    /**
+     * In case the MarketUser found by the `where` argument doesn't exist, create a new MarketUser with this data.
+     */
+    create: XOR<MarketUserCreateInput, MarketUserUncheckedCreateInput>
+    /**
+     * In case the MarketUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketUserUpdateInput, MarketUserUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketUser delete
+   */
+  export type MarketUserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
+    /**
+     * Filter which MarketUser to delete.
+     */
+    where: MarketUserWhereUniqueInput
+  }
+
+  /**
+   * MarketUser deleteMany
+   */
+  export type MarketUserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketUsers to delete
+     */
+    where?: MarketUserWhereInput
+    /**
+     * Limit how many MarketUsers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketUser.updatedBy
+   */
+  export type MarketUser$updatedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * MarketUser without action
+   */
+  export type MarketUserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketUser
+     */
+    select?: MarketUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketUser
+     */
+    omit?: MarketUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketUserInclude<ExtArgs> | null
   }
 
 
@@ -21174,6 +22493,26 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const MarketUserScalarFieldEnum: {
+    id: 'id',
+    mongoId: 'mongoId',
+    fullName: 'fullName',
+    email: 'email',
+    phoneNumber: 'phoneNumber',
+    region: 'region',
+    area: 'area',
+    status: 'status',
+    selectedProductIds: 'selectedProductIds',
+    selectedProductNames: 'selectedProductNames',
+    lastLoginAt: 'lastLoginAt',
+    updatedByMongoId: 'updatedByMongoId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MarketUserScalarFieldEnum = (typeof MarketUserScalarFieldEnum)[keyof typeof MarketUserScalarFieldEnum]
+
+
   export const VendorScalarFieldEnum: {
     id: 'id',
     mongoId: 'mongoId',
@@ -21784,6 +23123,7 @@ export namespace Prisma {
     settings?: SettingListRelationFilter
     referrals?: ReferralListRelationFilter
     payments?: PaymentListRelationFilter
+    managedMarketUsers?: MarketUserListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -21812,6 +23152,7 @@ export namespace Prisma {
     settings?: SettingOrderByRelationAggregateInput
     referrals?: ReferralOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
+    managedMarketUsers?: MarketUserOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -21843,6 +23184,7 @@ export namespace Prisma {
     settings?: SettingListRelationFilter
     referrals?: ReferralListRelationFilter
     payments?: PaymentListRelationFilter
+    managedMarketUsers?: MarketUserListRelationFilter
   }, "id" | "mongoId" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -21883,6 +23225,106 @@ export namespace Prisma {
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type MarketUserWhereInput = {
+    AND?: MarketUserWhereInput | MarketUserWhereInput[]
+    OR?: MarketUserWhereInput[]
+    NOT?: MarketUserWhereInput | MarketUserWhereInput[]
+    id?: UuidFilter<"MarketUser"> | string
+    mongoId?: StringFilter<"MarketUser"> | string
+    fullName?: StringFilter<"MarketUser"> | string
+    email?: StringFilter<"MarketUser"> | string
+    phoneNumber?: StringFilter<"MarketUser"> | string
+    region?: StringFilter<"MarketUser"> | string
+    area?: StringFilter<"MarketUser"> | string
+    status?: EnumUserStatusFilter<"MarketUser"> | $Enums.UserStatus
+    selectedProductIds?: StringNullableListFilter<"MarketUser">
+    selectedProductNames?: StringNullableListFilter<"MarketUser">
+    lastLoginAt?: DateTimeNullableFilter<"MarketUser"> | Date | string | null
+    updatedByMongoId?: StringNullableFilter<"MarketUser"> | string | null
+    createdAt?: DateTimeFilter<"MarketUser"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketUser"> | Date | string
+    updatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type MarketUserOrderByWithRelationInput = {
+    id?: SortOrder
+    mongoId?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    region?: SortOrder
+    area?: SortOrder
+    status?: SortOrder
+    selectedProductIds?: SortOrder
+    selectedProductNames?: SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    updatedByMongoId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: UserOrderByWithRelationInput
+  }
+
+  export type MarketUserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    mongoId?: string
+    email?: string
+    AND?: MarketUserWhereInput | MarketUserWhereInput[]
+    OR?: MarketUserWhereInput[]
+    NOT?: MarketUserWhereInput | MarketUserWhereInput[]
+    fullName?: StringFilter<"MarketUser"> | string
+    phoneNumber?: StringFilter<"MarketUser"> | string
+    region?: StringFilter<"MarketUser"> | string
+    area?: StringFilter<"MarketUser"> | string
+    status?: EnumUserStatusFilter<"MarketUser"> | $Enums.UserStatus
+    selectedProductIds?: StringNullableListFilter<"MarketUser">
+    selectedProductNames?: StringNullableListFilter<"MarketUser">
+    lastLoginAt?: DateTimeNullableFilter<"MarketUser"> | Date | string | null
+    updatedByMongoId?: StringNullableFilter<"MarketUser"> | string | null
+    createdAt?: DateTimeFilter<"MarketUser"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketUser"> | Date | string
+    updatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "mongoId" | "email">
+
+  export type MarketUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    mongoId?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    region?: SortOrder
+    area?: SortOrder
+    status?: SortOrder
+    selectedProductIds?: SortOrder
+    selectedProductNames?: SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    updatedByMongoId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MarketUserCountOrderByAggregateInput
+    _max?: MarketUserMaxOrderByAggregateInput
+    _min?: MarketUserMinOrderByAggregateInput
+  }
+
+  export type MarketUserScalarWhereWithAggregatesInput = {
+    AND?: MarketUserScalarWhereWithAggregatesInput | MarketUserScalarWhereWithAggregatesInput[]
+    OR?: MarketUserScalarWhereWithAggregatesInput[]
+    NOT?: MarketUserScalarWhereWithAggregatesInput | MarketUserScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"MarketUser"> | string
+    mongoId?: StringWithAggregatesFilter<"MarketUser"> | string
+    fullName?: StringWithAggregatesFilter<"MarketUser"> | string
+    email?: StringWithAggregatesFilter<"MarketUser"> | string
+    phoneNumber?: StringWithAggregatesFilter<"MarketUser"> | string
+    region?: StringWithAggregatesFilter<"MarketUser"> | string
+    area?: StringWithAggregatesFilter<"MarketUser"> | string
+    status?: EnumUserStatusWithAggregatesFilter<"MarketUser"> | $Enums.UserStatus
+    selectedProductIds?: StringNullableListFilter<"MarketUser">
+    selectedProductNames?: StringNullableListFilter<"MarketUser">
+    lastLoginAt?: DateTimeNullableWithAggregatesFilter<"MarketUser"> | Date | string | null
+    updatedByMongoId?: StringNullableWithAggregatesFilter<"MarketUser"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MarketUser"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MarketUser"> | Date | string
   }
 
   export type VendorWhereInput = {
@@ -23336,6 +24778,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -23364,6 +24807,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUpdateInput = {
@@ -23392,6 +24836,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -23420,6 +24865,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -23469,6 +24915,124 @@ export namespace Prisma {
     profileRegion?: NullableStringFieldUpdateOperationsInput | string | null
     profileNotes?: NullableStringFieldUpdateOperationsInput | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketUserCreateInput = {
+    id?: string
+    mongoId: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    region: string
+    area: string
+    status?: $Enums.UserStatus
+    selectedProductIds?: MarketUserCreateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserCreateselectedProductNamesInput | string[]
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    updatedBy?: UserCreateNestedOneWithoutManagedMarketUsersInput
+  }
+
+  export type MarketUserUncheckedCreateInput = {
+    id?: string
+    mongoId: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    region: string
+    area: string
+    status?: $Enums.UserStatus
+    selectedProductIds?: MarketUserCreateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserCreateselectedProductNamesInput | string[]
+    lastLoginAt?: Date | string | null
+    updatedByMongoId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    selectedProductIds?: MarketUserUpdateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserUpdateselectedProductNamesInput | string[]
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: UserUpdateOneWithoutManagedMarketUsersNestedInput
+  }
+
+  export type MarketUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    selectedProductIds?: MarketUserUpdateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserUpdateselectedProductNamesInput | string[]
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedByMongoId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketUserCreateManyInput = {
+    id?: string
+    mongoId: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    region: string
+    area: string
+    status?: $Enums.UserStatus
+    selectedProductIds?: MarketUserCreateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserCreateselectedProductNamesInput | string[]
+    lastLoginAt?: Date | string | null
+    updatedByMongoId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    selectedProductIds?: MarketUserUpdateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserUpdateselectedProductNamesInput | string[]
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    selectedProductIds?: MarketUserUpdateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserUpdateselectedProductNamesInput | string[]
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedByMongoId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25244,6 +26808,12 @@ export namespace Prisma {
     none?: PaymentWhereInput
   }
 
+  export type MarketUserListRelationFilter = {
+    every?: MarketUserWhereInput
+    some?: MarketUserWhereInput
+    none?: MarketUserWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -25286,6 +26856,10 @@ export namespace Prisma {
   }
 
   export type PaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MarketUserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25437,6 +27011,66 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type MarketUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    mongoId?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    region?: SortOrder
+    area?: SortOrder
+    status?: SortOrder
+    selectedProductIds?: SortOrder
+    selectedProductNames?: SortOrder
+    lastLoginAt?: SortOrder
+    updatedByMongoId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    mongoId?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    region?: SortOrder
+    area?: SortOrder
+    status?: SortOrder
+    lastLoginAt?: SortOrder
+    updatedByMongoId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    mongoId?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    region?: SortOrder
+    area?: SortOrder
+    status?: SortOrder
+    lastLoginAt?: SortOrder
+    updatedByMongoId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type EnumThemeColorFilter<$PrismaModel = never> = {
@@ -25788,14 +27422,6 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type EnumProductStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ProductStatus | EnumProductStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ProductStatus[] | ListEnumProductStatusFieldRefInput<$PrismaModel>
@@ -25943,11 +27569,6 @@ export namespace Prisma {
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
   }
 
   export type LocationCountOrderByAggregateInput = {
@@ -26681,6 +28302,13 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
+  export type MarketUserCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<MarketUserCreateWithoutUpdatedByInput, MarketUserUncheckedCreateWithoutUpdatedByInput> | MarketUserCreateWithoutUpdatedByInput[] | MarketUserUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: MarketUserCreateOrConnectWithoutUpdatedByInput | MarketUserCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: MarketUserCreateManyUpdatedByInputEnvelope
+    connect?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+  }
+
   export type VendorUncheckedCreateNestedManyWithoutOwnerInput = {
     create?: XOR<VendorCreateWithoutOwnerInput, VendorUncheckedCreateWithoutOwnerInput> | VendorCreateWithoutOwnerInput[] | VendorUncheckedCreateWithoutOwnerInput[]
     connectOrCreate?: VendorCreateOrConnectWithoutOwnerInput | VendorCreateOrConnectWithoutOwnerInput[]
@@ -26756,6 +28384,13 @@ export namespace Prisma {
     connectOrCreate?: PaymentCreateOrConnectWithoutUserInput | PaymentCreateOrConnectWithoutUserInput[]
     createMany?: PaymentCreateManyUserInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput = {
+    create?: XOR<MarketUserCreateWithoutUpdatedByInput, MarketUserUncheckedCreateWithoutUpdatedByInput> | MarketUserCreateWithoutUpdatedByInput[] | MarketUserUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: MarketUserCreateOrConnectWithoutUpdatedByInput | MarketUserCreateOrConnectWithoutUpdatedByInput[]
+    createMany?: MarketUserCreateManyUpdatedByInputEnvelope
+    connect?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -26936,6 +28571,20 @@ export namespace Prisma {
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
+  export type MarketUserUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<MarketUserCreateWithoutUpdatedByInput, MarketUserUncheckedCreateWithoutUpdatedByInput> | MarketUserCreateWithoutUpdatedByInput[] | MarketUserUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: MarketUserCreateOrConnectWithoutUpdatedByInput | MarketUserCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: MarketUserUpsertWithWhereUniqueWithoutUpdatedByInput | MarketUserUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: MarketUserCreateManyUpdatedByInputEnvelope
+    set?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    disconnect?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    delete?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    connect?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    update?: MarketUserUpdateWithWhereUniqueWithoutUpdatedByInput | MarketUserUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: MarketUserUpdateManyWithWhereWithoutUpdatedByInput | MarketUserUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: MarketUserScalarWhereInput | MarketUserScalarWhereInput[]
+  }
+
   export type VendorUncheckedUpdateManyWithoutOwnerNestedInput = {
     create?: XOR<VendorCreateWithoutOwnerInput, VendorUncheckedCreateWithoutOwnerInput> | VendorCreateWithoutOwnerInput[] | VendorUncheckedCreateWithoutOwnerInput[]
     connectOrCreate?: VendorCreateOrConnectWithoutOwnerInput | VendorCreateOrConnectWithoutOwnerInput[]
@@ -27088,6 +28737,54 @@ export namespace Prisma {
     update?: PaymentUpdateWithWhereUniqueWithoutUserInput | PaymentUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PaymentUpdateManyWithWhereWithoutUserInput | PaymentUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput = {
+    create?: XOR<MarketUserCreateWithoutUpdatedByInput, MarketUserUncheckedCreateWithoutUpdatedByInput> | MarketUserCreateWithoutUpdatedByInput[] | MarketUserUncheckedCreateWithoutUpdatedByInput[]
+    connectOrCreate?: MarketUserCreateOrConnectWithoutUpdatedByInput | MarketUserCreateOrConnectWithoutUpdatedByInput[]
+    upsert?: MarketUserUpsertWithWhereUniqueWithoutUpdatedByInput | MarketUserUpsertWithWhereUniqueWithoutUpdatedByInput[]
+    createMany?: MarketUserCreateManyUpdatedByInputEnvelope
+    set?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    disconnect?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    delete?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    connect?: MarketUserWhereUniqueInput | MarketUserWhereUniqueInput[]
+    update?: MarketUserUpdateWithWhereUniqueWithoutUpdatedByInput | MarketUserUpdateWithWhereUniqueWithoutUpdatedByInput[]
+    updateMany?: MarketUserUpdateManyWithWhereWithoutUpdatedByInput | MarketUserUpdateManyWithWhereWithoutUpdatedByInput[]
+    deleteMany?: MarketUserScalarWhereInput | MarketUserScalarWhereInput[]
+  }
+
+  export type MarketUserCreateselectedProductIdsInput = {
+    set: string[]
+  }
+
+  export type MarketUserCreateselectedProductNamesInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutManagedMarketUsersInput = {
+    create?: XOR<UserCreateWithoutManagedMarketUsersInput, UserUncheckedCreateWithoutManagedMarketUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagedMarketUsersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MarketUserUpdateselectedProductIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type MarketUserUpdateselectedProductNamesInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserUpdateOneWithoutManagedMarketUsersNestedInput = {
+    create?: XOR<UserCreateWithoutManagedMarketUsersInput, UserUncheckedCreateWithoutManagedMarketUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagedMarketUsersInput
+    upsert?: UserUpsertWithoutManagedMarketUsersInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutManagedMarketUsersInput, UserUpdateWithoutManagedMarketUsersInput>, UserUncheckedUpdateWithoutManagedMarketUsersInput>
   }
 
   export type UserCreateNestedOneWithoutVendorsInput = {
@@ -28850,6 +30547,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MarketUserCreateWithoutUpdatedByInput = {
+    id?: string
+    mongoId: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    region: string
+    area: string
+    status?: $Enums.UserStatus
+    selectedProductIds?: MarketUserCreateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserCreateselectedProductNamesInput | string[]
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketUserUncheckedCreateWithoutUpdatedByInput = {
+    id?: string
+    mongoId: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    region: string
+    area: string
+    status?: $Enums.UserStatus
+    selectedProductIds?: MarketUserCreateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserCreateselectedProductNamesInput | string[]
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketUserCreateOrConnectWithoutUpdatedByInput = {
+    where: MarketUserWhereUniqueInput
+    create: XOR<MarketUserCreateWithoutUpdatedByInput, MarketUserUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type MarketUserCreateManyUpdatedByInputEnvelope = {
+    data: MarketUserCreateManyUpdatedByInput | MarketUserCreateManyUpdatedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type VendorUpsertWithWhereUniqueWithoutOwnerInput = {
     where: VendorWhereUniqueInput
     update: XOR<VendorUpdateWithoutOwnerInput, VendorUncheckedUpdateWithoutOwnerInput>
@@ -29224,6 +30963,170 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
   }
 
+  export type MarketUserUpsertWithWhereUniqueWithoutUpdatedByInput = {
+    where: MarketUserWhereUniqueInput
+    update: XOR<MarketUserUpdateWithoutUpdatedByInput, MarketUserUncheckedUpdateWithoutUpdatedByInput>
+    create: XOR<MarketUserCreateWithoutUpdatedByInput, MarketUserUncheckedCreateWithoutUpdatedByInput>
+  }
+
+  export type MarketUserUpdateWithWhereUniqueWithoutUpdatedByInput = {
+    where: MarketUserWhereUniqueInput
+    data: XOR<MarketUserUpdateWithoutUpdatedByInput, MarketUserUncheckedUpdateWithoutUpdatedByInput>
+  }
+
+  export type MarketUserUpdateManyWithWhereWithoutUpdatedByInput = {
+    where: MarketUserScalarWhereInput
+    data: XOR<MarketUserUpdateManyMutationInput, MarketUserUncheckedUpdateManyWithoutUpdatedByInput>
+  }
+
+  export type MarketUserScalarWhereInput = {
+    AND?: MarketUserScalarWhereInput | MarketUserScalarWhereInput[]
+    OR?: MarketUserScalarWhereInput[]
+    NOT?: MarketUserScalarWhereInput | MarketUserScalarWhereInput[]
+    id?: UuidFilter<"MarketUser"> | string
+    mongoId?: StringFilter<"MarketUser"> | string
+    fullName?: StringFilter<"MarketUser"> | string
+    email?: StringFilter<"MarketUser"> | string
+    phoneNumber?: StringFilter<"MarketUser"> | string
+    region?: StringFilter<"MarketUser"> | string
+    area?: StringFilter<"MarketUser"> | string
+    status?: EnumUserStatusFilter<"MarketUser"> | $Enums.UserStatus
+    selectedProductIds?: StringNullableListFilter<"MarketUser">
+    selectedProductNames?: StringNullableListFilter<"MarketUser">
+    lastLoginAt?: DateTimeNullableFilter<"MarketUser"> | Date | string | null
+    updatedByMongoId?: StringNullableFilter<"MarketUser"> | string | null
+    createdAt?: DateTimeFilter<"MarketUser"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketUser"> | Date | string
+  }
+
+  export type UserCreateWithoutManagedMarketUsersInput = {
+    id?: string
+    mongoId: string
+    email: string
+    passwordHash: string
+    role: $Enums.UserRole
+    status?: $Enums.UserStatus
+    profileFirstName?: string | null
+    profileLastName?: string | null
+    profilePhone?: string | null
+    profileRegion?: string | null
+    profileNotes?: string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    vendors?: VendorCreateNestedManyWithoutOwnerInput
+    media?: MediaCreateNestedManyWithoutOwnerUserInput
+    adminAssignments?: AdminAssignmentCreateNestedManyWithoutAdminUserInput
+    adPlacementsCreatedBy?: AdPlacementCreateNestedManyWithoutCreatedByInput
+    adPlacementsUpdatedBy?: AdPlacementCreateNestedManyWithoutUpdatedByInput
+    locations?: LocationCreateNestedManyWithoutCreatedByInput
+    promotions?: PromotionCreateNestedManyWithoutCreatedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    settings?: SettingCreateNestedManyWithoutUpdatedByInput
+    referrals?: ReferralCreateNestedManyWithoutCreatedByInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutManagedMarketUsersInput = {
+    id?: string
+    mongoId: string
+    email: string
+    passwordHash: string
+    role: $Enums.UserRole
+    status?: $Enums.UserStatus
+    profileFirstName?: string | null
+    profileLastName?: string | null
+    profilePhone?: string | null
+    profileRegion?: string | null
+    profileNotes?: string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    vendors?: VendorUncheckedCreateNestedManyWithoutOwnerInput
+    media?: MediaUncheckedCreateNestedManyWithoutOwnerUserInput
+    adminAssignments?: AdminAssignmentUncheckedCreateNestedManyWithoutAdminUserInput
+    adPlacementsCreatedBy?: AdPlacementUncheckedCreateNestedManyWithoutCreatedByInput
+    adPlacementsUpdatedBy?: AdPlacementUncheckedCreateNestedManyWithoutUpdatedByInput
+    locations?: LocationUncheckedCreateNestedManyWithoutCreatedByInput
+    promotions?: PromotionUncheckedCreateNestedManyWithoutCreatedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
+    referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutManagedMarketUsersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutManagedMarketUsersInput, UserUncheckedCreateWithoutManagedMarketUsersInput>
+  }
+
+  export type UserUpsertWithoutManagedMarketUsersInput = {
+    update: XOR<UserUpdateWithoutManagedMarketUsersInput, UserUncheckedUpdateWithoutManagedMarketUsersInput>
+    create: XOR<UserCreateWithoutManagedMarketUsersInput, UserUncheckedCreateWithoutManagedMarketUsersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutManagedMarketUsersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutManagedMarketUsersInput, UserUncheckedUpdateWithoutManagedMarketUsersInput>
+  }
+
+  export type UserUpdateWithoutManagedMarketUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    profileFirstName?: NullableStringFieldUpdateOperationsInput | string | null
+    profileLastName?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePhone?: NullableStringFieldUpdateOperationsInput | string | null
+    profileRegion?: NullableStringFieldUpdateOperationsInput | string | null
+    profileNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    vendors?: VendorUpdateManyWithoutOwnerNestedInput
+    media?: MediaUpdateManyWithoutOwnerUserNestedInput
+    adminAssignments?: AdminAssignmentUpdateManyWithoutAdminUserNestedInput
+    adPlacementsCreatedBy?: AdPlacementUpdateManyWithoutCreatedByNestedInput
+    adPlacementsUpdatedBy?: AdPlacementUpdateManyWithoutUpdatedByNestedInput
+    locations?: LocationUpdateManyWithoutCreatedByNestedInput
+    promotions?: PromotionUpdateManyWithoutCreatedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    settings?: SettingUpdateManyWithoutUpdatedByNestedInput
+    referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutManagedMarketUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    profileFirstName?: NullableStringFieldUpdateOperationsInput | string | null
+    profileLastName?: NullableStringFieldUpdateOperationsInput | string | null
+    profilePhone?: NullableStringFieldUpdateOperationsInput | string | null
+    profileRegion?: NullableStringFieldUpdateOperationsInput | string | null
+    profileNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    vendors?: VendorUncheckedUpdateManyWithoutOwnerNestedInput
+    media?: MediaUncheckedUpdateManyWithoutOwnerUserNestedInput
+    adminAssignments?: AdminAssignmentUncheckedUpdateManyWithoutAdminUserNestedInput
+    adPlacementsCreatedBy?: AdPlacementUncheckedUpdateManyWithoutCreatedByNestedInput
+    adPlacementsUpdatedBy?: AdPlacementUncheckedUpdateManyWithoutUpdatedByNestedInput
+    locations?: LocationUncheckedUpdateManyWithoutCreatedByNestedInput
+    promotions?: PromotionUncheckedUpdateManyWithoutCreatedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
+    referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutVendorsInput = {
     id?: string
     mongoId: string
@@ -29249,6 +31152,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutVendorsInput = {
@@ -29276,6 +31180,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutVendorsInput = {
@@ -29557,6 +31462,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVendorsInput = {
@@ -29584,6 +31490,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type ProductUpsertWithWhereUniqueWithoutVendorInput = {
@@ -30291,6 +32198,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutLocationsInput = {
@@ -30318,6 +32226,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutLocationsInput = {
@@ -30361,6 +32270,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLocationsInput = {
@@ -30388,6 +32298,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type VendorCreateWithoutSubdomainsInput = {
@@ -30603,6 +32514,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutAdPlacementsCreatedByInput = {
@@ -30630,6 +32542,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutAdPlacementsCreatedByInput = {
@@ -30662,6 +32575,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutAdPlacementsUpdatedByInput = {
@@ -30689,6 +32603,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutAdPlacementsUpdatedByInput = {
@@ -30732,6 +32647,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdPlacementsCreatedByInput = {
@@ -30759,6 +32675,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUpsertWithoutAdPlacementsUpdatedByInput = {
@@ -30797,6 +32714,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdPlacementsUpdatedByInput = {
@@ -30824,6 +32742,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserCreateWithoutAdminAssignmentsInput = {
@@ -30851,6 +32770,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutAdminAssignmentsInput = {
@@ -30878,6 +32798,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutAdminAssignmentsInput = {
@@ -31012,6 +32933,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAdminAssignmentsInput = {
@@ -31039,6 +32961,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type VendorUpsertWithoutAdminAssignmentsInput = {
@@ -31163,6 +33086,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -31190,6 +33114,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -31324,6 +33249,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -31351,6 +33277,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type VendorUpsertWithoutPaymentsInput = {
@@ -31475,6 +33402,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutReferralsInput = {
@@ -31502,6 +33430,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutReferralsInput = {
@@ -31545,6 +33474,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsInput = {
@@ -31572,6 +33502,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type ProductCreateWithoutPromotionsInput = {
@@ -31745,6 +33676,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutPromotionsInput = {
@@ -31772,6 +33704,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutPromotionsInput = {
@@ -31973,6 +33906,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPromotionsInput = {
@@ -32000,6 +33934,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -32027,6 +33962,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -32054,6 +33990,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -32097,6 +34034,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -32124,6 +34062,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserCreateWithoutSettingsInput = {
@@ -32151,6 +34090,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutSettingsInput = {
@@ -32178,6 +34118,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutSettingsInput = {
@@ -32221,6 +34162,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSettingsInput = {
@@ -32248,6 +34190,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserCreateWithoutMediaInput = {
@@ -32275,6 +34218,7 @@ export namespace Prisma {
     settings?: SettingCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralCreateNestedManyWithoutCreatedByInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserUncheckedCreateWithoutMediaInput = {
@@ -32302,6 +34246,7 @@ export namespace Prisma {
     settings?: SettingUncheckedCreateNestedManyWithoutUpdatedByInput
     referrals?: ReferralUncheckedCreateNestedManyWithoutCreatedByInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    managedMarketUsers?: MarketUserUncheckedCreateNestedManyWithoutUpdatedByInput
   }
 
   export type UserCreateOrConnectWithoutMediaInput = {
@@ -32436,6 +34381,7 @@ export namespace Prisma {
     settings?: SettingUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMediaInput = {
@@ -32463,6 +34409,7 @@ export namespace Prisma {
     settings?: SettingUncheckedUpdateManyWithoutUpdatedByNestedInput
     referrals?: ReferralUncheckedUpdateManyWithoutCreatedByNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    managedMarketUsers?: MarketUserUncheckedUpdateManyWithoutUpdatedByNestedInput
   }
 
   export type VendorUpsertWithoutMediaInput = {
@@ -32733,6 +34680,22 @@ export namespace Prisma {
     vendorMongoId?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketUserCreateManyUpdatedByInput = {
+    id?: string
+    mongoId: string
+    fullName: string
+    email: string
+    phoneNumber: string
+    region: string
+    area: string
+    status?: $Enums.UserStatus
+    selectedProductIds?: MarketUserCreateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserCreateselectedProductNamesInput | string[]
+    lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33270,6 +35233,54 @@ export namespace Prisma {
     vendorMongoId?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketUserUpdateWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    selectedProductIds?: MarketUserUpdateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserUpdateselectedProductNamesInput | string[]
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketUserUncheckedUpdateWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    selectedProductIds?: MarketUserUpdateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserUpdateselectedProductNamesInput | string[]
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketUserUncheckedUpdateManyWithoutUpdatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mongoId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    region?: StringFieldUpdateOperationsInput | string
+    area?: StringFieldUpdateOperationsInput | string
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    selectedProductIds?: MarketUserUpdateselectedProductIdsInput | string[]
+    selectedProductNames?: MarketUserUpdateselectedProductNamesInput | string[]
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -14,6 +14,21 @@ export interface User {
 	updatedAt: string;
 }
 
+export interface MarketUser {
+	_id: string;
+	fullName: string;
+	email: string;
+	phoneNumber: string;
+	region: string;
+	area: string;
+	status: "active" | "suspended";
+	selectedProductIds?: string[];
+	selectedProductNames?: string[];
+	lastLoginAt?: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
 export interface Vendor {
 	_id: string;
 	mongoId?: string;

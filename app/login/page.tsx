@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Spinner } from "@/components/ui/spinner";
-import { loginMarketUser } from "@/lib/market-user";
+import { saveMarketUserRegistration } from "@/lib/market-user";
+import { marketUserService } from "@/lib/services/market-user.service";
 import { toast } from "sonner";
 
 export default function LoginPage() {
@@ -54,14 +55,27 @@ export default function LoginPage() {
     setIsUserLoading(true);
 
     try {
-      const marketUser = loginMarketUser(userLoginData.email, userLoginData.phoneNumber);
-      if (!marketUser) {
-        toast.error("No user account matched that email and phone number on this device");
-        return;
-      }
+      const response = await marketUserService.login(userLoginData);
+      const marketUser = response.data.data;
+
+      saveMarketUserRegistration({
+        id: marketUser._id,
+        fullName: marketUser.fullName,
+        email: marketUser.email,
+        phoneNumber: marketUser.phoneNumber,
+        region: marketUser.region,
+        area: marketUser.area,
+        status: marketUser.status,
+        selectedProductIds: marketUser.selectedProductIds || [],
+        selectedProductNames: marketUser.selectedProductNames || [],
+        registeredAt: marketUser.createdAt,
+        lastActiveAt: new Date().toISOString(),
+      });
 
       toast.success("User login successful");
       router.push(nextPath || "/discover");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error?.message || "User login failed");
     } finally {
       setIsUserLoading(false);
     }

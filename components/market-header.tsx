@@ -7,6 +7,7 @@ import {
   MARKET_USER_EVENT,
   clearMarketUserSession,
   readMarketUserRegistration,
+  validateMarketUserSession,
 } from "@/lib/market-user";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +26,9 @@ export function MarketHeader({ current = "market" }: MarketHeaderProps) {
     };
 
     sync();
+    void validateMarketUserSession().then((marketUser) => {
+      setMarketUserName(marketUser?.fullName || "");
+    });
     window.addEventListener("storage", sync);
     window.addEventListener(MARKET_USER_EVENT, sync);
     return () => {
@@ -98,4 +102,3 @@ export function MarketHeader({ current = "market" }: MarketHeaderProps) {
     </header>
   );
 }
-

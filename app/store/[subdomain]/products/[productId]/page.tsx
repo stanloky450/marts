@@ -15,8 +15,8 @@ import { StoreInteractions } from "@/components/store-interactions";
 import {
   addViewedProduct,
   isBookmarkedProduct,
-  readMarketUserRegistration,
   toggleBookmarkedProduct,
+  validateMarketUserSession,
 } from "@/lib/market-user";
 
 const getServiceMeta = (product: Product) => {
@@ -68,10 +68,12 @@ export default function ProductDetailPage() {
   const [vendor, setVendor] = useState<Vendor | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [hasMarketUserSession, setHasMarketUserSession] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const marketUser = await validateMarketUserSession();
         const [productRes, vendorRes] = await Promise.all([
           storefrontService.getProduct(subdomain, productId),
           storefrontService.getVendorBySubdomain(subdomain),
@@ -83,8 +85,9 @@ export default function ProductDetailPage() {
         setProduct(nextProduct);
         setVendor(nextVendor);
         setIsBookmarked(isBookmarkedProduct(nextProduct._id));
+        setHasMarketUserSession(!!marketUser);
 
-        if (readMarketUserRegistration()) {
+        if (marketUser) {
           addViewedProduct({
             id: nextProduct._id,
             name: nextProduct.name,
@@ -312,7 +315,7 @@ export default function ProductDetailPage() {
                   </Button>
                 </>
               )}
-              {readMarketUserRegistration() && (
+              {hasMarketUserSession && (
                 <Button size="lg" variant="outline" className="w-full bg-transparent" onClick={toggleBookmark}>
                   {isBookmarked ? "Remove bookmark" : "Bookmark product"}
                 </Button>

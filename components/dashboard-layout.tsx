@@ -19,6 +19,7 @@ import {
   LogOut,
   Menu,
   UserCog,
+  Users,
   Gift,
   ShoppingBag,
   TrendingUp,
@@ -36,6 +37,7 @@ const superAdminNav: NavItem[] = [
   { title: "Dashboard", href: "/super-admin", icon: LayoutDashboard },
   { title: "Analytics", href: "/super-admin/analytics", icon: TrendingUp },
   { title: "Admins", href: "/super-admin/admins", icon: UserCog },
+  { title: "Users", href: "/super-admin/users", icon: Users },
   { title: "Categories", href: "/super-admin/categories", icon: FolderTree },
   { title: "Vendors", href: "/super-admin/vendors", icon: Store },
   { title: "All Products", href: "/super-admin/products", icon: Package },
@@ -47,6 +49,7 @@ const superAdminNav: NavItem[] = [
 const adminNav: NavItem[] = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "My Vendors", href: "/admin/vendors", icon: Store },
+  { title: "Users", href: "/admin/users", icon: Users },
   { title: "Products", href: "/admin/products", icon: Package },
   { title: "Settings", href: "/admin/settings", icon: Settings },
 ]

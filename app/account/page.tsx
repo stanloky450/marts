@@ -11,10 +11,10 @@ import {
   MARKET_USER_EVENT,
   type MarketUserProductSnapshot,
   readBookmarkedProducts,
-  readMarketUserRegistration,
   readViewedProducts,
   removeBookmarkedProduct,
   updateMarketUserActivity,
+  validateMarketUserSession,
 } from "@/lib/market-user";
 
 function ProductList({
@@ -81,21 +81,23 @@ export default function AccountPage() {
 
   useEffect(() => {
     const sync = () => {
-      const marketUser = readMarketUserRegistration();
-      if (!marketUser) {
-        router.replace("/login?mode=user&next=/account");
-        return;
-      }
+      void (async () => {
+        const marketUser = await validateMarketUserSession();
+        if (!marketUser) {
+          router.replace("/login?mode=user&next=/account");
+          return;
+        }
 
-      setUserName(marketUser.fullName);
-      setEmail(marketUser.email);
-      setPhoneNumber(marketUser.phoneNumber);
-      setRegion(marketUser.region);
-      setArea(marketUser.area);
-      setSelectedProducts(marketUser.selectedProductNames || []);
-      setViewedProducts(readViewedProducts());
-      setBookmarkedProducts(readBookmarkedProducts());
-      updateMarketUserActivity();
+        setUserName(marketUser.fullName);
+        setEmail(marketUser.email);
+        setPhoneNumber(marketUser.phoneNumber);
+        setRegion(marketUser.region);
+        setArea(marketUser.area);
+        setSelectedProducts(marketUser.selectedProductNames || []);
+        setViewedProducts(readViewedProducts());
+        setBookmarkedProducts(readBookmarkedProducts());
+        updateMarketUserActivity();
+      })();
     };
 
     sync();
@@ -214,4 +216,3 @@ export default function AccountPage() {
     </div>
   );
 }
-

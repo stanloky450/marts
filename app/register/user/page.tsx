@@ -20,6 +20,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { locationService, type Location, type NigeriaCatalogRegion } from "@/lib/services/location.service";
 import { storefrontService } from "@/lib/services/storefront.service";
 import { saveMarketUserRegistration } from "@/lib/market-user";
+import { marketUserService } from "@/lib/services/market-user.service";
 import type { Product } from "@/lib/types";
 
 const STEPS = [
@@ -138,17 +139,33 @@ export default function RegisterUserPage() {
         selectedProductIds.includes(product._id)
       );
 
-      saveMarketUserRegistration({
-        id: `mu_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
+      const response = await marketUserService.register({
         ...form,
         selectedProductIds,
         selectedProductNames: selectedProducts.map((product) => product.name),
-        registeredAt: new Date().toISOString(),
+      });
+
+      const marketUser = response.data.data;
+
+      saveMarketUserRegistration({
+        id: marketUser._id,
+        fullName: marketUser.fullName,
+        email: marketUser.email,
+        phoneNumber: marketUser.phoneNumber,
+        region: marketUser.region,
+        area: marketUser.area,
+        status: marketUser.status,
+        selectedProductIds: marketUser.selectedProductIds || selectedProductIds,
+        selectedProductNames:
+          marketUser.selectedProductNames || selectedProducts.map((product) => product.name),
+        registeredAt: marketUser.createdAt,
         lastActiveAt: new Date().toISOString(),
       });
 
       toast.success("User registration completed");
       router.push(nextPath || "/discover");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error?.message || "Failed to complete registration");
     } finally {
       setIsSaving(false);
     }

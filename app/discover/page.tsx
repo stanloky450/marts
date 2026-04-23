@@ -13,8 +13,8 @@ import { Badge } from "@/components/ui/badge";
 import { ProductCard } from "@/components/product-card";
 import {
   MARKET_USER_EVENT,
-  readMarketUserRegistration,
   updateMarketUserActivity,
+  validateMarketUserSession,
 } from "@/lib/market-user";
 import { storefrontService } from "@/lib/services/storefront.service";
 import type { Product } from "@/lib/types";
@@ -50,16 +50,18 @@ export default function DiscoverPage() {
 
   useEffect(() => {
     const sync = () => {
-      const marketUser = readMarketUserRegistration();
-      if (!marketUser) {
-        router.replace("/login?mode=user&next=/discover");
-        return;
-      }
+      void (async () => {
+        const marketUser = await validateMarketUserSession();
+        if (!marketUser) {
+          router.replace("/login?mode=user&next=/discover");
+          return;
+        }
 
-      setMarketUserName(marketUser.fullName);
-      setRegion(marketUser.region);
-      setArea(marketUser.area);
-      updateMarketUserActivity();
+        setMarketUserName(marketUser.fullName);
+        setRegion(marketUser.region);
+        setArea(marketUser.area);
+        updateMarketUserActivity();
+      })();
     };
 
     sync();

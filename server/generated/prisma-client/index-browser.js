@@ -137,6 +137,23 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MarketUserScalarFieldEnum = {
+  id: 'id',
+  mongoId: 'mongoId',
+  fullName: 'fullName',
+  email: 'email',
+  phoneNumber: 'phoneNumber',
+  region: 'region',
+  area: 'area',
+  status: 'status',
+  selectedProductIds: 'selectedProductIds',
+  selectedProductNames: 'selectedProductNames',
+  lastLoginAt: 'lastLoginAt',
+  updatedByMongoId: 'updatedByMongoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.VendorScalarFieldEnum = {
   id: 'id',
   mongoId: 'mongoId',
@@ -463,6 +480,7 @@ exports.MediaProvider = exports.$Enums.MediaProvider = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  MarketUser: 'MarketUser',
   Vendor: 'Vendor',
   Category: 'Category',
   Product: 'Product',

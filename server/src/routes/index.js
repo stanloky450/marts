@@ -16,6 +16,7 @@ import locationRoutes from "./locations.routes.js"
 import settingsRoutes from "./settings.routes.js"
 import chatRoutes from "./chat.routes.js"
 import reviewRoutes from "./reviews.routes.js"
+import marketUserRoutes from "./market-users.routes.js"
 
 const router = express.Router()
 
@@ -37,6 +38,7 @@ router.use("/locations", locationRoutes)
 router.use("/settings", settingsRoutes)
 router.use("/chat", chatRoutes)
 router.use("/reviews", reviewRoutes)
+router.use("/market-users", marketUserRoutes)
 
 // Health check
 router.get("/health", (req, res) => {

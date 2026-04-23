@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/contexts/auth-context";
 import { apiClient } from "@/lib/api-client";
-import { readMarketUserRegistration } from "@/lib/market-user";
+import { validateMarketUserSession } from "@/lib/market-user";
 
 export default function ProductGatewayPage() {
   const params = useParams();
@@ -16,16 +16,16 @@ export default function ProductGatewayPage() {
   useEffect(() => {
     if (isLoading) return;
 
-    const marketUser = readMarketUserRegistration();
-    const canViewDetails = isAuthenticated || !!marketUser;
-
-    if (!canViewDetails) {
-      router.replace(`/register?next=${encodeURIComponent(`/products/${id}`)}`);
-      return;
-    }
-
     const resolve = async () => {
       try {
+        const marketUser = await validateMarketUserSession();
+        const canViewDetails = isAuthenticated || !!marketUser;
+
+        if (!canViewDetails) {
+          router.replace(`/register?next=${encodeURIComponent(`/products/${id}`)}`);
+          return;
+        }
+
         const response = await apiClient.get<{ data?: { vendor?: { subdomain?: string } } }>(
           `/storefront/products/${id}`
         );

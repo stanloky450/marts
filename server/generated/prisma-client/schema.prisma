@@ -107,6 +107,34 @@ model User {
   settings              Setting[]         @relation("SettingUpdatedBy")
   referrals             Referral[]        @relation("ReferralCreatedBy")
   payments              Payment[]         @relation("PaymentUser")
+  managedMarketUsers    MarketUser[]      @relation("MarketUserUpdatedBy")
+}
+
+model MarketUser {
+  id      String @id @default(uuid()) @db.Uuid
+  mongoId String @unique @db.VarChar(24)
+
+  fullName    String
+  email       String @unique
+  phoneNumber String
+  region      String
+  area        String
+
+  status UserStatus @default(active)
+
+  selectedProductIds   String[]
+  selectedProductNames String[]
+
+  lastLoginAt DateTime?
+
+  updatedByMongoId String? @db.VarChar(24)
+  updatedBy        User?   @relation("MarketUserUpdatedBy", fields: [updatedByMongoId], references: [mongoId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([region, status])
+  @@index([email, status])
 }
 
 model Vendor {

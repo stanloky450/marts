@@ -1,5 +1,6 @@
 import { successResponse, errorResponse } from "../utils/apiResponse.js";
 import prisma from "../lib/prisma.js";
+import { ensureActiveMarketUserFromHeaders } from "../utils/market-user.js";
 
 const CHAT_PREFIX = "chat:thread:";
 const EDIT_WINDOW_MS = 2 * 60 * 1000;
@@ -41,14 +42,6 @@ const buildThread = ({ vendorMongoId, marketUserId, marketUserName, marketUserEm
     createdAt: ts,
     updatedAt: ts,
   };
-};
-
-const getMarketUserFromHeaders = (req) => {
-  const marketUserId = normalize(req.headers["x-market-user-id"]);
-  const marketUserName = normalize(req.headers["x-market-user-name"]);
-  const marketUserEmail = normalize(req.headers["x-market-user-email"]);
-  if (!marketUserId) return null;
-  return { marketUserId, marketUserName, marketUserEmail };
 };
 
 const getVendorForAuthUser = async (req) => {
@@ -113,10 +106,8 @@ const mapThreadSummary = async (thread, receiver) => {
 export const getUserThreads = async (req, res, next) => {
   try {
     if (!(await ensureChatEnabled(res))) return;
-    const marketUser = getMarketUserFromHeaders(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
 
     const all = await getAllThreads();
     const mine = all.filter((item) => item.thread.marketUserId === marketUser.marketUserId);
@@ -132,10 +123,8 @@ export const getUserThreads = async (req, res, next) => {
 export const getUserThreadByVendor = async (req, res, next) => {
   try {
     if (!(await ensureChatEnabled(res))) return;
-    const marketUser = getMarketUserFromHeaders(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
     const vendorMongoId = normalize(req.params.vendorMongoId);
     if (!vendorMongoId) {
       return res.status(400).json(errorResponse("INVALID_VENDOR", "vendorMongoId is required"));
@@ -157,10 +146,8 @@ export const getUserThreadByVendor = async (req, res, next) => {
 export const sendUserMessage = async (req, res, next) => {
   try {
     if (!(await ensureChatEnabled(res))) return;
-    const marketUser = getMarketUserFromHeaders(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
     const vendorMongoId = normalize(req.params.vendorMongoId);
     const text = normalize(req.body.text);
     if (!text) {
@@ -202,10 +189,8 @@ export const sendUserMessage = async (req, res, next) => {
 export const editUserMessage = async (req, res, next) => {
   try {
     if (!(await ensureChatEnabled(res))) return;
-    const marketUser = getMarketUserFromHeaders(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
     const vendorMongoId = normalize(req.params.vendorMongoId);
     const messageId = normalize(req.params.messageId);
     const text = normalize(req.body.text);
@@ -250,10 +235,8 @@ export const editUserMessage = async (req, res, next) => {
 export const deleteUserMessage = async (req, res, next) => {
   try {
     if (!(await ensureChatEnabled(res))) return;
-    const marketUser = getMarketUserFromHeaders(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
     const vendorMongoId = normalize(req.params.vendorMongoId);
     const messageId = normalize(req.params.messageId);
 
@@ -294,10 +277,8 @@ export const deleteUserMessage = async (req, res, next) => {
 export const markUserThreadRead = async (req, res, next) => {
   try {
     if (!(await ensureChatEnabled(res))) return;
-    const marketUser = getMarketUserFromHeaders(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
     const vendorMongoId = normalize(req.params.vendorMongoId);
     const setting = await prisma.setting.findUnique({
       where: { key: threadKey(vendorMongoId, marketUser.marketUserId) },

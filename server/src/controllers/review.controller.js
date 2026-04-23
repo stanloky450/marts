@@ -1,5 +1,6 @@
 import { successResponse, errorResponse } from "../utils/apiResponse.js";
 import prisma from "../lib/prisma.js";
+import { ensureActiveMarketUserFromHeaders } from "../utils/market-user.js";
 
 const REVIEW_FEATURE_KEY = "feature_reviews_enabled";
 const REVIEW_VENDOR_PREFIX = "review:vendor:";
@@ -20,14 +21,6 @@ const ensureReviewEnabled = async (res) => {
     return false;
   }
   return true;
-};
-
-const getMarketUser = (req) => {
-  const marketUserId = normalize(req.headers["x-market-user-id"]);
-  const marketUserName = normalize(req.headers["x-market-user-name"]);
-  const marketUserEmail = normalize(req.headers["x-market-user-email"]);
-  if (!marketUserId) return null;
-  return { marketUserId, marketUserName, marketUserEmail };
 };
 
 const buildSummary = (items) => {
@@ -72,10 +65,8 @@ export const listProductReviews = async (req, res, next) => {
 export const upsertVendorReview = async (req, res, next) => {
   try {
     if (!(await ensureReviewEnabled(res))) return;
-    const marketUser = getMarketUser(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
 
     const vendorMongoId = normalize(req.params.vendorMongoId);
     const rating = Number(req.body.rating);
@@ -123,10 +114,8 @@ export const upsertVendorReview = async (req, res, next) => {
 export const upsertProductReview = async (req, res, next) => {
   try {
     if (!(await ensureReviewEnabled(res))) return;
-    const marketUser = getMarketUser(req);
-    if (!marketUser) {
-      return res.status(401).json(errorResponse("UNAUTHORIZED", "Market user headers are required"));
-    }
+    const marketUser = await ensureActiveMarketUserFromHeaders(req, res);
+    if (!marketUser) return;
 
     const productMongoId = normalize(req.params.productMongoId);
     const rating = Number(req.body.rating);

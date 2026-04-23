@@ -10,7 +10,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { chatService, type ChatMessage } from "@/lib/services/chat.service";
 import { reviewService } from "@/lib/services/review.service";
 import { settingService } from "@/lib/services/setting.service";
-import { readMarketUserRegistration } from "@/lib/market-user";
+import {
+  MARKET_USER_EVENT,
+  readMarketUserRegistration,
+  validateMarketUserSession,
+} from "@/lib/market-user";
 
 interface StoreInteractionsProps {
   vendorMongoId: string;
@@ -40,9 +44,25 @@ export function StoreInteractions({
   const [productFeedback, setProductFeedback] = useState("");
   const [vendorReviewPayload, setVendorReviewPayload] = useState<any>(null);
   const [productReviewPayload, setProductReviewPayload] = useState<any>(null);
+  const [canChatOrReview, setCanChatOrReview] = useState(false);
 
-  const marketUser = readMarketUserRegistration();
-  const canChatOrReview = !!marketUser;
+  useEffect(() => {
+    const syncMarketUser = () => {
+      void validateMarketUserSession().then((marketUser) => {
+        setCanChatOrReview(!!marketUser);
+      });
+    };
+
+    setCanChatOrReview(!!readMarketUserRegistration());
+    syncMarketUser();
+    window.addEventListener(MARKET_USER_EVENT, syncMarketUser);
+    window.addEventListener("storage", syncMarketUser);
+
+    return () => {
+      window.removeEventListener(MARKET_USER_EVENT, syncMarketUser);
+      window.removeEventListener("storage", syncMarketUser);
+    };
+  }, []);
 
   const loadSettings = useCallback(async () => {
     try {

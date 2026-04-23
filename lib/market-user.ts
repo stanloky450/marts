@@ -1,3 +1,5 @@
+import { marketUserService } from "@/lib/services/market-user.service";
+
 export interface MarketUserProductSnapshot {
   id: string;
   name: string;
@@ -24,6 +26,7 @@ export interface MarketUserRegistration {
   phoneNumber: string;
   region: string;
   area: string;
+  status?: "active" | "suspended";
   selectedProductIds?: string[];
   selectedProductNames?: string[];
   registeredAt: string;
@@ -72,6 +75,7 @@ function normalizeRegistration(payload: Partial<MarketUserRegistration>): Market
     phoneNumber: payload.phoneNumber || "",
     region: payload.region || "",
     area: payload.area || "",
+    status: payload.status === "suspended" ? "suspended" : "active",
     selectedProductIds: Array.isArray(payload.selectedProductIds) ? payload.selectedProductIds : [],
     selectedProductNames: Array.isArray(payload.selectedProductNames) ? payload.selectedProductNames : [],
     registeredAt: payload.registeredAt || new Date().toISOString(),
@@ -184,6 +188,59 @@ export const loginMarketUser = (
   };
   writeSession(nextSession);
   return nextSession;
+};
+
+export const validateMarketUserSession = async (): Promise<MarketUserRegistration | null> => {
+  const current = readMarketUserRegistration();
+  if (!current) return null;
+
+  try {
+    const response = await marketUserService.validateSession({
+      id: current.id,
+      email: current.email,
+    });
+    const marketUser = response.data.data;
+    const nextSession = {
+      ...current,
+      id: marketUser._id,
+      fullName: marketUser.fullName,
+      email: marketUser.email,
+      phoneNumber: marketUser.phoneNumber,
+      region: marketUser.region,
+      area: marketUser.area,
+      status: marketUser.status,
+      selectedProductIds: marketUser.selectedProductIds || current.selectedProductIds || [],
+      selectedProductNames: marketUser.selectedProductNames || current.selectedProductNames || [],
+      lastActiveAt: new Date().toISOString(),
+    };
+    saveMarketUserRegistration(nextSession);
+    return nextSession;
+  } catch (error: any) {
+    try {
+      const fallback = await marketUserService.register({
+        fullName: current.fullName,
+        email: current.email,
+        phoneNumber: current.phoneNumber,
+        region: current.region,
+        area: current.area,
+        selectedProductIds: current.selectedProductIds || [],
+        selectedProductNames: current.selectedProductNames || [],
+      });
+      const marketUser = fallback.data.data;
+      const migratedSession = {
+        ...current,
+        id: marketUser._id,
+        status: marketUser.status,
+        registeredAt: marketUser.createdAt,
+        lastActiveAt: new Date().toISOString(),
+      };
+      saveMarketUserRegistration(migratedSession);
+      return migratedSession;
+    } catch {
+      clearMarketUserSession();
+      return null;
+    }
+  }
 };
 
 export const updateMarketUserActivity = (): void => {
