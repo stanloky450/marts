@@ -12,6 +12,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon, Store01Icon, PackageIcon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import { StoreInteractions } from "@/components/store-interactions";
+import { getStorefrontThemeStyles } from "@/lib/storefront-theme";
 import {
   addViewedProduct,
   isBookmarkedProduct,
@@ -160,6 +161,8 @@ export default function ProductDetailPage() {
     );
   }
 
+  const theme = getStorefrontThemeStyles(vendor.themeColor);
+
   const toggleBookmark = () => {
     const active = toggleBookmarkedProduct({
       id: product._id,
@@ -185,21 +188,21 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-muted/40">
+    <div className="min-h-screen" style={{ background: theme.pageBackground, color: theme.theme.text }}>
+      <header className="border-b" style={{ background: theme.panelBackground, borderColor: theme.softBorder }}>
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <HugeiconsIcon icon={Store01Icon} className="h-8 w-8" />
+              <HugeiconsIcon icon={Store01Icon} className="h-8 w-8" style={{ color: theme.theme.text }} />
               <div>
-                <h1 className="text-2xl font-bold">{vendor.businessName}</h1>
-                <p className="text-sm text-muted-foreground">
+                <h1 className="text-2xl font-bold" style={{ color: theme.theme.text }}>{vendor.businessName}</h1>
+                <p className="text-sm" style={{ color: theme.mutedText }}>
                   {[vendor.address?.city, vendor.address?.country].filter(Boolean).join(", ")}
                 </p>
               </div>
             </div>
             <Link href={`/store/${subdomain}`}>
-              <Button variant="outline">
+              <Button variant="outline" style={{ borderColor: theme.strongBorder, color: theme.theme.text, background: "rgba(255,255,255,0.5)" }}>
                 <HugeiconsIcon icon={ArrowLeft01Icon} className="mr-2 h-4 w-4" />
                 Back to Store
               </Button>
@@ -211,7 +214,7 @@ export default function ProductDetailPage() {
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="space-y-4">
-            <div className="aspect-square w-full overflow-hidden rounded-lg bg-muted">
+            <div className="aspect-square w-full overflow-hidden rounded-lg" style={{ background: theme.panelBackground, border: `1px solid ${theme.softBorder}` }}>
               <img
                 src={product.images?.[0] || "/placeholder.svg?height=600&width=600&query=product"}
                 alt={product.name}
@@ -226,6 +229,7 @@ export default function ProductDetailPage() {
                     src={img}
                     alt={`${product.name} image ${index + 2}`}
                     className="h-20 w-full rounded-md object-cover"
+                    style={{ border: `1px solid ${theme.softBorder}` }}
                   />
                 ))}
               </div>
@@ -237,43 +241,50 @@ export default function ProductDetailPage() {
               <span
                 className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                   serviceMode
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-emerald-100 text-emerald-700"
+                    ? ""
+                    : ""
                 }`}
+                style={{
+                  background: serviceMode ? theme.theme.accent : theme.panelBackground,
+                  color: theme.buttonText,
+                }}
               >
                 {serviceMode ? "Service" : "Product"}
               </span>
-              <p className="text-sm text-muted-foreground">SKU: {product.sku}</p>
+              <p className="text-sm" style={{ color: theme.mutedText }}>SKU: {product.sku}</p>
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold">{product.name}</h1>
+              <h1 className="text-3xl font-bold" style={{ color: theme.theme.text }}>{product.name}</h1>
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
-              <span className="text-4xl font-bold">{displayPrice}</span>
+              <span className="text-4xl font-bold" style={{ color: theme.theme.text }}>{displayPrice}</span>
               {serviceMode ? (
-                <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+                <span
+                  className="rounded-full px-3 py-1 text-sm font-medium"
+                  style={{ background: theme.theme.accent, color: theme.buttonText }}
+                >
                   {product.duration || serviceMeta?.duration || "Duration required"}
                 </span>
               ) : (
-                <span className={`text-sm ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}>
+                <span className="text-sm" style={{ color: product.stock > 0 ? theme.buttonText : "#b91c1c" }}>
                   {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
                 </span>
               )}
             </div>
 
-            <Card>
+            <Card style={{ background: "rgba(255,255,255,0.75)", borderColor: theme.softBorder }}>
               <CardContent className="pt-6">
-                <h2 className="mb-2 font-semibold">Description</h2>
-                <p className="text-muted-foreground">{product.description}</p>
+                <h2 className="mb-2 font-semibold" style={{ color: theme.theme.text }}>Description</h2>
+                <p style={{ color: theme.mutedText }}>{product.description}</p>
               </CardContent>
             </Card>
 
             {serviceMode && serviceVideoUrl && (
-              <Card>
+              <Card style={{ background: "rgba(255,255,255,0.75)", borderColor: theme.softBorder }}>
                 <CardContent className="pt-6">
-                  <h2 className="mb-3 font-semibold">Service Video</h2>
+                  <h2 className="mb-3 font-semibold" style={{ color: theme.theme.text }}>Service Video</h2>
                   {youtubeEmbed || vimeoEmbed ? (
                     <div className="aspect-video overflow-hidden rounded-lg">
                       <iframe
@@ -297,18 +308,19 @@ export default function ProductDetailPage() {
 
             <div className="space-y-3">
               {serviceMode ? (
-                <Button size="lg" className="w-full">
+                <Button size="lg" className="w-full" style={{ background: theme.theme.accent, color: theme.buttonText }}>
                   Request Service
                 </Button>
               ) : (
                 <>
-                  <Button size="lg" className="w-full" disabled={product.stock === 0}>
+                  <Button size="lg" className="w-full" style={{ background: theme.theme.accent, color: theme.buttonText }} disabled={product.stock === 0}>
                     Add to Cart
                   </Button>
                   <Button
                     size="lg"
                     variant="outline"
                     className="w-full bg-transparent"
+                    style={{ borderColor: theme.strongBorder, color: theme.theme.text }}
                     disabled={product.stock === 0}
                   >
                     Buy Now
@@ -316,41 +328,41 @@ export default function ProductDetailPage() {
                 </>
               )}
               {hasMarketUserSession && (
-                <Button size="lg" variant="outline" className="w-full bg-transparent" onClick={toggleBookmark}>
+                <Button size="lg" variant="outline" className="w-full bg-transparent" style={{ borderColor: theme.strongBorder, color: theme.theme.text }} onClick={toggleBookmark}>
                   {isBookmarked ? "Remove bookmark" : "Bookmark product"}
                 </Button>
               )}
             </div>
 
             {!serviceMode && product.stock === 0 && (
-              <p className="text-center text-sm text-muted-foreground">
+              <p className="text-center text-sm" style={{ color: theme.mutedText }}>
                 This product is currently out of stock. Please check back later.
               </p>
             )}
 
-            <Card>
+            <Card style={{ background: "rgba(255,255,255,0.75)", borderColor: theme.softBorder }}>
               <CardContent className="space-y-4 pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-lg font-semibold">Vendor details</h2>
-                    <p className="text-sm text-muted-foreground">
+                    <h2 className="text-lg font-semibold" style={{ color: theme.theme.text }}>Vendor details</h2>
+                    <p className="text-sm" style={{ color: theme.mutedText }}>
                       Chat is available below for logged-in marketplace users.
                     </p>
                   </div>
                   <Link href={`/store/${subdomain}`}>
-                    <Button variant="outline">Visit store</Button>
+                    <Button variant="outline" style={{ borderColor: theme.strongBorder, color: theme.theme.text }}>Visit store</Button>
                   </Link>
                 </div>
                 <div className="grid gap-3 md:grid-cols-2">
-                  <div className="rounded-xl border p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Business</p>
-                    <p className="mt-2 font-semibold">{vendor.businessName}</p>
-                    <p className="text-sm text-muted-foreground">{vendor.description || "No vendor description yet."}</p>
+                  <div className="rounded-xl border p-4" style={{ borderColor: theme.softBorder, background: theme.panelBackground }}>
+                    <p className="text-xs uppercase tracking-[0.25em]" style={{ color: theme.mutedText }}>Business</p>
+                    <p className="mt-2 font-semibold" style={{ color: theme.theme.text }}>{vendor.businessName}</p>
+                    <p className="text-sm" style={{ color: theme.mutedText }}>{vendor.description || "No vendor description yet."}</p>
                   </div>
-                  <div className="rounded-xl border p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Reach vendor</p>
-                    <p className="mt-2 text-sm">{vendor.phoneNumber || vendor.phone || "Phone unavailable"}</p>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="rounded-xl border p-4" style={{ borderColor: theme.softBorder, background: theme.panelBackground }}>
+                    <p className="text-xs uppercase tracking-[0.25em]" style={{ color: theme.mutedText }}>Reach vendor</p>
+                    <p className="mt-2 text-sm" style={{ color: theme.theme.text }}>{vendor.phoneNumber || vendor.phone || "Phone unavailable"}</p>
+                    <p className="text-sm" style={{ color: theme.mutedText }}>
                       {[vendor.address?.city, vendor.address?.state, vendor.address?.country]
                         .filter(Boolean)
                         .join(", ") || "Location unavailable"}
@@ -368,8 +380,8 @@ export default function ProductDetailPage() {
         </div>
       </main>
 
-      <footer className="mt-16 border-t bg-muted/40 py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="mt-16 border-t py-8" style={{ background: theme.theme.accent, borderColor: theme.softBorder }}>
+        <div className="container mx-auto px-4 text-center text-sm" style={{ color: theme.mutedText }}>
           <p>© 2025 {vendor.businessName}. All rights reserved.</p>
           <p className="mt-2">Contact: {vendor.phoneNumber}</p>
         </div>
