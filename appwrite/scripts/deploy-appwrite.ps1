@@ -535,7 +535,7 @@ $collections = @(
       @{ key = "logoUrl"; type = "string"; size = 500; required = $false; array = $false; default = $null }
       @{ key = "profilePhotoUrl"; type = "string"; size = 500; required = $false; array = $false; default = $null }
       @{ key = "bannerImage"; type = "string"; size = 500; required = $false; array = $false; default = $null }
-      @{ key = "themeColor"; type = "enum"; elements = @("black", "deep_blue", "green", "purple_blue"); required = $true; array = $false; default = "black" }
+      @{ key = "themeColor"; type = "enum"; elements = @("black", "deep_blue", "green", "purple_blue", "hot_coral", "electric_violet", "fuchsia_pop", "terracotta_glam", "midnight_berry", "blush_rose", "lavender_mist", "sage_and_cream", "hot_flamingo", "cherry_red", "candy_gradient", "papaya_punch"); required = $true; array = $false; default = "black" }
       @{ key = "phoneNumber"; type = "string"; size = 50; required = $false; array = $false; default = $null }
       @{ key = "whatsappNumber"; type = "string"; size = 50; required = $false; array = $false; default = $null }
       @{ key = "socialsFacebook"; type = "string"; size = 255; required = $false; array = $false; default = $null }

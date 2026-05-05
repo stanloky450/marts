@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState, type ReactNode } from "react";
 import { useParams } from "next/navigation";
@@ -39,6 +39,7 @@ import {
 import {
 	Copy,
 	ChevronDown,
+	Download,
 	ExternalLink,
 	Facebook,
 	Instagram,
@@ -46,73 +47,14 @@ import {
 	Phone,
 } from "lucide-react";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { AIChatWidget } from "@/components/ai-chat-widget";
+import { getStorefrontThemeStyles } from "@/lib/storefront-theme";
+import {
+	downloadVendorQrCode,
+	generateVendorQrCodeDataUrl,
+} from "@/lib/vendor-qr";
 
-// Helper to map theme strings to Tailwind classes
-const getThemeClasses = (themeColor?: string) => {
-	switch (themeColor) {
-		case "deep_blue":
-			return {
-				bg: "bg-blue-900",
-				text: "text-blue-900",
-				border: "border-blue-900",
-				hoverBg: "hover:bg-blue-800",
-				lightBg: "bg-blue-50/50",
-				buttonPrimary: "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20",
-				gradientBg: "bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800",
-				ring: "focus-visible:ring-blue-600",
-				badge: "bg-blue-100 text-blue-800 border-blue-200",
-				icon: "text-blue-600",
-				overlay: "bg-blue-900/60"
-			};
-		case "green":
-			return {
-				bg: "bg-emerald-700",
-				text: "text-emerald-700",
-				border: "border-emerald-700",
-				hoverBg: "hover:bg-emerald-600",
-				lightBg: "bg-emerald-50/50",
-				buttonPrimary: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-500/20",
-				gradientBg: "bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700",
-				ring: "focus-visible:ring-emerald-600",
-				badge: "bg-emerald-100 text-emerald-800 border-emerald-200",
-				icon: "text-emerald-600",
-				overlay: "bg-emerald-900/60"
-			};
-		case "purple_blue":
-			return {
-				bg: "bg-indigo-700",
-				text: "text-indigo-700",
-				border: "border-indigo-700",
-				hoverBg: "hover:bg-indigo-600",
-				lightBg: "bg-indigo-50/50",
-				buttonPrimary: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/20",
-				gradientBg: "bg-gradient-to-br from-indigo-950 via-indigo-900 to-indigo-700",
-				ring: "focus-visible:ring-indigo-600",
-				badge: "bg-indigo-100 text-indigo-800 border-indigo-200",
-				icon: "text-indigo-600",
-				overlay: "bg-indigo-900/60"
-			};
-		case "black":
-		default:
-			return {
-				bg: "bg-stone-900",
-				text: "text-stone-900",
-				border: "border-stone-900",
-				hoverBg: "hover:bg-stone-800",
-				lightBg: "bg-stone-50/80",
-				buttonPrimary: "bg-stone-800 hover:bg-stone-900 text-white shadow-stone-900/20",
-				gradientBg: "bg-gradient-to-br from-stone-950 via-stone-900 to-stone-800",
-				ring: "focus-visible:ring-stone-600",
-				badge: "bg-stone-200 text-stone-900 border-stone-300",
-				icon: "text-stone-700",
-				overlay: "bg-stone-900/70"
-			};
-	}
-};
-
-// Animation variants
 const containerVariants = {
 	hidden: { opacity: 0 },
 	show: {
@@ -125,12 +67,68 @@ const containerVariants = {
 
 const itemVariants = {
 	hidden: { opacity: 0, y: 30 },
-	show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } },
+	show: {
+		opacity: 1,
+		y: 0,
+		transition: { type: "spring" as const, stiffness: 300, damping: 24 },
+	},
 };
 
 const heroVariants = {
-  hidden: { opacity: 0, y: -20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } }
+	hidden: { opacity: 0, y: -20 },
+	show: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: 0.6, ease: "easeOut" as const },
+	},
+};
+
+function ensureHttp(url: string) {
+	return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+}
+
+function toWhatsAppUrl(value: string) {
+	const digits = (value || "").replace(/[^\d]/g, "");
+	return digits ? `https://wa.me/${digits}` : "";
+}
+
+function extractHandle(value?: string) {
+	if (!value) return "";
+	const trimmed = value.trim();
+	if (!trimmed) return "";
+	if (!trimmed.includes("/") && !trimmed.includes(".")) {
+		return trimmed.startsWith("@") ? trimmed : `@${trimmed}`;
+	}
+	try {
+		const url = new URL(ensureHttp(trimmed));
+		const segments = url.pathname.split("/").filter(Boolean);
+		const last = segments[segments.length - 1] || "";
+		if (!last) return "";
+		const clean = last.replace(/^@/, "").split("?")[0];
+		return clean ? `@${clean}` : "";
+	} catch {
+		return "";
+	}
+}
+
+function getServiceMeta(product: Product) {
+	if (
+		product.variants &&
+		!Array.isArray(product.variants) &&
+		typeof product.variants === "object" &&
+		(product.variants as { kind?: string }).kind === "service"
+	) {
+		return product.variants as {
+			duration?: string;
+			priceMin?: number;
+			priceMax?: number;
+		};
+	}
+	return null;
+}
+
+function isServiceProduct(product: Product) {
+	return product.productType === "service" || !!getServiceMeta(product);
 }
 
 export default function StorefrontPage() {
@@ -144,6 +142,9 @@ export default function StorefrontPage() {
 	const [search, setSearch] = useState("");
 	const [categoryFilter, setCategoryFilter] = useState<string>("all");
 	const [sortBy, setSortBy] = useState<string>("name_asc");
+	const [storefrontUrl, setStorefrontUrl] = useState("");
+	const [qrCodeDataUrl, setQrCodeDataUrl] = useState("");
+	const [isDownloadingQr, setIsDownloadingQr] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -153,7 +154,7 @@ export default function StorefrontPage() {
 					storefrontService.getVendorProducts(subdomain, {
 						search,
 						category: categoryFilter !== "all" ? categoryFilter : undefined,
-						sortBy: sortBy as any,
+						sortBy: sortBy as never,
 					}),
 					categoryService.getAll(),
 				]);
@@ -171,8 +172,25 @@ export default function StorefrontPage() {
 			}
 		};
 
-		fetchData();
+		void fetchData();
 	}, [subdomain, search, categoryFilter, sortBy]);
+
+	useEffect(() => {
+		if (!vendor || typeof window === "undefined") return;
+
+		const currentStorefrontUrl = window.location.href;
+		setStorefrontUrl(currentStorefrontUrl);
+
+		void generateVendorQrCodeDataUrl({
+			businessName: vendor.businessName,
+			storefrontUrl: currentStorefrontUrl,
+			theme: getStorefrontThemeStyles(vendor.themeColor).theme,
+		})
+			.then(setQrCodeDataUrl)
+			.catch((error) => {
+				console.error("Failed to generate vendor QR code", error);
+			});
+	}, [vendor]);
 
 	if (isLoading) {
 		return (
@@ -200,7 +218,7 @@ export default function StorefrontPage() {
 		);
 	}
 
-	const theme = getThemeClasses(vendor.themeColor);
+	const theme = getStorefrontThemeStyles(vendor.themeColor);
 	const phoneValue = vendor.phone || vendor.phoneNumber;
 	const whatsappValue =
 		(vendor as Vendor & { whatsapp?: string }).whatsapp || vendor.whatsappNumber;
@@ -214,37 +232,11 @@ export default function StorefrontPage() {
 	const instagramUrl = socialSource?.instagram || socialMedia.instagram;
 	const xUrl = socialSource?.x || socialSource?.twitter || socialMedia.twitter;
 
-	const ensureHttp = (url: string) =>
-		/^https?:\/\//i.test(url) ? url : `https://${url}`;
-
-	const toWhatsAppUrl = (value: string) => {
-		const digits = (value || "").replace(/[^\d]/g, "");
-		return digits ? `https://wa.me/${digits}` : "";
-	};
-
-	const extractHandle = (value?: string) => {
-		if (!value) return "";
-		const trimmed = value.trim();
-		if (!trimmed) return "";
-		if (!trimmed.includes("/") && !trimmed.includes(".")) {
-			return trimmed.startsWith("@") ? trimmed : `@${trimmed}`;
-		}
-		try {
-			const url = new URL(ensureHttp(trimmed));
-			const segments = url.pathname.split("/").filter(Boolean);
-			const last = segments[segments.length - 1] || "";
-			if (!last) return "";
-			const clean = last.replace(/^@/, "").split("?")[0];
-			return clean ? `@${clean}` : "";
-		} catch {
-			return "";
-		}
-	};
-
 	const whatsappLink = whatsappValue ? toWhatsAppUrl(whatsappValue) : "";
 	const facebookHandle = extractHandle(facebookUrl);
 	const instagramHandle = extractHandle(instagramUrl);
 	const xHandle = extractHandle(xUrl);
+
 	const socialLinks = [
 		facebookUrl
 			? {
@@ -294,51 +286,47 @@ export default function StorefrontPage() {
 		}
 	};
 
-	const getServiceMeta = (product: Product) => {
-		if (
-			product.variants &&
-			!Array.isArray(product.variants) &&
-			typeof product.variants === "object" &&
-			(product.variants as any).kind === "service"
-		) {
-			return product.variants as any;
-		}
-		return null;
-	};
+	const handleDownloadQr = async () => {
+		if (!storefrontUrl) return;
 
-	const isServiceProduct = (product: Product) =>
-		product.productType === "service" || !!getServiceMeta(product);
+		setIsDownloadingQr(true);
+		try {
+			await downloadVendorQrCode({
+				businessName: vendor.businessName,
+				storefrontUrl,
+				theme: theme.theme,
+			});
+			toast.success("Storefront QR code downloaded");
+		} catch (error) {
+			console.error("Failed to download vendor QR code", error);
+			toast.error("Failed to download storefront QR code");
+		} finally {
+			setIsDownloadingQr(false);
+		}
+	};
 
 	return (
 		<>
-			<div className="min-h-screen bg-background">
-				{/* Header / Hero Section */}
+			<div className="min-h-screen" style={{ background: theme.pageBackground }}>
 				<motion.header
 					variants={heroVariants}
 					initial="hidden"
 					animate="show"
-					className={`relative flex flex-col items-center justify-center overflow-hidden py-24 text-center ${
-						vendor.bannerImage ? "" : theme.gradientBg
-					}`}
+					className="relative flex flex-col items-center justify-center overflow-hidden py-24 text-center"
+					style={vendor.bannerImage ? undefined : { background: theme.heroBackground }}
 				>
-					{/* Banner Image Background */}
 					{vendor.bannerImage && (
-						<>
-							<div className="absolute inset-0 z-0">
-								<img
-									src={vendor.bannerImage}
-									alt={`${vendor.businessName} banner`}
-									className="h-full w-full object-cover"
-								/>
-								<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />{" "}
-								{/* Dim overlay */}
-							</div>
-						</>
+						<div className="absolute inset-0 z-0">
+							<img
+								src={vendor.bannerImage}
+								alt={`${vendor.businessName} banner`}
+								className="h-full w-full object-cover"
+							/>
+							<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+						</div>
 					)}
 
-					<div
-						className={`container relative z-10 mx-auto px-4 ${vendor.bannerImage || !vendor.bannerImage ? "text-white" : ""}`}
-					>
+					<div className="container relative z-10 mx-auto px-4 text-white">
 						<motion.div
 							initial={{ scale: 0.9, opacity: 0 }}
 							animate={{ scale: 1, opacity: 1 }}
@@ -349,44 +337,50 @@ export default function StorefrontPage() {
 								<img
 									src={vendor.logoUrl}
 									alt="Logo"
-									className="h-28 w-28 rounded-full border-4 border-white/20 object-cover shadow-2xl backdrop-blur-sm"
+									className="h-28 w-28 rounded-full border-4 border-white/20 object-cover shadow-2xl"
 								/>
 							) : (
-								<div
-									className={`flex h-28 w-28 items-center justify-center rounded-full border-4 border-white/20 bg-white/10 backdrop-blur-md text-white shadow-2xl`}
-								>
+								<div className="flex h-28 w-28 items-center justify-center rounded-full border-4 border-white/20 bg-white/10 text-white shadow-2xl backdrop-blur-md">
 									<HugeiconsIcon icon={Store01Icon} className="h-12 w-12" />
 								</div>
 							)}
 						</motion.div>
+
 						<motion.div
 							initial={{ y: 20, opacity: 0 }}
 							animate={{ y: 0, opacity: 1 }}
 							transition={{ delay: 0.3 }}
 						>
-							<h1 className="mb-4 text-4xl font-extrabold tracking-tight drop-shadow-lg md:text-6xl text-white">
+							<h1 className="mb-4 text-4xl font-extrabold tracking-tight drop-shadow-lg md:text-6xl">
 								{vendor.businessName}
 							</h1>
-							<p className="mx-auto max-w-2xl text-lg text-white/90 drop-shadow-md md:text-xl font-medium leading-relaxed">
+							<p className="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-white/90 drop-shadow-md md:text-xl">
 								{vendor.description ||
-									"Welcome to our store. Browse our latest amazing products below."}
+									"Welcome to our store. Browse our latest products below."}
 							</p>
 
-							<div className="mx-auto mt-8 max-w-3xl rounded-2xl border border-white/20 bg-black/25 p-4 backdrop-blur-md">
+							<div className="mx-auto mt-8 max-w-5xl rounded-2xl border border-white/20 bg-black/25 p-4 backdrop-blur-md">
 								<div className="mb-3 text-sm font-semibold tracking-wide text-white/90">
 									Connect & Contact
 								</div>
-								{whatsappLink && (
-									<div className="mb-3">
-										<a href={whatsappLink} target="_blank" rel="noreferrer">
-											<Button className="h-10 rounded-xl bg-emerald-500 px-4 text-white hover:bg-emerald-600">
-												<MessageCircle className="mr-2 h-4 w-4" />
-												Chat on WhatsApp
-											</Button>
-										</a>
-									</div>
-								)}
 								<div className="grid gap-3 md:grid-cols-2">
+									{whatsappLink && (
+										<div className="md:col-span-2">
+											<a href={whatsappLink} target="_blank" rel="noreferrer">
+												<Button
+													className="h-10 rounded-xl px-4 shadow-sm"
+													style={{
+														background: theme.theme.accent,
+														color: theme.buttonText,
+													}}
+												>
+													<MessageCircle className="mr-2 h-4 w-4" />
+													Chat on WhatsApp
+												</Button>
+											</a>
+										</div>
+									)}
+
 									{vendor.address?.city && (
 										<div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2 text-sm text-white">
 											<span className="flex items-center gap-2">
@@ -396,6 +390,7 @@ export default function StorefrontPage() {
 											</span>
 										</div>
 									)}
+
 									{phoneValue && (
 										<div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2 text-sm text-white">
 											<span className="flex items-center gap-2">
@@ -412,6 +407,7 @@ export default function StorefrontPage() {
 											</Button>
 										</div>
 									)}
+
 									{whatsappValue && (
 										<div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2 text-sm text-white">
 											<span className="flex items-center gap-2">
@@ -428,6 +424,7 @@ export default function StorefrontPage() {
 											</Button>
 										</div>
 									)}
+
 									{socialLinks.length > 0 && (
 										<div className="rounded-xl bg-white/10 px-3 py-2 text-sm text-white">
 											<DropdownMenu>
@@ -444,14 +441,18 @@ export default function StorefrontPage() {
 													{socialLinks.map((social) => (
 														<DropdownMenuItem
 															key={social.key}
-															onSelect={() => window.open(social.url, "_blank", "noopener,noreferrer")}
+															onSelect={() =>
+																window.open(social.url, "_blank", "noopener,noreferrer")
+															}
 															className="flex items-center justify-between gap-2"
 														>
 															<span className="flex items-center gap-2">
 																{social.icon}
 																<span>{social.label}</span>
 																{social.handle ? (
-																	<span className="text-muted-foreground">{social.handle}</span>
+																	<span className="text-muted-foreground">
+																		{social.handle}
+																	</span>
 																) : null}
 															</span>
 															<span className="flex items-center gap-2">
@@ -476,46 +477,103 @@ export default function StorefrontPage() {
 											</DropdownMenu>
 										</div>
 									)}
+
+									{storefrontUrl && (
+										<div className="rounded-2xl border border-white/20 bg-white/10 p-3 text-white md:col-span-2">
+											<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+												<div className="flex items-center gap-3">
+													{qrCodeDataUrl ? (
+														<img
+															src={qrCodeDataUrl}
+															alt={`${vendor.businessName} storefront QR code`}
+															className="h-24 w-24 rounded-xl border border-white/15 bg-white p-2"
+														/>
+													) : (
+														<div className="flex h-24 w-24 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-xs text-white/80">
+															Generating QR
+														</div>
+													)}
+													<div className="text-left">
+														<div className="text-sm font-semibold">Storefront QR Code</div>
+														<p className="max-w-md text-sm text-white/80">
+															Turn this vendor link into a downloadable QR code for flyers,
+															packaging, and quick store access.
+														</p>
+													</div>
+												</div>
+												<div className="flex flex-wrap gap-2">
+													<Button
+														type="button"
+														className="rounded-xl"
+														style={{
+															background: theme.theme.accent,
+															color: theme.buttonText,
+														}}
+														onClick={handleDownloadQr}
+														disabled={isDownloadingQr || !qrCodeDataUrl}
+													>
+														<Download className="mr-2 h-4 w-4" />
+														{isDownloadingQr ? "Preparing..." : "Download QR"}
+													</Button>
+													<Button
+														type="button"
+														variant="ghost"
+														className="rounded-xl border border-white/20 text-white hover:bg-white/10 hover:text-white"
+														onClick={() => copyText(storefrontUrl, "Storefront link")}
+													>
+														<Copy className="mr-2 h-4 w-4" />
+														Copy Link
+													</Button>
+												</div>
+											</div>
+										</div>
+									)}
 								</div>
 							</div>
 						</motion.div>
 					</div>
 				</motion.header>
 
-				{/* Main Content */}
 				<main
-					className={`container mx-auto px-4 py-14 ${theme.lightBg} min-h-[50vh] rounded-t-[2.2rem] -mt-0 relative z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]`}
+					className="container relative z-20 mx-auto min-h-[50vh] rounded-t-[2.2rem] px-4 py-14 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]"
+					style={{ background: theme.pageBackground }}
 				>
 					<div className="mb-8 flex items-center justify-between">
-						<h2 className="text-2xl font-bold tracking-tight">Our Products</h2>
+						<h2 className="text-2xl font-bold tracking-tight" style={{ color: theme.theme.text }}>
+							Our Products
+						</h2>
 						<Link href="/">
 							<Button
 								variant="outline"
-								className={`rounded-full border-2 ${theme.ring} shadow-sm bg-white/50 backdrop-blur-sm hover:bg-white`}
+								className="rounded-full border-2 bg-white/50 shadow-sm backdrop-blur-sm hover:bg-white"
+								style={{ borderColor: theme.strongBorder, color: theme.theme.text }}
 							>
 								Back to Marketplace
 							</Button>
 						</Link>
 					</div>
 
-					{/* Filters */}
 					<div className="mb-10 space-y-4">
 						<div className="flex flex-col gap-4 md:flex-row">
 							<div className="relative flex-1">
 								<HugeiconsIcon
 									icon={Search01Icon}
-									className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${theme.icon}`}
+									className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+									style={{ color: theme.theme.text }}
 								/>
 								<Input
 									placeholder="Search products..."
 									value={search}
 									onChange={(e) => setSearch(e.target.value)}
-									className={`pl-9 shadow-sm rounded-xl border-transparent focus-visible:border-transparent focus-visible:bg-white bg-white/60 backdrop-blur-sm transition-all ${theme.ring}`}
+									className="rounded-xl border-transparent bg-white/60 pl-9 shadow-sm backdrop-blur-sm transition-all focus-visible:border-transparent focus-visible:bg-white"
+									style={{ color: theme.theme.text }}
 								/>
 							</div>
+
 							<Select value={categoryFilter} onValueChange={setCategoryFilter}>
 								<SelectTrigger
-									className={`w-full shadow-sm md:w-[200px] rounded-xl border-transparent bg-white/60 backdrop-blur-sm focus:bg-white transition-all ${theme.ring}`}
+									className="w-full rounded-xl border-transparent bg-white/60 shadow-sm backdrop-blur-sm transition-all focus:bg-white md:w-[200px]"
+									style={{ color: theme.theme.text }}
 								>
 									<SelectValue placeholder="Category" />
 								</SelectTrigger>
@@ -528,9 +586,11 @@ export default function StorefrontPage() {
 									))}
 								</SelectContent>
 							</Select>
+
 							<Select value={sortBy} onValueChange={setSortBy}>
 								<SelectTrigger
-									className={`w-full shadow-sm md:w-[200px] rounded-xl border-transparent bg-white/60 backdrop-blur-sm focus:bg-white transition-all ${theme.ring}`}
+									className="w-full rounded-xl border-transparent bg-white/60 shadow-sm backdrop-blur-sm transition-all focus:bg-white md:w-[200px]"
+									style={{ color: theme.theme.text }}
 								>
 									<SelectValue placeholder="Sort by" />
 								</SelectTrigger>
@@ -538,30 +598,28 @@ export default function StorefrontPage() {
 									<SelectItem value="name_asc">Name (A-Z)</SelectItem>
 									<SelectItem value="name_desc">Name (Z-A)</SelectItem>
 									<SelectItem value="price_asc">Price (Low to High)</SelectItem>
-									<SelectItem value="price_desc">
-										Price (High to Low)
-									</SelectItem>
+									<SelectItem value="price_desc">Price (High to Low)</SelectItem>
 								</SelectContent>
 							</Select>
 						</div>
 					</div>
 
-					{/* Products Grid */}
 					{products.length === 0 ? (
 						<motion.div
 							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{ opacity: 1, scale: 1 }}
-							className={`flex flex-col items-center justify-center rounded-2xl bg-white/50 p-16 text-center shadow-sm backdrop-blur-md border border-white/60`}
+							className="flex flex-col items-center justify-center rounded-2xl border border-white/60 bg-white/50 p-16 text-center shadow-sm backdrop-blur-md"
 						>
 							<HugeiconsIcon
 								icon={ShoppingCart01Icon}
-								className={`mb-4 h-16 w-16 opacity-40 ${theme.icon}`}
+								className="mb-4 h-16 w-16 opacity-40"
+								style={{ color: theme.theme.text }}
 							/>
-							<h2 className={`text-xl font-semibold ${theme.text}`}>
+							<h2 className="text-xl font-semibold" style={{ color: theme.theme.text }}>
 								No Products Found
 							</h2>
 							<p className="mt-2 text-muted-foreground">
-								This store doesn't have any products matching your criteria.
+								This store doesn&apos;t have any products matching your criteria.
 							</p>
 						</motion.div>
 					) : (
@@ -571,28 +629,13 @@ export default function StorefrontPage() {
 							animate="show"
 							className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 						>
-							{/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-								{products.map((product) => (
-									<Link
-										href={`/store/${subdomain}/products/${product._id}`}
-										className="block h-full outline-none rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background group-focus-visible:ring-primary"
-									>
-										<ProductCard key={product._id} product={product} />
-									</Link>
-								))}
-							</div> */}
-
 							{products.map((product) => (
-								<motion.div
-									key={product._id}
-									variants={itemVariants}
-									className="h-full"
-								>
+								<motion.div key={product._id} variants={itemVariants} className="h-full">
 									<Link
 										href={`/store/${subdomain}/products/${product._id}`}
-										className="block h-full outline-none rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background group-focus-visible:ring-primary"
+										className="block h-full rounded-2xl outline-none"
 									>
-										<Card className="group flex  flex-col overflow-hidden rounded-2xl border-transparent bg-white/80 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:border-border border border-white/40">
+										<Card className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/40 bg-white/80 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)]">
 											<CardHeader className="p-0">
 												<div className="relative aspect-square w-full overflow-hidden bg-muted/30">
 													<img
@@ -603,74 +646,101 @@ export default function StorefrontPage() {
 														alt={product.name}
 														className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
 													/>
-													{/* Product overlay on hover */}
 													<div
-														className={`absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-[2px] ${theme.overlay}`}
+														className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 backdrop-blur-[2px] group-hover:opacity-100"
+														style={{ background: theme.shadow }}
 													>
 														<span
-															className={`rounded-full px-6 py-2.5 text-sm outline-none font-bold shadow-xl transition-transform hover:scale-105 ${theme.buttonPrimary}`}
+															className="rounded-full px-6 py-2.5 text-sm font-bold shadow-xl transition-transform hover:scale-105"
+															style={{
+																background: theme.theme.accent,
+																color: theme.buttonText,
+															}}
 														>
 															View Details
 														</span>
 													</div>
 												</div>
 											</CardHeader>
-											<CardContent className="flex flex-1 flex-col p-2">
-	<div className="mb-2">
-		<span
-			className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold ${
-				isServiceProduct(product)
-					? "bg-blue-100 text-blue-700"
-					: "bg-emerald-100 text-emerald-700"
-			}`}
-		>
-			{isServiceProduct(product) ? "Service" : "Product"}
-		</span>
-	</div>
-	<CardTitle
-		className={`mb-2 line-clamp-2 text-lg font-bold transition-colors ${theme.text} group-hover:opacity-80`}
-	>
-		{product.name}
-	</CardTitle>
-	<p className="line-clamp-2 flex-1 text-sm text-muted-foreground leading-relaxed">
-		{product.description}
-	</p>
-</CardContent>
-<CardFooter className="flex items-center justify-between border-t border-black/5 bg-black/[0.02] p-2">
-	{(() => {
-		const serviceMeta = getServiceMeta(product);
-		if (isServiceProduct(product)) {
-			const min = Number(serviceMeta?.priceMin ?? product.price);
-			const max = Number(serviceMeta?.priceMax ?? product.price);
-			return (
-				<>
-					<span className={`text-xl font-black ${theme.text}`}>
-						{min === max
-							? `NGN ${min.toLocaleString()}`
-							: `NGN ${min.toLocaleString()} - NGN ${max.toLocaleString()}`}
-					</span>
-					<span
-						className={`rounded-full px-3 py-1 text-xs font-semibold border ${theme.badge} shadow-sm`}
-					>
-						{serviceMeta?.duration || "Service"}
-					</span>
-				</>
-			);
-		}
-		return (
-			<>
-				<span className={`text-2xl font-black ${theme.text}`}>
-					NGN {product.price.toLocaleString()}
-				</span>
-				<span
-					className={`rounded-full px-3 py-1 text-xs font-semibold border ${theme.badge} shadow-sm`}
-				>
-					{product.stock} left
-				</span>
-			</>
-		);
-	})()}
-</CardFooter>
+
+											<CardContent className="flex flex-1 flex-col p-3">
+												<div className="mb-2">
+													<span
+														className="inline-flex rounded-full px-2 py-1 text-[11px] font-semibold"
+														style={{
+															background: isServiceProduct(product)
+																? theme.theme.accent
+																: theme.panelBackground,
+															color: theme.buttonText,
+														}}
+													>
+														{isServiceProduct(product) ? "Service" : "Product"}
+													</span>
+												</div>
+
+												<CardTitle
+													className="mb-2 line-clamp-2 text-lg font-bold transition-colors group-hover:opacity-80"
+													style={{ color: theme.theme.text }}
+												>
+													{product.name}
+												</CardTitle>
+												<p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+													{product.description}
+												</p>
+											</CardContent>
+
+											<CardFooter className="flex items-center justify-between border-t border-black/5 bg-black/[0.02] p-3">
+												{(() => {
+													const serviceMeta = getServiceMeta(product);
+													if (isServiceProduct(product)) {
+														const min = Number(serviceMeta?.priceMin ?? product.price);
+														const max = Number(serviceMeta?.priceMax ?? product.price);
+														return (
+															<>
+																<span
+																	className="text-xl font-black"
+																	style={{ color: theme.theme.text }}
+																>
+																	{min === max
+																		? `NGN ${min.toLocaleString()}`
+																		: `NGN ${min.toLocaleString()} - NGN ${max.toLocaleString()}`}
+																</span>
+																<span
+																	className="rounded-full border px-3 py-1 text-xs font-semibold shadow-sm"
+																	style={{
+																		background: theme.panelBackground,
+																		borderColor: theme.strongBorder,
+																		color: theme.theme.text,
+																	}}
+																>
+																	{serviceMeta?.duration || "Service"}
+																</span>
+															</>
+														);
+													}
+
+													return (
+														<>
+															<span
+																className="text-2xl font-black"
+																style={{ color: theme.theme.text }}
+															>
+																NGN {product.price.toLocaleString()}
+															</span>
+															<span
+																className="rounded-full border px-3 py-1 text-xs font-semibold shadow-sm"
+																style={{
+																	background: theme.panelBackground,
+																	borderColor: theme.strongBorder,
+																	color: theme.theme.text,
+																}}
+															>
+																{product.stock} left
+															</span>
+														</>
+													);
+												})()}
+											</CardFooter>
 										</Card>
 									</Link>
 								</motion.div>
@@ -679,23 +749,29 @@ export default function StorefrontPage() {
 					)}
 				</main>
 
-				{/* Footer */}
-				<footer className={`border-t border-black/5 bg-white py-16 mt-0`}>
+				<footer
+					className="mt-0 border-t py-16"
+					style={{ borderColor: theme.softBorder, background: theme.theme.accent }}
+				>
 					<div className="container mx-auto px-4 text-center">
 						<div
-							className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl ${theme.lightBg}`}
+							className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
+							style={{ background: theme.panelBackground }}
 						>
 							<HugeiconsIcon
 								icon={Store01Icon}
-								className={`h-8 w-8 ${theme.icon}`}
+								className="h-8 w-8"
+								style={{ color: theme.theme.text }}
 							/>
 						</div>
-						<h3 className="mb-2 text-xl font-bold">{vendor.businessName}</h3>
-						<p className="mb-8 text-sm text-muted-foreground">
+						<h3 className="mb-2 text-xl font-bold" style={{ color: theme.theme.text }}>
+							{vendor.businessName}
+						</h3>
+						<p className="mb-8 text-sm" style={{ color: theme.mutedText }}>
 							Thanks for shopping with us!
 						</p>
 
-						<div className="flex justify-center gap-6 text-sm text-muted-foreground">
+						<div className="flex justify-center gap-6 text-sm" style={{ color: theme.mutedText }}>
 							<p className="font-medium">© 2025 All rights reserved.</p>
 							{vendor.phoneNumber && (
 								<>
@@ -708,7 +784,6 @@ export default function StorefrontPage() {
 				</footer>
 			</div>
 
-			{/* AI Sales Chat Widget */}
 			<AIChatWidget
 				subdomain={subdomain}
 				storeContext={
@@ -720,7 +795,3 @@ export default function StorefrontPage() {
 		</>
 	);
 }
-
-
-
-

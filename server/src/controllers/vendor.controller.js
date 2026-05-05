@@ -516,16 +516,16 @@ export const updateVendorProfile = async (req, res, next) => {
 		if (!vendor) return res.status(404).json(errorResponse("VENDOR_NOT_FOUND", "Vendor profile not found"));
 
 		const updateData = {};
-		if (businessName) updateData.businessName = businessName;
-		if (description) updateData.description = description;
-		if (phone) updateData.phoneNumber = phone;
-		if (whatsapp) updateData.whatsappNumber = whatsapp;
-		if (socials) updateData.socials = { ...vendor.socials, ...socials };
-		if (address) updateData.address = { ...vendor.address, ...address };
-		if (logoUrl) updateData.logoUrl = logoUrl;
-		if (profilePhotoUrl) updateData.profilePhotoUrl = profilePhotoUrl;
-		if (bannerImage) updateData.bannerImage = bannerImage;
-		if (themeColor) updateData.themeColor = themeColor;
+		if (businessName !== undefined) updateData.businessName = businessName || null;
+		if (description !== undefined) updateData.description = description || null;
+		if (phone !== undefined) updateData.phoneNumber = phone || null;
+		if (whatsapp !== undefined) updateData.whatsappNumber = whatsapp || null;
+		if (socials !== undefined) updateData.socials = { ...(vendor.socials || {}), ...(socials || {}) };
+		if (address !== undefined) updateData.address = { ...(vendor.address || {}), ...(address || {}) };
+		if (logoUrl !== undefined) updateData.logoUrl = logoUrl || null;
+		if (profilePhotoUrl !== undefined) updateData.profilePhotoUrl = profilePhotoUrl || null;
+		if (bannerImage !== undefined) updateData.bannerImage = bannerImage || null;
+		if (themeColor !== undefined) updateData.themeColor = themeColor;
 
 		const updatedVendor = await prisma.vendor.update({
 			where: { id: vendor.id },

@@ -18,6 +18,24 @@ import { upload, uploadErrorHandler } from "../middleware/upload.js";
 import { uploadToCloud } from "../config/cloudinary.js";
 
 const router = express.Router();
+const STOREFRONT_THEME_VALUES = [
+	"black",
+	"deep_blue",
+	"green",
+	"purple_blue",
+	"hot_coral",
+	"electric_violet",
+	"fuchsia_pop",
+	"terracotta_glam",
+	"midnight_berry",
+	"blush_rose",
+	"lavender_mist",
+	"sage_and_cream",
+	"hot_flamingo",
+	"cherry_red",
+	"candy_gradient",
+	"papaya_punch",
+];
 
 // Validation schemas
 const registerSchema = z.object({
@@ -67,7 +85,7 @@ const updateProfileSchema = z.object({
 		logoUrl: z.string().url().optional(),
 		profilePhotoUrl: z.string().url().optional(),
 		bannerImage: z.string().url().optional(),
-		themeColor: z.enum(["black", "deep_blue", "green", "purple_blue"]).optional(),
+		themeColor: z.enum(STOREFRONT_THEME_VALUES).optional(),
 	}),
 });
 

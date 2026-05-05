@@ -180,6 +180,7 @@ async function uploadMedia({ ctx, res }) {
     },
   });
 
+  // Vendor settings expects { success: true, data: { url } }
   return sendSuccess(res, { url: media.url }, null, 201);
 }
 
@@ -225,6 +226,7 @@ async function uploadMediaFile({ ctx, res }) {
     });
   }
 
+  // Super-admin settings expects { imageUrl }
   return res.json({ imageUrl: result.secure_url });
 }
 
@@ -269,19 +271,23 @@ async function deleteMedia({ ctx, res }) {
     }
   }
 
+  // Best-effort delete from Cloudinary.
   try {
     ensureCloudinaryConfigured();
     if (media.provider === "cloudinary" && media.url) {
       const publicId = media.url.split("/").slice(-2).join("/").split(".")[0];
       await cloudinary.uploader.destroy(publicId);
     }
-  } catch {}
+  } catch {
+    // Ignore Cloudinary failures; still delete DB record.
+  }
 
   await prisma.media.delete({ where: { id: media.id } });
   return sendSuccess(res, { message: "Media deleted successfully" });
 }
 
 module.exports = {
+  parseMultipartSingleFile,
   uploadMedia,
   uploadMediaFile,
   listMedia,

@@ -1,5 +1,5 @@
 {
-  "name": "prisma-client-0381eda6a48267f58ccdf1b0e9a3a2012b0778ee354c5c6c81680f2ba45791a4",
+  "name": "prisma-client-8e6b302ccb89957b6ec4caf12733416c7b2a4415e263b905ca34ea51312c5342",
   "main": "index.js",
   "types": "index.d.ts",
   "browser": "default.js",
@@ -109,10 +109,10 @@
     },
     "./*": "./*"
   },
-  "version": "7.5.0",
+  "version": "7.8.0",
   "sideEffects": false,
   "dependencies": {
-    "@prisma/client-runtime-utils": "7.5.0"
+    "@prisma/client-runtime-utils": "7.8.0"
   },
   "imports": {
     "#wasm-compiler-loader": {

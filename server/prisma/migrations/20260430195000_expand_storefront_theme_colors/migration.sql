@@ -1,0 +1,12 @@
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'hot_coral';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'electric_violet';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'fuchsia_pop';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'terracotta_glam';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'midnight_berry';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'blush_rose';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'lavender_mist';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'sage_and_cream';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'hot_flamingo';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'cherry_red';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'candy_gradient';
+ALTER TYPE "ThemeColor" ADD VALUE IF NOT EXISTS 'papaya_punch';

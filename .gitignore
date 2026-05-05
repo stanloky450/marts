@@ -9,6 +9,7 @@
 /.next/
 /out/
 
+
 # production
 /build
 .env

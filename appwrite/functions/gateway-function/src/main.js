@@ -25,6 +25,8 @@ const {
   createAdmin,
   updateAdmin,
   deleteAdmin,
+  listMyAssignedVendors,
+  getMyAdminDashboardStats,
   getAdminDashboardStats,
   getAdminProductAnalytics,
   listReferrals,
@@ -55,6 +57,8 @@ const {
   getProductAnalytics,
   verifyPaymentStatus,
   listPayments,
+  createWebhookPayment,
+  listWebhookPayments,
   uploadMedia,
   uploadMediaFile,
   listMedia,
@@ -82,6 +86,22 @@ const {
   listPublicProducts,
   searchAllProducts,
   marketplaceOverview,
+  registerMarketUser,
+  loginMarketUser,
+  validateMarketUserSession,
+  listMarketUsers,
+  updateMarketUserStatus,
+  getAds,
+  createAd,
+  updateAd,
+  deleteAd,
+  listVendorReviews,
+  listProductReviews,
+  upsertVendorReview,
+  upsertProductReview,
+  aiChat,
+  initiateVendorRegistration,
+  suspendProduct,
 } = require("@migration/shared");
 
 const routes = [
@@ -115,6 +135,8 @@ const routes = [
   createRoute("POST", "/api/v1/admins", createAdmin),
   createRoute("PATCH", "/api/v1/admins/:id", updateAdmin),
   createRoute("DELETE", "/api/v1/admins/:id", deleteAdmin),
+  createRoute("GET", "/api/v1/admins/me/vendors", listMyAssignedVendors),
+  createRoute("GET", "/api/v1/admins/me/stats", getMyAdminDashboardStats),
   createRoute("GET", "/api/v1/admins/stats", getAdminDashboardStats),
   createRoute("GET", "/api/v1/admins/products/analytics", getAdminProductAnalytics),
 
@@ -150,6 +172,8 @@ const routes = [
 
   createRoute("GET", "/api/v1/payments", listPayments),
   createRoute("GET", "/api/v1/payments/verify/:reference", verifyPaymentStatus),
+  createRoute("GET", "/api/v1/webhooks/payments", listWebhookPayments),
+  createRoute("POST", "/api/v1/webhooks/payment", createWebhookPayment),
 
   createRoute("POST", "/api/v1/media/upload", uploadMedia),
   createRoute("POST", "/api/v1/media/uploadfile", uploadMediaFile),
@@ -182,6 +206,23 @@ const routes = [
   createRoute("GET", "/api/v1/storefront/store/products/:id", getStoreProduct),
 
   createRoute("GET", "/api/v1/analytics/overview", marketplaceOverview),
+
+  createRoute("POST", "/api/v1/market-users/register", registerMarketUser),
+  createRoute("POST", "/api/v1/market-users/login", loginMarketUser),
+  createRoute("POST", "/api/v1/market-users/session/validate", validateMarketUserSession),
+  createRoute("GET", "/api/v1/market-users", listMarketUsers),
+  createRoute("PATCH", "/api/v1/market-users/:id/status", updateMarketUserStatus),
+  createRoute("GET", "/api/v1/adsplace", getAds),
+  createRoute("POST", "/api/v1/adsplace", createAd),
+  createRoute("PATCH", "/api/v1/adsplace/:id", updateAd),
+  createRoute("DELETE", "/api/v1/adsplace/:id", deleteAd),
+  createRoute("GET", "/api/v1/reviews/vendor/:vendorMongoId", listVendorReviews),
+  createRoute("GET", "/api/v1/reviews/product/:productMongoId", listProductReviews),
+  createRoute("POST", "/api/v1/reviews/vendor/:vendorMongoId", upsertVendorReview),
+  createRoute("POST", "/api/v1/reviews/product/:productMongoId", upsertProductReview),
+  createRoute("POST", "/api/v1/ai/chat", aiChat),
+  createRoute("POST", "/api/v1/vendors/register/init", initiateVendorRegistration),
+  createRoute("PATCH", "/api/v1/products/:id/suspend", suspendProduct),
 ];
 
 module.exports = async (context) => createHandler(routes)(context);

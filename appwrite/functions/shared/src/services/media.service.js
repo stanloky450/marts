@@ -287,6 +287,7 @@ async function deleteMedia({ ctx, res }) {
 }
 
 module.exports = {
+  parseMultipartSingleFile,
   uploadMedia,
   uploadMediaFile,
   listMedia,

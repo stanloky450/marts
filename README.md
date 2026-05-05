@@ -9,14 +9,14 @@ The frontend now uses a local proxy route for API calls:
 - Browser requests go to `/api/v1/...`
 - Next.js first tries `API_PROXY_TARGET_URL` or `APPWRITE_API_GATEWAY_URL` when those are configured
 - If that target is unavailable and Appwrite server variables are present, Next.js falls back to direct Appwrite function execution
-- If neither Appwrite path is configured, the final local fallback remains `LEGACY_API_BASE_URL` or `http://localhost:5700/api`
+- If neither Appwrite path is configured, the final local fallback remains `LEGACY_API_BASE_URL` or `http://localhost:5700/api/v1`
 
 Recommended deployment options:
 
 - Option 1: Set `APPWRITE_API_GATEWAY_URL` to a real HTTP gateway that fronts `gateway-function`
 - Option 2: Set `APPWRITE_ENDPOINT`, `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY`, and optionally `APPWRITE_FUNCTION_ID=gateway-function`
 - Option 2 is useful when the app is deployed before a public Appwrite gateway URL is ready
-- For local development against the legacy Express backend, set `API_PROXY_TARGET_URL=http://localhost:5700/api`
+- For local development against the legacy Express backend, set `API_PROXY_TARGET_URL=http://localhost:5700/api/v1`
 
 Files involved:
 

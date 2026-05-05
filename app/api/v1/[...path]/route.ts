@@ -63,7 +63,7 @@ function getLegacyFallbackBaseUrl() {
     return value.endsWith("/") ? value.slice(0, -1) : value;
   }
 
-  return "http://localhost:5700/api";
+  return "http://localhost:5700/api/v1";
 }
 
 function isProductionRuntime() {
@@ -269,6 +269,12 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
     }
   } catch {
     // Ignore Appwrite execution errors and fall back to the local legacy server below.
+  }
+
+  try {
+    return await proxyToBaseUrl(legacyFallbackBaseUrl, request, path, body);
+  } catch {
+    // Fall through to the production error response below when no backend is reachable.
   }
 
   if (isProductionRuntime()) {

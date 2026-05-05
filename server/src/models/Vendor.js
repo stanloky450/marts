@@ -24,7 +24,7 @@ const vendorSchema = new mongoose.Schema(
 		bannerImage: String,
 		themeColor: {
 			type: String,
-			enum: ["black", "deep_blue", "green", "purple_blue"],
+			enum: ["black", "deep_blue", "green", "purple_blue", "hot_coral", "electric_violet", "fuchsia_pop", "terracotta_glam", "midnight_berry", "blush_rose", "lavender_mist", "sage_and_cream", "hot_flamingo", "cherry_red", "candy_gradient", "papaya_punch"],
 			default: "black",
 		},
 		phoneNumber: String,

@@ -19,13 +19,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { apiClient } from "@/lib/api-client"
 import { Settings, ImageIcon, Loader2 } from "lucide-react";
-
-const THEMES = [
-  { id: "black", name: "Black (Default)", color: "bg-black" },
-  { id: "deep_blue", name: "Deep Blue", color: "bg-blue-900" },
-  { id: "green", name: "Green", color: "bg-emerald-700" },
-  { id: "purple_blue", name: "Purple Blue", color: "bg-indigo-700" },
-]
+import {
+  STOREFRONT_THEMES,
+  getStorefrontTheme,
+  getStorefrontThemeStyles,
+  type StorefrontThemeId,
+} from "@/lib/storefront-theme";
 
 export default function VendorSettingsPage() {
   const [vendor, setVendor] = useState<Vendor | null>(null)
@@ -33,7 +32,7 @@ export default function VendorSettingsPage() {
   const [isSaving, setIsSaving] = useState(false)
   
   // Form State
-  const [themeColor, setThemeColor] = useState<string>("black")
+  const [themeColor, setThemeColor] = useState<StorefrontThemeId>("midnight_berry")
   const [bannerUrl, setBannerUrl] = useState<string>("")
   const [logoUrl, setLogoUrl] = useState<string>("")
   const [uploadingImage, setUploadingImage] = useState(false)
@@ -51,7 +50,7 @@ export default function VendorSettingsPage() {
         const response = await vendorService.getProfile()
         const vendorData = response.data.data.vendor
         setVendor(vendorData)
-        if (vendorData.themeColor) setThemeColor(vendorData.themeColor)
+        setThemeColor(getStorefrontTheme(vendorData.themeColor).id)
         if (vendorData.bannerImage) setBannerUrl(vendorData.bannerImage)
         if (vendorData.logoUrl) setLogoUrl(vendorData.logoUrl)
         const socials = (vendorData as Vendor & { socials?: { facebook?: string; instagram?: string; x?: string; twitter?: string } }).socials
@@ -144,7 +143,7 @@ export default function VendorSettingsPage() {
       const refreshed = await vendorService.getProfile()
       const vendorData = refreshed.data.data.vendor
       setVendor(vendorData)
-      if (vendorData.themeColor) setThemeColor(vendorData.themeColor)
+      setThemeColor(getStorefrontTheme(vendorData.themeColor).id)
       if (vendorData.bannerImage) setBannerUrl(vendorData.bannerImage)
       else setBannerUrl("")
       if (vendorData.logoUrl) setLogoUrl(vendorData.logoUrl)
@@ -340,29 +339,51 @@ export default function VendorSettingsPage() {
                 <div className="space-y-2">
                    <Label>Storefront Theme Color</Label>
                    <p className="text-sm text-muted-foreground">
-                      Select a primary color scheme for your store. This affects buttons and accents.
+                      Select a storefront variant. Background drives surfaces, accent drives buttons and highlights, and text drives copy.
                    </p>
                 </div>
                 
                 <RadioGroup 
                   value={themeColor} 
-                  onValueChange={setThemeColor}
-                  className="grid grid-cols-2 gap-4 md:grid-cols-4"
+                  onValueChange={(value) => setThemeColor(value as StorefrontThemeId)}
+                  className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"
                 >
-                  {THEMES.map((theme) => (
+                  {STOREFRONT_THEMES.map((theme) => {
+                    const styles = getStorefrontThemeStyles(theme.id)
+                    return (
                     <div key={theme.id} className="flex items-center space-x-2">
                       <RadioGroupItem value={theme.id} id={theme.id} className="sr-only" />
                       <Label
                         htmlFor={theme.id}
-                        className={`flex cursor-pointer flex-col items-center justify-between rounded-md border-2 p-4 hover:bg-accent hover:text-accent-foreground ${
-                          themeColor === theme.id ? "border-primary bg-accent" : "border-muted bg-popover"
+                        className={`flex cursor-pointer flex-col items-start justify-between rounded-xl border-2 p-4 transition-transform hover:-translate-y-0.5 ${
+                          themeColor === theme.id ? "border-primary shadow-sm" : "border-muted bg-popover"
                         }`}
+                        style={{
+                          background: styles.pageBackground,
+                          borderColor: themeColor === theme.id ? theme.text : styles.softBorder,
+                        }}
                       >
-                         <div className={`mb-3 h-10 w-10 rounded-full ${theme.color} ring-1 ring-offset-2 ring-transparent`} />
-                         <span className="text-sm font-medium">{theme.name}</span>
+                         <div className="mb-4 flex w-full items-center gap-3">
+                           <div className="h-10 w-10 rounded-full border" style={{ background: theme.background, borderColor: styles.softBorder }} />
+                           <div className="h-10 w-10 rounded-full border" style={{ background: theme.accent, borderColor: styles.softBorder }} />
+                           <div className="h-10 w-10 rounded-full border" style={{ background: theme.text, borderColor: styles.softBorder }} />
+                         </div>
+                         <div className="w-full rounded-xl p-4" style={{ background: styles.heroBackground, color: theme.text }}>
+                           <div className="mb-3 text-sm font-semibold">{theme.name}</div>
+                           <div className="flex items-center justify-between rounded-lg px-3 py-2" style={{ background: theme.accent, color: styles.buttonText }}>
+                             <span className="text-xs font-semibold">Accent Button</span>
+                             <span className="text-xs font-medium">Preview</span>
+                           </div>
+                         </div>
+                         <div className="mt-3 space-y-1 text-left">
+                           <span className="block text-sm font-medium">{theme.name}</span>
+                           <span className="block text-xs text-muted-foreground">
+                             BG {theme.background} · Text {theme.text} · Accent {theme.accent}
+                           </span>
+                         </div>
                       </Label>
                     </div>
-                  ))}
+                  )})}
                 </RadioGroup>
               </div>
 

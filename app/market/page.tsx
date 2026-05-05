@@ -63,8 +63,12 @@ export default function MarketPage() {
 				// 5. Fetch Ads
 				try {
 					const adsRes = await apiClient.get<ApiResponse<any[]>>("/adsplace");
-					// @ts-ignore
-					setAds(adsRes.data.data.filter(ad => ad.active !== false));
+					const rawAds = Array.isArray(adsRes.data)
+						? adsRes.data
+						: Array.isArray((adsRes.data as ApiResponse<any[]>).data)
+							? (adsRes.data as ApiResponse<any[]>).data
+							: [];
+					setAds(rawAds.filter((ad) => ad?.active !== false));
 				} catch (err) {
 					console.error("Ads fetch error:", err);
 				}

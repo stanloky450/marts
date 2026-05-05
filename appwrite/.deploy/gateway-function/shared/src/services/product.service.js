@@ -289,6 +289,23 @@ async function rejectProduct({ ctx, res }) {
   return sendSuccess(res, { ...updated, _id: updated.mongoId });
 }
 
+async function suspendProduct({ ctx, res }) {
+  const auth = await requireRole({ ctx, res }, [USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN]);
+  if (!auth.ok) return auth.response;
+
+  const repo = getProductRepository();
+  const product = await repo.getProductById(ctx.params.id);
+  if (!product) return sendError(res, 404, "PRODUCT_NOT_FOUND", "Product not found");
+
+  const reason = String(ctx.body?.reason || ctx.body?.rejectionNote || "Product suspended").trim();
+  const updated = await repo.updateProductByDbId(product.id, {
+    status: PRODUCT_STATUS.REJECTED,
+    rejectionNote: reason,
+  });
+
+  return sendSuccess(res, { ...updated, _id: updated.mongoId });
+}
+
 async function trackView({ ctx, res }) {
   const repo = getProductRepository();
   const product = await repo.getProductById(ctx.params.id);
@@ -360,6 +377,7 @@ module.exports = {
   deleteProduct,
   approveProduct,
   rejectProduct,
+  suspendProduct,
   trackView,
   getProductAnalytics,
 };

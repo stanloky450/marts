@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma.js"
 import { uploadToCloud } from "../config/cloudinary.js"
+import crypto from "crypto"
 
 // Helper to calculate duration in days
 const getDurationInDays = (start, end) => {
@@ -32,6 +33,7 @@ export const createAd = async (req, res) => {
 
     const savedAd = await prisma.adPlacement.create({
       data: {
+        mongoId: crypto.randomBytes(12).toString("hex"),
         slot,
         imageUrl,
         description,
@@ -102,8 +104,12 @@ export const updateAd = async (req, res) => {
       updates.endDate = end
     }
 
-    if (updates.price) updates.price = Number.parseFloat(updates.price)
-    if (updates.priority) updates.priority = parseInt(updates.priority, 10)
+    if (updates.price !== undefined && updates.price !== "") {
+      updates.price = Number.parseFloat(updates.price)
+    }
+    if (updates.priority !== undefined && updates.priority !== "") {
+      updates.priority = parseInt(updates.priority, 10)
+    }
     if (updates.active !== undefined) updates.active = updates.active === 'true' || updates.active === true
 
     const updatedAd = await prisma.adPlacement.update({
