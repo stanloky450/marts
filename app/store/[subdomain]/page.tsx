@@ -39,7 +39,6 @@ import {
 import {
 	Copy,
 	ChevronDown,
-	Download,
 	ExternalLink,
 	Facebook,
 	Instagram,
@@ -50,10 +49,6 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { AIChatWidget } from "@/components/ai-chat-widget";
 import { getStorefrontThemeStyles } from "@/lib/storefront-theme";
-import {
-	downloadVendorQrCode,
-	generateVendorQrCodeDataUrl,
-} from "@/lib/vendor-qr";
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -142,9 +137,6 @@ export default function StorefrontPage() {
 	const [search, setSearch] = useState("");
 	const [categoryFilter, setCategoryFilter] = useState<string>("all");
 	const [sortBy, setSortBy] = useState<string>("name_asc");
-	const [storefrontUrl, setStorefrontUrl] = useState("");
-	const [qrCodeDataUrl, setQrCodeDataUrl] = useState("");
-	const [isDownloadingQr, setIsDownloadingQr] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -174,23 +166,6 @@ export default function StorefrontPage() {
 
 		void fetchData();
 	}, [subdomain, search, categoryFilter, sortBy]);
-
-	useEffect(() => {
-		if (!vendor || typeof window === "undefined") return;
-
-		const currentStorefrontUrl = window.location.href;
-		setStorefrontUrl(currentStorefrontUrl);
-
-		void generateVendorQrCodeDataUrl({
-			businessName: vendor.businessName,
-			storefrontUrl: currentStorefrontUrl,
-			theme: getStorefrontThemeStyles(vendor.themeColor).theme,
-		})
-			.then(setQrCodeDataUrl)
-			.catch((error) => {
-				console.error("Failed to generate vendor QR code", error);
-			});
-	}, [vendor]);
 
 	if (isLoading) {
 		return (
@@ -283,25 +258,6 @@ export default function StorefrontPage() {
 			toast.success(`${label} copied`);
 		} catch {
 			toast.error(`Failed to copy ${label.toLowerCase()}`);
-		}
-	};
-
-	const handleDownloadQr = async () => {
-		if (!storefrontUrl) return;
-
-		setIsDownloadingQr(true);
-		try {
-			await downloadVendorQrCode({
-				businessName: vendor.businessName,
-				storefrontUrl,
-				theme: theme.theme,
-			});
-			toast.success("Storefront QR code downloaded");
-		} catch (error) {
-			console.error("Failed to download vendor QR code", error);
-			toast.error("Failed to download storefront QR code");
-		} finally {
-			setIsDownloadingQr(false);
 		}
 	};
 
@@ -478,56 +434,6 @@ export default function StorefrontPage() {
 										</div>
 									)}
 
-									{storefrontUrl && (
-										<div className="rounded-2xl border border-white/20 bg-white/10 p-3 text-white md:col-span-2">
-											<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-												<div className="flex items-center gap-3">
-													{qrCodeDataUrl ? (
-														<img
-															src={qrCodeDataUrl}
-															alt={`${vendor.businessName} storefront QR code`}
-															className="h-24 w-24 rounded-xl border border-white/15 bg-white p-2"
-														/>
-													) : (
-														<div className="flex h-24 w-24 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-xs text-white/80">
-															Generating QR
-														</div>
-													)}
-													<div className="text-left">
-														<div className="text-sm font-semibold">Storefront QR Code</div>
-														<p className="max-w-md text-sm text-white/80">
-															Turn this vendor link into a downloadable QR code for flyers,
-															packaging, and quick store access.
-														</p>
-													</div>
-												</div>
-												<div className="flex flex-wrap gap-2">
-													<Button
-														type="button"
-														className="rounded-xl"
-														style={{
-															background: theme.theme.accent,
-															color: theme.buttonText,
-														}}
-														onClick={handleDownloadQr}
-														disabled={isDownloadingQr || !qrCodeDataUrl}
-													>
-														<Download className="mr-2 h-4 w-4" />
-														{isDownloadingQr ? "Preparing..." : "Download QR"}
-													</Button>
-													<Button
-														type="button"
-														variant="ghost"
-														className="rounded-xl border border-white/20 text-white hover:bg-white/10 hover:text-white"
-														onClick={() => copyText(storefrontUrl, "Storefront link")}
-													>
-														<Copy className="mr-2 h-4 w-4" />
-														Copy Link
-													</Button>
-												</div>
-											</div>
-										</div>
-									)}
 								</div>
 							</div>
 						</motion.div>

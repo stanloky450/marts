@@ -18,13 +18,17 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { apiClient } from "@/lib/api-client"
-import { Settings, ImageIcon, Loader2 } from "lucide-react";
+import { Settings, ImageIcon, Loader2, Copy, Download } from "lucide-react";
 import {
   STOREFRONT_THEMES,
   getStorefrontTheme,
   getStorefrontThemeStyles,
   type StorefrontThemeId,
 } from "@/lib/storefront-theme";
+import {
+  downloadVendorQrCode,
+  generateVendorQrCodeDataUrl,
+} from "@/lib/vendor-qr";
 
 export default function VendorSettingsPage() {
   const [vendor, setVendor] = useState<Vendor | null>(null)
@@ -40,6 +44,9 @@ export default function VendorSettingsPage() {
   const [facebook, setFacebook] = useState("")
   const [instagram, setInstagram] = useState("")
   const [xHandle, setXHandle] = useState("")
+  const [storefrontUrl, setStorefrontUrl] = useState("")
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState("")
+  const [isDownloadingQr, setIsDownloadingQr] = useState(false)
 
   const extractErrorMessage = (error: any, fallback: string) =>
     error?.response?.data?.error?.message || error?.response?.data?.message || fallback
@@ -66,6 +73,27 @@ export default function VendorSettingsPage() {
 
     fetchProfile()
   }, [])
+
+  useEffect(() => {
+    if (!vendor?.subdomain || typeof window === "undefined") {
+      setStorefrontUrl("")
+      setQrCodeDataUrl("")
+      return
+    }
+
+    const nextStorefrontUrl = `${window.location.origin}/store/${vendor.subdomain}`
+    setStorefrontUrl(nextStorefrontUrl)
+
+    void generateVendorQrCodeDataUrl({
+      businessName: vendor.businessName,
+      storefrontUrl: nextStorefrontUrl,
+      theme: getStorefrontTheme(themeColor),
+    })
+      .then(setQrCodeDataUrl)
+      .catch((error) => {
+        console.error("Failed to generate vendor QR code", error)
+      })
+  }, [vendor?.subdomain, vendor?.businessName, themeColor])
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -160,6 +188,36 @@ export default function VendorSettingsPage() {
       toast.error(`${errMessage} ${details}`.trim())
     } finally {
       setIsSaving(false)
+    }
+  }
+
+  const handleCopyStorefrontLink = async () => {
+    if (!storefrontUrl) return
+
+    try {
+      await navigator.clipboard.writeText(storefrontUrl)
+      toast.success("Storefront link copied")
+    } catch {
+      toast.error("Failed to copy storefront link")
+    }
+  }
+
+  const handleDownloadQr = async () => {
+    if (!storefrontUrl || !vendor) return
+
+    setIsDownloadingQr(true)
+    try {
+      await downloadVendorQrCode({
+        businessName: vendor.businessName,
+        storefrontUrl,
+        theme: getStorefrontTheme(themeColor),
+      })
+      toast.success("Storefront QR code downloaded")
+    } catch (error) {
+      console.error("Failed to download vendor QR code", error)
+      toast.error("Failed to download storefront QR code")
+    } finally {
+      setIsDownloadingQr(false)
     }
   }
 
@@ -288,6 +346,55 @@ export default function VendorSettingsPage() {
                 </div>
               </div>
               
+              <div className="my-6 border-t" />
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Storefront QR Code</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Download a QR code for your storefront and copy the direct store link for flyers, packaging, and social posts.
+                  </p>
+                </div>
+
+                {!vendor?.subdomain ? (
+                  <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
+                    Your storefront link will appear here after a store subdomain is available.
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-4 rounded-2xl border bg-muted/20 p-4 md:flex-row md:items-center md:justify-between">
+                    <div className="flex items-center gap-4">
+                      {qrCodeDataUrl ? (
+                        <img
+                          src={qrCodeDataUrl}
+                          alt={`${vendor.businessName} storefront QR code`}
+                          className="h-24 w-24 rounded-xl border bg-white p-2"
+                        />
+                      ) : (
+                        <div className="flex h-24 w-24 items-center justify-center rounded-xl border bg-background text-xs text-muted-foreground">
+                          Generating QR
+                        </div>
+                      )}
+
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium">{vendor.businessName}</p>
+                        <p className="break-all text-xs text-muted-foreground">{storefrontUrl}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      <Button type="button" variant="outline" onClick={handleCopyStorefrontLink} disabled={!storefrontUrl}>
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copy Link
+                      </Button>
+                      <Button type="button" onClick={handleDownloadQr} disabled={isDownloadingQr || !qrCodeDataUrl}>
+                        <Download className="mr-2 h-4 w-4" />
+                        {isDownloadingQr ? "Preparing..." : "Download QR"}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="my-6 border-t" />
 
               {/* Social Media Section */}
